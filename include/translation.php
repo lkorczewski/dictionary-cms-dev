@@ -24,6 +24,10 @@ class Translation {
 	function set($text){
 		$this->text = $text;
 	}
+	
+	function get(){
+		return $this->text = $text;
+	}
 }
 
 ?>
