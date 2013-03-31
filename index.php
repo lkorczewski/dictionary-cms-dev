@@ -15,7 +15,14 @@ if(isset($config['debug']) && $config['debug'] == true){
 
 // classes
 
-require_once 'include/database.php';
+if(isset($config['include_path'])){
+	set_include_path(get_include_path() . PATH_SEPARATOR . $config['include_path']);
+}
+
+require_once 'database/database.php';
+require_once 'include/dictionary.php';
+
+// database initialization
 
 $db = new Database();
 if(isset($config['db_host'])) $db->set_host($config['db_host']);
@@ -25,13 +32,16 @@ if(isset($config['db_user'])) $db->set_user($config['db_user'],
 );
 if(isset($config['db_database'])) $db->set_database($config['db_database']);
 $db->connect();
+
 ?>
 <html>
 <head>
 <title>Dictionary</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <?php
+
 // example
 
 $headword = isset($_GET['h']) ? $_GET['h'] : '';
@@ -51,9 +61,12 @@ switch($headword){
 	
 	default :
 		
-		echo '<p>searching not implemented</p>';
+		$dictionary = new Dictionary($db);
+		$entry = $dictionary->get_entry($headword);
 		
 		break;
 }
 
 ?>
+</body>
+</html>
