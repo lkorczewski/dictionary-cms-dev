@@ -26,7 +26,7 @@ class Translation {
 	}
 	
 	function get(){
-		return $this->text = $text;
+		return $this->text;
 	}
 }
 

@@ -21,6 +21,7 @@ if(isset($config['include_path'])){
 
 require_once 'database/database.php';
 require_once 'include/dictionary.php';
+require_once 'include/layout.php';
 
 // database initialization
 
@@ -63,6 +64,9 @@ switch($headword){
 		
 		$dictionary = new Dictionary($db);
 		$entry = $dictionary->get_entry($headword);
+		
+		$layout = new Layout();
+		echo $layout->parse($entry);
 		
 		break;
 }

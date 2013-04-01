@@ -34,6 +34,18 @@ class Entry {
 	}
 	
 	//------------------------------------------------
+	// headword management
+	//------------------------------------------------
+	
+	function set_headword($headword){
+		$this->headword = $headword;
+	}
+	
+	function get_headword(){
+		return $this->headword;
+	}
+	
+	//------------------------------------------------
 	// sense management
 	//------------------------------------------------
 	
@@ -45,8 +57,10 @@ class Entry {
 	}
 	
 	function get_sense(){
+		if(!isset($this->senses[$this->sense_iterator])) return false;
+		
 		$sense = $this->senses[$this->sense_iterator];
-		$sense_iterator++;
+		$this->sense_iterator++;
 		
 		return $sense;
 	}

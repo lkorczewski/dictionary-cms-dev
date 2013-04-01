@@ -24,7 +24,8 @@ class Dictionary {
 		$entry_result = $this->database->query($query);
 		Debugger::dump($entry_result);
 		
-		$entry->set_id($entry_result[0]['entry_id']);		
+		$entry->set_id($entry_result[0]['entry_id']);
+		$entry->set_headword($entry_result[0]['headword']);
 		$entry->pull();
 		
 		Debugger::dump($entry);

@@ -47,6 +47,30 @@ class Sense {
 		$this->label = $label;
 	}
 	
+	function get_label(){
+		return $this->label;
+	}
+	
+	//------------------------------------------------
+	// translation management
+	//------------------------------------------------
+	
+	function add_translation(){
+		$translation = new Translation($this->dictionary);
+		$this->translations[] = $translation;
+		
+		return $translation;
+	}
+	
+	function get_translation(){
+		if(!isset($this->translations[$this->translation_iterator])) return false;
+		
+		$translation = $this->translations[$this->translation_iterator];
+		$this->translation_iterator++;
+			
+		return $translation;
+	}
+	
 	//------------------------------------------------
 	// sense management
 	//------------------------------------------------
@@ -59,25 +83,12 @@ class Sense {
 	}
 	
 	function get_sense(){
+		if(!isset($this->senses[$this->sense_iterator])) return false;
+		
 		$sense = $this->senses[$this->sense_iterator];
 		$this->sense_iterator++;
 		
 		return $sense;
-	}
-	
-	//------------------------------------------------
-	// translation management
-	//------------------------------------------------
-	
-	function add_translation(){
-		$this->translations[] = new Translation($this->dictionary);
-	}
-	
-	function get_translation(){
-		$translation = $this->translations[$this->translation_iterator];
-		$this->translation_iterator++;
-			
-		return $translation;
 	}
 	
 	//------------------------------------------------
@@ -88,14 +99,19 @@ class Sense {
 		
 		// translations
 		
-		$query = "SELECT * FROM translations WHERE sense_id = {$this->id};";
+		$query = "SELECT * FROM translations WHERE sense_id = {$this->id} ORDER BY `order`;";
 		$translations_result = $this->database->query($query);
 		Debugger::dump($query);
 		Debugger::dump($translations_result);
 		
+		foreach($translations_result as $translation_result){
+			$translation = $this->add_translation();
+			$translation->set($translation_result['text']);
+		}
+		
 		// subsenses
 		
-		$query = "SELECT * FROM senses WHERE parent_sense_id = {$this->id};";
+		$query = "SELECT * FROM senses WHERE parent_sense_id = {$this->id} ORDER BY `order`;";
 		$subsenses_result = $this->database->query($query);
 		Debugger::dump($query);
 		Debugger::dump($subsenses_result);
