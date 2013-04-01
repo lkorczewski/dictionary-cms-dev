@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__.'/dictionary.php';
-require_once __DIR__.'/entry.php';
-require_once __DIR__.'/sense.php';
-require_once __DIR__.'/translation.php';
+require_once 'dictionary/dictionary.php';
+require_once 'dictionary/entry.php';
+require_once 'dictionary/sense.php';
+require_once 'dictionary/translation.php';
 
 Class Layout{
 	private $output;

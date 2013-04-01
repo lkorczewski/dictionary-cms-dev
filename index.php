@@ -20,7 +20,7 @@ if(isset($config['include_path'])){
 }
 
 require_once 'database/database.php';
-require_once 'include/dictionary.php';
+require_once 'dictionary/dictionary.php';
 require_once 'include/layout.php';
 
 // database initialization
