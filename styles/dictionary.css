@@ -1,0 +1,47 @@
+html {
+	width: 800px;
+	margin: auto;
+}
+
+/* == entry structure =================================== */
+
+.entry_container {}
+
+.headword {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	background: red;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+	padding-left: 0.25em;
+	padding-right:0.25em;
+	font-weight: bold;
+	font-family: GFS Didot;
+}
+
+.sense_container {
+	margin-left: 1em;
+}
+
+.sense_label {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	background: pink;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+	padding-left: 0.25em;
+	padding-right:0.25em;
+	font-weight: bold;
+	font-family: GFS Didot;
+}
+
+.translation {
+	margin: 0;
+	font-family: GFS Didot;
+}
+
+/* == buttons =========================================== */
+
+.buttons {
+	float: right;
+}

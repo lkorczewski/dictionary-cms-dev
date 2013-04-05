@@ -23,33 +23,64 @@ Class Layout{
 	}
 
 	private function parse_entry(Entry $entry){
-		$this->output .= '<div class="entry_container">'."\n";
-		$this->output .= '<p class="headword"><b>'.$entry->get_headword().'</b></p>'."\n";
+		$this->output .= '<div class="entry_container">' . "\n";
+		$this->output .= '<div class="headword"><b>' . $entry->get_headword() . '</b></div>' . "\n";
 		
 		while($sense = $entry->get_sense()){
 			$this->parse_sense($sense);
 		}
-		$this->output .= '<div>'."\n";
+		$this->output .= '<div>' . "\n";
 	}
 	
 	private function parse_sense(Sense $sense){
 		
 		$this->output .= '<div class="sense_container">';
-		$this->output .= '<p class="sense_label">'.$sense->get_label().'</p>'."\n";
+		
+		$this->output .=
+			'<div class="sense_label">' .
+			$sense->get_label() .
+			'<div class="buttons">' .
+			'<button class="button move_up" onclick="move_sense_up(this.parentNode.parentNode.parentNode, ' .
+			$sense->get_id() .
+			')"> do góry</button>' .
+			'<button class="button move_down" onclick="move_sense_down(this.parentNode.parentNode.parentNode, ' .
+			$sense->get_id() .
+			')"> na dół</button>' .
+			'</div>' .
+			'</div>' .
+			"\n";
 		
 		while($translation = $sense->get_translation()){
 			$this->parse_translation($translation);
 		}
 		
+		$this->output .=
+			'<div><button class="button add_translation" onclick="add_translation(this.parentNode.parentNode, ' .
+			$sense->get_id() .
+			')">dodaj wpis</button></div>' . "\n";
+		
+		
 		while($subsense = $sense->get_sense()){
 			$this->parse_sense($subsense);
 		}
 		
-		$this->output .= '</div>'."\n";
+		$this->output .= '</div>' . "\n";
 	}
 	
 	private function parse_translation(Translation $translation){
-		$this->output .= '<p class="translation">'.$translation->get().'</p>'."\n";
+		$this->output .=
+			'<div class="translation">' .
+			$translation->get_text() .
+			'<div class="buttons">' .
+			'<button class="button move_up" onclick="move_translation_up(this.parentNode.parentNode, ' .
+			$translation->get_id() .
+			')">do góry</button>' .
+			'<button class="button move_down" onclick="move_translation_down(this.parentNode.parentNode, ' .
+			$translation->get_id() .
+			')">na dół</buton>' .
+			'</div>' .
+			'</div>' .
+			"\n";
 	}
 }
 
