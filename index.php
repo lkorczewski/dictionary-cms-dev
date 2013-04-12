@@ -5,6 +5,7 @@ require_once 'include/script.php';
 $config = Script::load_config();
 
 require_once 'database/database.php';
+require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
 require_once 'include/layout.php';
 
@@ -14,26 +15,27 @@ $database = Script::connect_to_database();
 // content construction
 //====================================================
 
-$content = '';
-
 $headword = isset($_GET['h']) ? $_GET['h'] : '';
+
+$data = new MySQL_Data($database);
+$dictionary = new Dictionary($data);
+
+$content = '';
 
 switch($headword){
 	
 	// list of headwords
 	case '':
-	
-		$result = $database->query('select headword from entries;');
 		
-		foreach($result as $row){
-			$content .= "<p><a href=\"?h={$row['headword']}\">{$row['headword']}</p>\n";
+		$headwords = $data->pull_headwords();
+		
+		foreach($headwords as $headword){
+			$content .= "<p><a href=\"?h=$headword\">$headword</p>\n";
 		}
 		
 		break;
 	
 	default :
-		
-		$dictionary = new Dictionary($database);
 		$entry = $dictionary->get_entry($headword);
 		
 		$layout = new Layout();
@@ -47,6 +49,7 @@ switch($headword){
 //====================================================
 
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <title>Dictionary</title>

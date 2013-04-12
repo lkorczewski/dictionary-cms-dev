@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Moving translation up
+// Updating translation
 //====================================================
 
 require_once '../include/script.php';
@@ -30,19 +30,31 @@ if(isset($_POST['id'])){
 	}
 }
 
+$text = '';
+if(isset($_POST['t'])){
+	$text = $_POST['t'];
+} else {
+	if(isset($_GET['t'])){
+		$text = $_GET['t'];
+	} else {
+		die('no parameter');
+	}
+}
+
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
 $query =
-	'UPDATE translations t1, translations t2'.
-	' SET t1.order = t2.order, t2.order = t1.order'.
-	" WHERE t1.translation_id = $id".
-	'  AND t1.order = t2.order + 1'.
+	'UPDATE translations' .
+	" SET text = '$text'" .
+	" WHERE translation_id = $id" .
 	';';
 $result = $database->query($query);
 
-if($result === false) die('query failure');
+if($result === false){
+	die('query failure');
+}
 
 // returning OK
 

@@ -10,7 +10,8 @@ html {
 .headword {
 	margin-top: 0.2em;
 	margin-bottom: 0.2em;
-	background: red;
+	/*background: red;*/
+	color: blue;
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
 	padding-left: 0.25em;
@@ -23,7 +24,7 @@ html {
 	margin-left: 1em;
 }
 
-.sense_label {
+.sense_label_bar {
 	margin-top: 0.2em;
 	margin-bottom: 0.2em;
 	background: pink;
@@ -31,17 +32,36 @@ html {
 	padding-bottom: 0.1em;
 	padding-left: 0.25em;
 	padding-right:0.25em;
+	overflow: hidden;
+}
+
+.sense_label {
+	display: inline-block;
+	margin: 0;
 	font-weight: bold;
 	font-family: GFS Didot;
+}
+
+.translation_bar {
+	margin: 0;
+	overflow: hidden;
 }
 
 .translation {
 	margin: 0;
 	font-family: GFS Didot;
+	display: inline-block;
 }
 
 /* == buttons =========================================== */
 
 .buttons {
+	display: inline-block;
 	float: right;
+	/*
+	width: 50px;*/
+}
+
+.button {
+	font-size: 67%;
 }

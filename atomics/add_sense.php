@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Moving translation up
+// Adding sense
 //====================================================
 
 require_once '../include/script.php';
@@ -19,12 +19,12 @@ $database = Script::connect_to_database();
 // setting parameters
 //----------------------------------------------------
 
-$id = '';
+$sense_id = '';
 if(isset($_POST['id'])){
-	$id = $_POST['id'];
+	$sense_id = $_POST['id'];
 } else {
 	if(isset($_GET['id'])){
-		$id = $_GET['id'];
+		$sense_id = $_GET['id'];
 	} else {
 		die('no parameter');
 	}
@@ -35,17 +35,31 @@ if(isset($_POST['id'])){
 //----------------------------------------------------
 
 $query =
-	'UPDATE translations t1, translations t2'.
-	' SET t1.order = t2.order, t2.order = t1.order'.
-	" WHERE t1.translation_id = $id".
-	'  AND t1.order = t2.order + 1'.
+	'INSERT `translations` (`sense_id`, `order`, `text`)' .
+	" SELECT $sense_id, MAX(`new_order`), '$text'" .
+	'  FROM (' .
+	'   SELECT MAX(`order`) + 1 AS `new_order`' .
+	'    FROM `translations`' .
+	"    WHERE `sense_id` = $sense_id" .
+	'    GROUP BY `sense_id`' .
+	'   UNION SELECT 1 AS `new_order`' .
+	'  ) t' .
 	';';
 $result = $database->query($query);
 
-if($result === false) die('query failure');
+if($result === false){
+	die('query failure');
+}
 
-// returning OK
+$query = 'SELECT last_insert_id() AS `insert_id`;';
+$result = $database->query($query);
 
-echo 'OK';
+if($result === false){
+	die('query failure');
+}
+
+// returning inserted id
+
+echo $result[0]['insert_id'];
 
 ?>

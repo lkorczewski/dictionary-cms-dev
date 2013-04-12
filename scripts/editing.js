@@ -4,6 +4,9 @@ function make_request(url, parameters, handler){
 	http_request.onreadystatechange = function(){
 		done = false;
 		console.log('readyState == ' + http_request.readyState)
+				
+		// do when response received
+		
 		if(http_request.readyState == 4){
 			if(http_request.status == 200){
 				if(done == false){
@@ -16,6 +19,7 @@ function make_request(url, parameters, handler){
 				console.log(http_request.status + ' : ' + http_request.statusText)
 			}
 		}
+		
 	}
 	http_request.open('POST', url, true)
 	http_request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); 
@@ -70,23 +74,23 @@ function move_sense_down(element, id){
 
 /* translations */
 
-function move_translation_up(element, id){
+function move_translation_up(translation_bar, id){
 	make_request('atomics/move_translation_up.php', 'id=' + id, {
 		success: function(response){
 			console.log('move_translation_up: ' + response)
 			if(response == 'OK'){
-				element.parentNode.insertBefore(element, element.previousElementSibling) /* not working in IE<9 */
+				translation_bar.parentNode.insertBefore(translation_bar, translation_bar.previousElementSibling) /* not working in IE<9 */
 			}
 		}
 	})
 }
 
-function move_translation_down(element, id){
+function move_translation_down(translation_bar, id){
 	make_request('atomics/move_translation_down.php', 'id=' + id, {
 		success: function(response){
 			console.log('move_translation_down: ' + response)
 			if(response == 'OK'){
-				element.parentNode.insertBefore(element.nextElementSibling, element) /* not working in IE<9 */
+				translation_bar.parentNode.insertBefore(translation_bar.nextElementSibling, translation_bar) /* not working in IE<9 */
 			}
 		}
 	})
@@ -97,38 +101,77 @@ function add_translation(sense_element, sense_id){
 		success: function(response){
 			console.log('add_translation: ' + response)
 			if(parseInt(response)){
-				sense_translations = sense_element.getElementsByClassName('translation')
-				last_translation = sense_translations[sense_translations.length - 1] // problem inserting first translation
-				sense_element.insertBefore(make_translation('...'), last_translation.nextElementSibling)
+				translations = sense_element.getElementsByClassName('translations')[0]
+				translations.appendChild(make_translation('...'))
 			}
 		}
 	})
 }
 
-/*
-function edit_translation(element, id){
-	element.innerHTML='<input type="text" onkeypress="update_translation">' + element + '</input>';
+function update_translation(translation_bar, id, text, doOnSuccess){
+	make_request('atomics/update_translation.php', 'id=' + id + '&t=' + text, {
+		success: function(response){
+			console.log('update_translation: ' + response)
+			if(response == 'OK'){
+				translation = translation.parentNode.getElementsByClassName('translation')[0]
+				translation.textContent = text
+				
+				if(typeof doOnSuccess != 'undefined'){
+					doOnSuccess()
+				}
+				
+				translation.style.display = 'inline-block';
+			}
+		}
+	})
+
 }
 
-function edit_translation_keypressed(event, element, id, text){
-	if(event.keyCode == 13){
-		update_translation(element, id, text)
-	}
+function delete_translation(translation_bar, id){
+	make_request('atomics/delete_translation.php', 'id=' + id, {
+		success: function(response){
+			console.log('delete_translation: ' + response)
+			if(response == 'OK'){
+				translation_bar.parentNode.removeChild(translation_bar)
+			}
+		}
+	})
 }
 
-function update_translation(element, id, text){
+function edit_translation(translation_bar, id){
+	translation = translation_bar.getElementsByClassName('translation')[0]
 	
+	translation_input = document.createElement('input')
+	translation_input.setAttribute('type','text')
+	translation_input.value = translation.textContent
+	translation_input.onkeypress = function(){
+		if(event.keyCode == 13){
+			if(translation_input.value != translation.textContent){
+				translation_input.disabled = true
+				update_translation(translation_input.parentNode, id, translation_input.value, function(){
+					translation_input.parentNode.removeChild(translation_input);
+					translation.style.display = 'inline-block';
+				})
+			}
+		}
+	}
+	
+	translation.style.display = 'none';
+	translation_bar.insertBefore(translation_input, translation.nextElementSibling) /* not working in IE<9 */
 }
-*/
 
 function make_translation(text, id){
+	translation_bar = document.createElement('div')
+	translation_bar.setAttribute('class', 'translation_bar')
+	
 	translation = document.createElement('div')
 	translation.setAttribute('class', 'translation')
-	translation.appendChild(document.createTextNode(text))
+	translation.textContent = text
+	translation_bar.appendChild(translation)
 	
 	buttons = document.createElement('div')
 	buttons.setAttribute('class', 'buttons')
-	translation.appendChild(buttons)
+	translation_bar.appendChild(buttons)
 	
 	buttonUp = document.createElement('button')
 	buttonUp.setAttribute('class', 'button move_up')
@@ -142,5 +185,5 @@ function make_translation(text, id){
 	buttonDown.textContent = 'na dół'
 	buttons.appendChild(buttonDown)
 	
-	return translation
+	return translation_bar
 }

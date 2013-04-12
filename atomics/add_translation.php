@@ -47,7 +47,7 @@ $query =
 	'INSERT `translations` (`sense_id`, `order`, `text`)' .
 	" SELECT $sense_id, MAX(`new_order`), '$text'" .
 	'  FROM (' .
-	'   SELECT MAX(`order`) AS `new_order`' .
+	'   SELECT MAX(`order`) + 1 AS `new_order`' .
 	'    FROM `translations`' .
 	"    WHERE `sense_id` = $sense_id" .
 	'    GROUP BY `sense_id`' .
