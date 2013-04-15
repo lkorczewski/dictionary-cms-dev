@@ -11,9 +11,11 @@ Script::set_root_path('..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
+require_once 'dictionary/data.php';
+require_once 'dictionary/mysql_data.php';
 
 $database = Script::connect_to_database();
-
+$data = new MySQL_Data($database);
 
 //----------------------------------------------------
 // setting parameters
@@ -34,19 +36,13 @@ if(isset($_POST['id'])){
 // executing query
 //----------------------------------------------------
 
-$query =
-	'UPDATE translations t1, translations t2' .
-	' SET t1.order = t2.order, t2.order = t1.order' .
-	" WHERE t1.translation_id = $id" .
-	'  AND t1.order = t2.order - 1' .
-	';';
-$result = $database->query($query);
+$result = $data->move_translation_down($id);
 
 if($result === false){
 	die('query failure');
 }
 
-if($database->get_affected_rows() === 0){
+if($result === 0){
 	die('nothing affected');
 }
 

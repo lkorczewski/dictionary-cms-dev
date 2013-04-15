@@ -11,9 +11,11 @@ Script::set_root_path('..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
+require_once 'dictionary/data.php';
+require_once 'dictionary/mysql_data.php';
 
 $database = Script::connect_to_database();
-
+$data = new MySQL_Data($database);
 
 //----------------------------------------------------
 // setting parameters
@@ -34,21 +36,13 @@ if(isset($_POST['id'])){
 // executing query
 //----------------------------------------------------
 
-$query =
-	'UPDATE senses s1, senses s2' .
-	' SET s1.order = s2.order, s2.order = s1.order, s1.label = s2.label, s2.label = s1.label' .
-	" WHERE s1.sense_id = $id" .
-	'  AND s1.parent_sense_id = s2.parent_sense_id' . // ugly database structure
-	'  AND s1.entry_id = s2.entry_id' . // ugly database structure
-	'  AND s1.order = s2.order - 1' .
-	';';
-$result = $database->query($query);
+$affected_rows = $data->move_sense_down($id);
 
-if($result === false){
+if($affected_rows === false){
 	die('query failure');
 }
 
-if($database->get_affected_rows() === 0){
+if($affected_rows === 0){
 	die('nothing affected');
 }
 

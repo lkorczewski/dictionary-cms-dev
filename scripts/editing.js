@@ -46,27 +46,39 @@ function previousElementSibling(element) {
 
 /* senses */
 
-function move_sense_up(element, id){
-	make_request('atomics/move_sense_up.php', 'id=' + id, {
+function move_sense_up(sense_element, sense_id){
+	make_request('atomics/move_sense_up.php', 'id=' + sense_id, {
 		success: function(response){
 			console.log('move_sense_up: ' + response)
 			if(response == 'OK'){
-				element_2 = element.previousElementSibling /* not working in IE<9 */
-				/* TO DO: replacing label */
-				element.parentNode.insertBefore(element, element_2)
+				previous_sense_element = sense_element.previousElementSibling /* not working in IE<9 */
+				sense_element.parentNode.insertBefore(sense_element, previous_sense_element)
+				
+				sense_label_element = sense_element.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				previous_sense_label_element = previous_sense_element.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				
+				buffered_sense_label = sense_label_element.textContent;
+				sense_label_element.textContent = previous_sense_label_element.textContent;
+				previous_sense_label_element.textContent = buffered_sense_label;
 			}
 		}
 	})
 }
 
-function move_sense_down(element, id){
-	make_request('atomics/move_sense_down.php', 'id=' + id, {
+function move_sense_down(sense_element, sense_id){
+	make_request('atomics/move_sense_down.php', 'id=' + sense_id, {
 		success: function(response){
 			console.log('move_sense_down: ' + response)
 			if(response == 'OK'){
-				element_2 = element.nextElementSibling /* not working in IE<9 */
-				/* TO DO: replacing label */
-				element.parentNode.insertBefore(element_2, element)
+				next_sense_element = sense_element.nextElementSibling /* not working in IE<9 */
+				sense_element.parentNode.insertBefore(next_sense_element, sense_element)
+				
+				sense_label_element = sense_element.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				previous_sense_label_element = previous_sense_element.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				
+				buffered_sense_label = sense_label_element.textContent;
+				sense_label_element.textContent = previous_sense_label_element.textContent;
+				previous_sense_label_element.textContent = buffered_sense_label;
 			}
 		}
 	})
@@ -119,12 +131,9 @@ function update_translation(translation_bar, id, text, doOnSuccess){
 				if(typeof doOnSuccess != 'undefined'){
 					doOnSuccess()
 				}
-				
-				translation.style.display = 'inline-block';
 			}
 		}
 	})
-
 }
 
 function delete_translation(translation_bar, id){

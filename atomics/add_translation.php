@@ -11,9 +11,11 @@ Script::set_root_path('..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
+require_once 'dictionary/data.php';
+require_once 'dictionary/mysql_data.php';
 
 $database = Script::connect_to_database();
-
+$data = new MySQL_Data($database);
 
 //----------------------------------------------------
 // setting parameters
@@ -43,32 +45,14 @@ if(isset($_POST['t'])){
 // executing query
 //----------------------------------------------------
 
-$query =
-	'INSERT `translations` (`sense_id`, `order`, `text`)' .
-	" SELECT $sense_id, MAX(`new_order`), '$text'" .
-	'  FROM (' .
-	'   SELECT MAX(`order`) + 1 AS `new_order`' .
-	'    FROM `translations`' .
-	"    WHERE `sense_id` = $sense_id" .
-	'    GROUP BY `sense_id`' .
-	'   UNION SELECT 1 AS `new_order`' .
-	'  ) t' .
-	';';
-$result = $database->query($query);
+$translation_id = $data->add_translation($sense_id, $text);
 
-if($result === false){
+if($translation_id === false){
 	die('query failure');
 }
 
-$query = 'SELECT last_insert_id() AS `insert_id`;';
-$result = $database->query($query);
+// returning id of new translation
 
-if($result === false){
-	die('query failure');
-}
-
-// returning inserted id
-
-echo $result[0]['insert_id'];
+echo $translation_id;
 
 ?>

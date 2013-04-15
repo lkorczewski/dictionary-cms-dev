@@ -11,9 +11,11 @@ Script::set_root_path('..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
+require_once 'dictionary/data.php';
+require_once 'dictionary/mysql_data.php';
 
 $database = Script::connect_to_database();
-
+$data = new MySQL_Data($database);
 
 //----------------------------------------------------
 // setting parameters
