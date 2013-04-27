@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Deleting translation
+// Adding phrase
 //====================================================
 
 session_start();
@@ -25,19 +25,38 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$translation_id = Script::get_parameter('id');
-if($translation_id === false) Script::fail('no parameter');
+$parent_node_id = '';
+if(isset($_POST['n'])){
+	$parent_node_id = $_POST['n'];
+} else {
+	if(isset($_GET['n'])){
+		$parent_node_id = $_GET['n'];
+	} else {
+		die('no parameter');
+	}
+}
+
+$phrase = '...';
+if(isset($_POST['t'])){
+	$phrase = $_POST['t'];
+} else {
+	if(isset($_GET['t'])){
+		$phrase = $_GET['t'];
+	}
+}
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$success = $data->delete_translation($translation_id);
+$node_id = $data->add_phrase($parent_node_id, $phrase);
 
-if($success === false) die('query failure');
+if($node_id === false){
+	die('query failure');
+}
 
-// returning OK
+// returning inserted id
 
-echo 'OK';
+echo $node_id;
 
 ?>

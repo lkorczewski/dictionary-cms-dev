@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Deleting translation
+// Adding translation
 //====================================================
 
 session_start();
@@ -25,19 +25,25 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$translation_id = Script::get_parameter('id');
-if($translation_id === false) Script::fail('no parameter');
+$headword = '...';
+if(isset($_POST['h'])){
+	$headword = $_POST['h'];
+} else {
+	if(isset($_GET['h'])){
+		$headword = $_GET['h'];
+	}
+}
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$success = $data->delete_translation($translation_id);
+$entry_id = $data->add_entry($headword);
 
-if($success === false) die('query failure');
+if($entry_id === false)	die('query failure');
 
-// returning OK
+// returning id of new entry
 
-echo 'OK';
+echo $entry_id;
 
 ?>

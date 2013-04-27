@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Deleting translation
+// Deleting entry
 //====================================================
 
 session_start();
@@ -25,18 +25,26 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$translation_id = Script::get_parameter('id');
-if($translation_id === false) Script::fail('no parameter');
+$entry_id = '';
+if(isset($_POST['id'])){
+	$entry_id = $_POST['id'];
+} else {
+	if(isset($_GET['id'])){
+		$entry_id = $_GET['id'];
+	} else {
+		die('no parameter');
+	}
+}
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$success = $data->delete_translation($translation_id);
+$success = $data->delete_entry($entry_id);
 
 if($success === false) die('query failure');
 
-// returning OK
+// returning id of new translation
 
 echo 'OK';
 

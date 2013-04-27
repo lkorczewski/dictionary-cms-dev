@@ -5,6 +5,10 @@
 // Moving sense down
 //====================================================
 
+session_start();
+
+if(!isset($_SESSION['editor'])) die('no authorization');
+
 require_once '../include/script.php';
 
 Script::set_root_path('..');
@@ -21,22 +25,14 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$id = '';
-if(isset($_POST['id'])){
-	$id = $_POST['id'];
-} else {
-	if(isset($_GET['id'])){
-		$id = $_GET['id'];
-	} else {
-		die('no parameter');
-	}
-}
+$node_id = Script::get_parameter('n');
+if($node_id === false) Script::fail('no parameter');
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$affected_rows = $data->move_sense_down($id);
+$affected_rows = $data->move_sense_down($node_id);
 
 if($affected_rows === false){
 	die('query failure');

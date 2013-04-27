@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Deleting translation
+// Moving phrase up
 //====================================================
 
 session_start();
@@ -25,16 +25,22 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$translation_id = Script::get_parameter('id');
-if($translation_id === false) Script::fail('no parameter');
+$node_id = Script::get_parameter('n');
+if($node_id === false) Script::fail('no parameter');
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$success = $data->delete_translation($translation_id);
+$affected_rows = $data->move_phrase_up($node_id);
 
-if($success === false) die('query failure');
+if($affected_rows === false){
+	die('query failure');
+}
+
+if($affected_rows === 0){
+	die('nothing affected');
+}
 
 // returning OK
 

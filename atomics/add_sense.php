@@ -5,61 +5,43 @@
 // Adding sense
 //====================================================
 
+session_start();
+
+if(!isset($_SESSION['editor'])) die('no authorization');
+
 require_once '../include/script.php';
 
 Script::set_root_path('..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
+require_once 'dictionary/data.php';
+require_once 'dictionary/mysql_data.php';
 
 $database = Script::connect_to_database();
-
+$data = new MySQL_Data($database);
 
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$sense_id = '';
-if(isset($_POST['id'])){
-	$sense_id = $_POST['id'];
-} else {
-	if(isset($_GET['id'])){
-		$sense_id = $_GET['id'];
-	} else {
-		die('no parameter');
-	}
-}
+$parent_node_id = Script::get_parameter('n');
+if($parent_node_id === false) Script::fail('no parameter');
+
+$label = Script::get_parameter('l', '...');
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$query =
-	'INSERT `translations` (`sense_id`, `order`, `text`)' .
-	" SELECT $sense_id, MAX(`new_order`), '$text'" .
-	'  FROM (' .
-	'   SELECT MAX(`order`) + 1 AS `new_order`' .
-	'    FROM `translations`' .
-	"    WHERE `sense_id` = $sense_id" .
-	'    GROUP BY `sense_id`' .
-	'   UNION SELECT 1 AS `new_order`' .
-	'  ) t' .
-	';';
-$result = $database->query($query);
+$node_id = $data->add_sense($parent_node_id, $label);
 
-if($result === false){
-	die('query failure');
-}
-
-$query = 'SELECT last_insert_id() AS `insert_id`;';
-$result = $database->query($query);
-
-if($result === false){
+if($node_id === false){
 	die('query failure');
 }
 
 // returning inserted id
 
-echo $result[0]['insert_id'];
+echo $node_id;
 
 ?>

@@ -1,33 +1,14 @@
-function make_request(url, parameters, handler){
-	try {
-	http_request = new XMLHttpRequest()
-	http_request.onreadystatechange = function(){
-		done = false;
-		console.log('readyState == ' + http_request.readyState)
-				
-		// do when response received
-		
-		if(http_request.readyState == 4){
-			if(http_request.status == 200){
-				if(done == false){
-					handler.success(http_request.responseText)
-					done = true
-				} else {
-					console.log('redundant call')
-				}
-			} else {
-				console.log(http_request.status + ' : ' + http_request.statusText)
-			}
-		}
-		
-	}
-	http_request.open('POST', url, true)
-	http_request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); 
-	http_request.send(parameters)
-	}
-	catch(exception){
-		console.log(exception.message)
-	}
+/* misc */
+
+function showButtons(element){
+	buttons = element.getElementsByClassName('buttons')[0]
+	buttons.style.display = 'inline-block'
+}
+
+function hideButtons(element){
+	buttons = element.getElementsByClassName('buttons')[0]
+	buttons.style.display = 'none'
+	
 }
 
 /* DOM traversal */
@@ -46,8 +27,19 @@ function previousElementSibling(element) {
 
 /* senses */
 
-function move_sense_up(sense_element, sense_id){
-	make_request('atomics/move_sense_up.php', 'id=' + sense_id, {
+function add_sense(entry_element, nodeId){
+	make_request('atomics/add_sense.php', 'n=' + nodeId, {
+		success: function(response){
+			console.log('add_sense: ' + response)
+			if(parseInt(response)){
+				location.reload()
+			}
+		}
+	})
+}
+
+function move_sense_up(sense_element, nodeId){
+	make_request('atomics/move_sense_up.php', 'n=' + nodeId, {
 		success: function(response){
 			console.log('move_sense_up: ' + response)
 			if(response == 'OK'){
@@ -65,8 +57,8 @@ function move_sense_up(sense_element, sense_id){
 	})
 }
 
-function move_sense_down(sense_element, sense_id){
-	make_request('atomics/move_sense_down.php', 'id=' + sense_id, {
+function move_sense_down(sense_element, nodeId){
+	make_request('atomics/move_sense_down.php', 'n=' + nodeId, {
 		success: function(response){
 			console.log('move_sense_down: ' + response)
 			if(response == 'OK'){
@@ -84,49 +76,154 @@ function move_sense_down(sense_element, sense_id){
 	})
 }
 
+function delete_sense(sense_element, nodeId){
+	make_request('atomics/delete_sense.php', 'n=' + nodeId, {
+		success: function(response){
+			console.log('delete_sense: ' + response)
+			if(response == 'OK'){
+				sense_element.parentNode.removeChild(sense_element)
+			}
+		}
+	})
+}
+
+/* phrases */
+
+function addPhrase(parentElement, nodeId){
+	make_request('atomics/add_phrase.php', 'n=' + nodeId, {
+		success: function(response){
+			console.log('add_phrase: ' + response)
+			if(parseInt(response)){
+				location.reload()
+			}
+		}
+	})
+}
+
+function editPhrase(phraseBar, nodeId){
+	phrase = phraseBar.getElementsByClassName('phrase')[0]
+	
+	phraseInput = document.createElement('input')
+	phraseInput.setAttribute('type', 'text')
+	phraseInput.value = phrase.textContent
+	phraseInput.onkeypress = function(){
+		if(event.keyCode == 13){
+			if(phraseInput.value != phrase.textContent){
+				phraseInput.disabled = true
+				updatePhrase(phraseInput.parentNode, nodeId, phraseInput.value, function(){
+					phraseInput.parentNode.removeChild(phraseInput);
+					phrase.style.display = 'inline-block'
+				})
+			} else {
+				phraseInput.parentNode.removeChild(phraseInput);
+				phrase.style.display = 'inline-block'
+			}
+		}
+	}
+	
+	phrase.style.display = 'none';
+	phraseBar.insertBefore(phraseInput, phrase.nextElementSibling) /* not working in IE<9 */
+	phraseInput.focus()
+}
+
+function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess){
+	make_request('atomics/update_phrase.php', 'n=' + nodeId + '&t=' + phraseText, {
+		success: function(response){
+			console.log('update_phrase: ' + response)
+			if(response == 'OK'){
+				phrase = phraseBar.getElementsByClassName('phrase')[0]
+				phrase.textContent = phraseText
+				if(typeof doOnSuccess != 'undefined'){
+					doOnSuccess()
+				}
+			}
+		}
+	})	
+}
+
+function movePhraseUp(phraseContainer, nodeId){
+	make_request('atomics/move_phrase_up.php', 'n=' + nodeId, {
+		success: function(response){
+			console.log('move_phrase_up: ' + response)
+			if(response == 'OK'){
+				phraseContainer.parentNode.insertBefore(phraseContainer, phraseContainer.previousElementSibling) /* not working in IE<9 */
+			}
+		}
+	})
+}
+
+function movePhraseDown(phraseContainer, nodeId){
+	make_request('atomics/move_phrase_down.php', 'n=' + nodeId, {
+		success: function(response){
+			console.log('move_phrase_down: ' + response)
+			if(response == 'OK'){
+				phraseContainer.parentNode.insertBefore(phraseContainer.nextElementSibling, phraseContainer) /* not working in IE<9 */
+			}
+		}
+	})
+}
+
+function deletePhrase(phraseElement, nodeId){
+	make_request('atomics/delete_phrase.php', 'n=' + nodeId, {
+		success: function(response){
+			console.log('delete_phrase: ' + response)
+			if(response == 'OK'){
+				phraseElement.parentNode.removeChild(phraseElement)
+			}
+		}
+	})
+}
+
 /* translations */
 
-function move_translation_up(translation_bar, id){
-	make_request('atomics/move_translation_up.php', 'id=' + id, {
-		success: function(response){
-			console.log('move_translation_up: ' + response)
-			if(response == 'OK'){
-				translation_bar.parentNode.insertBefore(translation_bar, translation_bar.previousElementSibling) /* not working in IE<9 */
-			}
-		}
-	})
-}
-
-function move_translation_down(translation_bar, id){
-	make_request('atomics/move_translation_down.php', 'id=' + id, {
-		success: function(response){
-			console.log('move_translation_down: ' + response)
-			if(response == 'OK'){
-				translation_bar.parentNode.insertBefore(translation_bar.nextElementSibling, translation_bar) /* not working in IE<9 */
-			}
-		}
-	})
-}
-
-function add_translation(sense_element, sense_id){
+function addTranslation(sense_element, sense_id){
 	make_request('atomics/add_translation.php', 'id=' + sense_id, {
 		success: function(response){
 			console.log('add_translation: ' + response)
 			if(parseInt(response)){
+				translationId = response
 				translations = sense_element.getElementsByClassName('translations')[0]
-				translations.appendChild(make_translation('...'))
+				translationBar = makeTranslationBar('...', translationId)
+				translations.appendChild(translationBar)
+				editTranslation(translationBar, translationId)
 			}
 		}
 	})
 }
 
-function update_translation(translation_bar, id, text, doOnSuccess){
-	make_request('atomics/update_translation.php', 'id=' + id + '&t=' + text, {
+function editTranslation(translationBar, translationId){
+	translation = translationBar.getElementsByClassName('translation')[0]
+	
+	translationInput = document.createElement('input')
+	translationInput.setAttribute('type','text')
+	translationInput.value = translation.textContent
+	translationInput.onkeypress = function(){
+		if(event.keyCode == 13){
+			if(translationInput.value != translation.textContent){
+				translationInput.disabled = true
+				updateTranslation(translationInput.parentNode, translationId, translationInput.value, function(){
+					translationInput.parentNode.removeChild(translationInput);
+					translation.style.display = 'inline-block'
+				})
+			} else {
+				translationInput.parentNode.removeChild(translationInput);
+				translation.style.display = 'inline-block'
+			}
+		}
+	}
+	
+	translation.style.display = 'none';
+	translationBar.insertBefore(translationInput, translation.nextElementSibling) /* not working in IE<9 */
+	translationInput.focus()
+}
+
+function updateTranslation(translationBar, translationId, translationText, doOnSuccess){
+	make_request('atomics/update_translation.php', 'id=' + translationId + '&t=' + translationText, {
 		success: function(response){
 			console.log('update_translation: ' + response)
 			if(response == 'OK'){
-				translation = translation.parentNode.getElementsByClassName('translation')[0]
-				translation.textContent = text
+				translation = translationBar.getElementsByClassName('translation')[0]
+				translation.textContent = translationText
 				
 				if(typeof doOnSuccess != 'undefined'){
 					doOnSuccess()
@@ -136,63 +233,78 @@ function update_translation(translation_bar, id, text, doOnSuccess){
 	})
 }
 
-function delete_translation(translation_bar, id){
-	make_request('atomics/delete_translation.php', 'id=' + id, {
+function moveTranslationUp(translationBar, translationId){
+	make_request('atomics/move_translation_up.php', 'id=' + translationId, {
 		success: function(response){
-			console.log('delete_translation: ' + response)
+			console.log('move_translation_up: ' + response)
 			if(response == 'OK'){
-				translation_bar.parentNode.removeChild(translation_bar)
+				translationBar.parentNode.insertBefore(translationBar, translationBar.previousElementSibling) /* not working in IE<9 */
 			}
 		}
 	})
 }
 
-function edit_translation(translation_bar, id){
-	translation = translation_bar.getElementsByClassName('translation')[0]
-	
-	translation_input = document.createElement('input')
-	translation_input.setAttribute('type','text')
-	translation_input.value = translation.textContent
-	translation_input.onkeypress = function(){
-		if(event.keyCode == 13){
-			if(translation_input.value != translation.textContent){
-				translation_input.disabled = true
-				update_translation(translation_input.parentNode, id, translation_input.value, function(){
-					translation_input.parentNode.removeChild(translation_input);
-					translation.style.display = 'inline-block';
-				})
+function moveTranslationDown(translationBar, translationId){
+	make_request('atomics/move_translation_down.php', 'id=' + translationId, {
+		success: function(response){
+			console.log('move_translation_down: ' + response)
+			if(response == 'OK'){
+				translationBar.parentNode.insertBefore(translationBar.nextElementSibling, translationBar) /* not working in IE<9 */
 			}
 		}
-	}
-	
-	translation.style.display = 'none';
-	translation_bar.insertBefore(translation_input, translation.nextElementSibling) /* not working in IE<9 */
+	})
 }
 
-function make_translation(text, id){
-	translation_bar = document.createElement('div')
-	translation_bar.setAttribute('class', 'translation_bar')
+function deleteTranslation(translationBar, translationId){
+	make_request('atomics/delete_translation.php', 'id=' + translationId, {
+		success: function(response){
+			console.log('delete_translation: ' + response)
+			if(response == 'OK'){
+				translationBar.parentNode.removeChild(translationBar)
+			}
+		}
+	})
+}
+
+function makeTranslationBar(text, translationId){
+	translationBar = document.createElement('div')
+	translationBar.setAttribute('class', 'translation_bar')
+	translationBar.onmouseover = function(){ showButtons(translationBar) }
+	translationBar.onmouseout = function(){ hideButtons(translationBar) }
 	
 	translation = document.createElement('div')
 	translation.setAttribute('class', 'translation')
+	translation.onclick = function(){ editTranslation(translationBar, translationId) }
 	translation.textContent = text
-	translation_bar.appendChild(translation)
+	translationBar.appendChild(translation)
 	
 	buttons = document.createElement('div')
 	buttons.setAttribute('class', 'buttons')
-	translation_bar.appendChild(buttons)
+	translationBar.appendChild(buttons)
+	
+	buttonDelete = document.createElement('button')
+	buttonDelete.setAttribute('class', 'button delete')
+	buttonDelete.onclick = function(){ deleteTranslation(translationBar, translationId) }
+	buttonDelete.textContent = '×'
+	buttons.appendChild(buttonDelete)
 	
 	buttonUp = document.createElement('button')
 	buttonUp.setAttribute('class', 'button move_up')
-	buttonUp.setAttribute('onclick', 'move_translation_up(' + id + ')')
+	buttonUp.onclick = function(){ moveTranslationUp(translationBar, translationId) }
 	buttonUp.textContent = 'do góry'
 	buttons.appendChild(buttonUp)
 	
 	buttonDown = document.createElement('button')
 	buttonDown.setAttribute('class', 'button move_down')
-	buttonDown.setAttribute('onclick', 'move_translation_down(' + id + ')')
+	buttonDown.onclick = function(){ moveTranslationDown(translationBar, translationId) }
 	buttonDown.textContent = 'na dół'
 	buttons.appendChild(buttonDown)
 	
-	return translation_bar
+	buttonEdit = document.createElement('button')
+	buttonEdit.setAttribute('class', 'button edit')
+	buttonEdit.onclick = function(){ editTranslation(translationBar, translationId) }
+	buttonEdit.textContent = 'edytuj'
+	buttons.appendChild(buttonEdit)
+	
+	return translationBar
 }

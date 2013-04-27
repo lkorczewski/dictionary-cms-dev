@@ -3,10 +3,19 @@
 class Script {
 	private static $config = '';
 	private static $root_path;
+	private static $debug_enabled = false;
+	
+	//--------------------------------------------------------------------
+	// ...
+	//--------------------------------------------------------------------
 	
 	static function set_root_path($root_path){
 		self::$root_path = $root_path;
 	}
+	
+	//--------------------------------------------------------------------
+	// loading config
+	//--------------------------------------------------------------------
 	
 	static function load_config(){
 		
@@ -39,6 +48,10 @@ class Script {
 		return $config;
 	}
 	
+	//--------------------------------------------------------------------
+	// connecting to database
+	//--------------------------------------------------------------------
+	
 	static function connect_to_database(){
 		require_once 'database/database.php';
 		
@@ -52,6 +65,38 @@ class Script {
 		$database->connect();
 		
 		return $database;
+	}
+	
+	//--------------------------------------------------------------------
+	// accquiring value from parameter
+	//--------------------------------------------------------------------
+	
+	static function get_parameter($parameter, $default = false){
+		$value = $default;
+		
+		if(isset($_POST[$parameter])){
+			$value = $_POST[$parameter];
+		} else {
+			if(self::$debug_enabled && isset($_GET[$parameter])){
+				$value = $_GET[$parameter];
+			}
+		}
+		
+		return $value;
+	}
+	
+	//--------------------------------------------------------------------
+	// returning failure
+	//--------------------------------------------------------------------
+	
+	static function fail($message){
+		$output =
+			'{' .
+			'"status":"failure"' .
+			',' .
+			'"message":"' . $message . '"' .
+			'}';
+		die($output);
 	}
 	
 }

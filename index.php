@@ -27,7 +27,7 @@ switch($headword){
 	// list of headwords
 	case '':
 		
-		$headwords = $data->pull_headwords();
+		$headwords = $dictionary->get_headwords();
 		
 		foreach($headwords as $headword){
 			$content .= "<p><a href=\"?h=$headword\">$headword</p>\n";
@@ -36,32 +36,48 @@ switch($headword){
 		break;
 	
 	default :
+		
 		$entry = $dictionary->get_entry($headword);
 		
 		$layout = new Layout();
 		$content .= $layout->parse($entry);
 		
 		break;
+		
 }
 
 //====================================================
 // presentation
 //====================================================
 
-?>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Dictionary</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>
-<script type="text/javascript" src="scripts/editing.js"></script>
-</head>
-<body>
-<?php
+$output = '';
+$output .=
+	'<!DOCTYPE html>' . "\n" .
+	'<html>' . "\n" .
+	'<head>' . "\n" .
+	'<title>Dictionary</title>' . "\n" .
+	'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
+	'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
+	'<script type="text/javascript" src="scripts/common.js"></script>' . "\n" .
+	'<script type="text/javascript" src="scripts/editing.js"></script>' . "\n" .
+	'</head>' . "\n" .
+	'<body>' . "\n";
+
+if(!isset($config['hide_toolbar']) || !$config['hide_toolbar']){
+	$output .=
+		'<div class="toolbar">' .
+		'<div class="editor_toolbar">' .
+		'<div class="editor_log_in" onclick="showEditorCredentialsInput(this)">zaloguj się</div>' .
+		'</div>' .
+		'</div>' . "\n";
+}
+
+$output .= $content;
 	
-echo $content;
+$output .=
+	'</body>' .
+	'</html>' ;
+
+echo $output;
 	
 ?>
-</body>
-</html>
