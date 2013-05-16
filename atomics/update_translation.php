@@ -34,12 +34,15 @@ $text = Script::get_parameter('t', '...');
 // executing query
 //----------------------------------------------------
 
+$result = $data->update_phrase($translation_id, $text);
+/*
 $query =
 	'UPDATE translations' .
 	" SET text = '$text'" .
-	" WHERE translation_id = $id" .
+	" WHERE translation_id = $translation_id" .
 	';';
 $result = $database->query($query);
+*/
 
 if($result === false){
 	die('query failure');

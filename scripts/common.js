@@ -1,4 +1,8 @@
-function make_request(url, parameters, handler){
+//==========================================================
+// making AJAX request
+//==========================================================
+
+function makeRequest(url, parameters, handler){
 	httpRequest = new XMLHttpRequest()
 	httpRequest.onreadystatechange = function(){
 		
@@ -16,6 +20,9 @@ function make_request(url, parameters, handler){
 					console.log('redundant call')
 				}
 			} else {
+				if(handler.failure){
+					handler.failure()
+				}
 				console.log(httpRequest.status + ' : ' + httpRequest.statusText)
 			}
 		}
@@ -25,38 +32,138 @@ function make_request(url, parameters, handler){
 	httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); 
 	httpRequest.send(parameters)
 }
+make_request = makeRequest
 
-function showEditorLogIn(editorToolbarContent){
-	editorToolbar = editorToolbarContent.parentNode
+//==========================================================
+// showing warning
+//==========================================================
+
+function showWarning(message){
 	
-	editorLogIn = document.createElement('div')
+	// creating warning element
+	var warningElement = document.createElement('div')
+	warningElement.id = 'warning'
+	warningElement.className = 'warning'
+	
+	// creating close button
+	var closeButton = document.createElement('img')
+	closeButton.className = 'close-button'
+	warningElement.onclick = function(event){
+		var warningElement = event.target
+		warningElement.parentNode.removeChild(warningElement)
+	}
+	
+	// appending button and text
+	// to warning element
+	warningElement.appendChild(closeButton)
+	warningElement.textContent = message
+	
+	// displaying
+	var toolbarElement = document.getElementById('toolbar')
+	toolbarElement.parentNode.insertBefore(warningElement, toolbarElement)
+	
+}
+
+
+//==========================================================
+// logging editor in
+//==========================================================
+
+function logEditorIn(login, password, doOnSuccess, doOnFailure){
+	make_request('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
+		success: function(responseText){
+			var response = JSON.parse(responseText)
+			switch(response.status){
+				case 'OK' :
+					doOnSuccess(response.editor_name)
+					break
+				case 'failure' :
+					if(doOnFailure){
+						doOnFailure()
+					}
+					break
+			}
+		}
+	})
+}
+
+//==========================================================
+// logging editor out
+//==========================================================
+
+function logEditorOut(doOnSuccess, doOnFailure){
+	make_request('atomics/log_editor_out.php', '', {
+		success: function(responseText){
+			var response = JSON.parse(responseText)
+			switch(response.status){
+				case 'OK' :
+					doOnSuccess()
+					break
+				case 'failure' :
+					if(doOnFailure){ doOnFailure() }
+					break
+			}
+		}
+	})
+}
+
+//==========================================================
+// showing editor log in
+//==========================================================
+
+function showEditorLogIn(){
+	var editorToolbar = document.getElementById('editor_toolbar')
+	
+	var editorLogIn = document.createElement('div')
 	editorLogIn.className = 'editor_log_in'
-	editorLogIn.textContent = 'zaloguj';
+	editorLogIn.textContent = 'zaloguj się';
 	editorLogIn.onclick = function(){
-		showEditorCredentialsInput(editorLogIn)
+		showEditorCredentialsInput()
 	}
 	
 	//--------------------------------
 	// result
 	//--------------------------------
-	editorToolbar.replaceChild(editorLogIn, editorToolbarContent)
+	editorToolbar.innerHTML = '';
+	editorToolbar.appendChild(editorLogIn)
 	
 }
 
+//==========================================================
+// showing editor credentials input
+//==========================================================
+
 function showEditorCredentialsInput(editorToolbarContent){
-	editorToolbar = editorToolbarContent.parentNode
+	
+	function disableEditorCredentialsInput(){
+		editorLoginInput.disabled = true
+		editorPasswordInput.disabled = true
+		editorLogInButton.disabled = true
+		editorCancelButton.disabled = true
+	}
+	
+	function enableEditorCredentialsInput(){
+		editorLoginInput.disabled = false
+		editorPasswordInput.disabled = false
+		editorLogInButton.disabled = false
+		editorCancelButton.disabled = false
+	}
+	
+	var editorToolbar = document.getElementById('editor_toolbar')
 	
 	//--------------------------------
-	// credentials input
+	// creating credentials input
 	//--------------------------------
-	editorCredentialsInput = document.createElement('div')
+	var editorCredentialsInput = document.createElement('div')
 	editorCredentialsInput.className = 'editor_credentials'
 	
 	//--------------------------------
-	// login input
+	// creating login input
 	//--------------------------------
-	editorLoginInput = document.createElement('input')
+	var editorLoginInput = document.createElement('input')
 	editorLoginInput.type = 'text'
+	editorLoginInput.placeholder = 'login'
+	/*
 	editorLoginInput.value = 'login'
 	editorLoginInput.onfocus = function(){
 		editorLoginInput.value = ''
@@ -66,13 +173,17 @@ function showEditorCredentialsInput(editorToolbarContent){
 			editorLoginInput.value = 'login'
 		}
 	}
+	*/
 	editorCredentialsInput.appendChild(editorLoginInput)
 	
 	//--------------------------------
-	// password input
+	// creating password input
 	//--------------------------------
-	editorPasswordInput = document.createElement('input')
-	editorPasswordInput.type = 'text'
+	var editorPasswordInput = document.createElement('input')
+	//editorPasswordInput.type = 'text'
+	editorPasswordInput.type = 'password'
+	editorPasswordInput.placeholder = 'hasło'
+	/*
 	editorPasswordInput.value = 'password'
 	editorPasswordInput.onfocus = function(){
 		editorPasswordInput.value = ''
@@ -84,16 +195,16 @@ function showEditorCredentialsInput(editorToolbarContent){
 			editorPasswordInput.type = 'text'
 		}
 	}
+	*/
 	editorCredentialsInput.appendChild(editorPasswordInput)
 	
 	//--------------------------------
-	// log in button
+	// creating log in button
 	//--------------------------------
-	editorLogInButton = document.createElement('button')
+	var editorLogInButton = document.createElement('button')
 	editorLogInButton.textContent = 'zaloguj się'
 	editorLogInButton.onclick = function(){
-		editorLoginInput.disabled = true
-		editorPasswordInput.disabled = true
+		disableEditorCredentialsInput()
 		login = editorLoginInput.value
 		password = editorPasswordInput.value
 		make_request('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
@@ -101,9 +212,11 @@ function showEditorCredentialsInput(editorToolbarContent){
 				response = JSON.parse(responseText)
 				switch(response.status){
 					case 'OK' :
-						showEditor(editorCredentialsInput, response.editor_name)
+						showEditor(response.editor_name)
 						break
 					case 'failure' :
+						showWarning('Incorrect credentials.')
+						enableEditorCredentialsInput()
 						break
 				}
 			}
@@ -112,10 +225,9 @@ function showEditorCredentialsInput(editorToolbarContent){
 	editorCredentialsInput.appendChild(editorLogInButton)
 	
 	//--------------------------------
-	// cancel button
+	// creating cancel button
 	//--------------------------------
-	
-	editorCancelButton = document.createElement('button')
+	var editorCancelButton = document.createElement('button')
 	editorCancelButton.textContent = 'anuluj'
 	editorCancelButton.onclick = function(){
 		showEditorLogIn(editorCredentialsInput)
@@ -123,25 +235,41 @@ function showEditorCredentialsInput(editorToolbarContent){
 	editorCredentialsInput.appendChild(editorCancelButton)
 	
 	//--------------------------------
-	// result
+	// displaying
 	//--------------------------------
-	editorToolbar.replaceChild(editorCredentialsInput, editorToolbarContent)
+	editorToolbar.innerHTML = '';
+	editorToolbar.appendChild(editorCredentialsInput)
 	
 }
 
-function showEditor(editorToolbarContent, editorName){
-	editorToolbar = editorToolbarContent.parentNode
+//==========================================================
+// showing editor
+//==========================================================
+
+function showEditor(editorName){
+	var editorToolbar = document.getElementById('editor_toolbar')
 	
 	//--------------------------------
-	// credentials input
+	// creating editor name
 	//--------------------------------
-	editor = document.createElement('div')
+	var editor = document.createElement('div')
 	editor.className = 'editor'
 	editor.textContent = 'editor: ' + editorName
 	
 	//--------------------------------
-	// result
+	// creating logout button
 	//--------------------------------
-	editorToolbar.replaceChild(editor, editorToolbarContent)
+	var logOutButton = document.createElement('button')
+	logOutButton.className = 'button log_out'
+	logOutButton.textContent = 'wyloguj się'
+	logOutButton.onclick = function(){
+		logEditorOut(showEditorLogIn)
+	}
 	
+	//--------------------------------
+	// displaying
+	//--------------------------------
+	editorToolbar.innerHTML = ''
+	editorToolbar.appendChild(editor)
+	editorToolbar.appendChild(logOutButton)
 }

@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Updating phrase
+// Adding form
 //====================================================
 
 session_start();
@@ -25,23 +25,27 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$node_id = Script::get_parameter('n');
-if($node_id === false) Script::fail('no parameter');
+$parent_node_id = Script::get_parameter('n');
+if($parent_node_id === false) Script::fail('no parameter');
 
-$phrase = Script::get_parameter('t', '...');
+$label = Script::get_parameter('l', '...');
+
+$form = Script::get_parameter('h', '...');
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$result = $data->update_phrase($node_id, $phrase);
+$form_id = $data->add_form($parent_node_id, $label, $form);
 
-if($result === false){
+if($form_id === false){
 	die('query failure');
 }
 
-// returning OK
+//----------------------------------------------------
+// returning inserted form id
+//----------------------------------------------------
 
-echo 'OK';
+echo $form_id;
 
 ?>

@@ -10,8 +10,23 @@ html {
 	padding-right: 0.2em;
 }
 
+/* == constant elements ================================= */
+
+.warning {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	border: solid 2px firebrick;
+	background: lemonchiffon;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+}
+
 .editor_toolbar {
 	float: right;
+}
+
+.editor {
+	display: inline-block;
 }
 
 /* == entry structure =================================== */

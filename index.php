@@ -1,5 +1,8 @@
 <?php
 
+// może sesja powinna być wyłączana, jeśli nie ma logowania?
+session_start();
+
 require_once 'include/script.php';
 
 $config = Script::load_config();
@@ -7,9 +10,15 @@ $config = Script::load_config();
 require_once 'database/database.php';
 require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
+
+require_once 'include/localization.php';
 require_once 'include/layout.php';
 
 $database = Script::connect_to_database();
+
+$localization = new Localization();
+$localization->set_path($config['locale_path']);
+$localization->set_locale($config['locale']);
 
 //====================================================
 // content construction
@@ -39,7 +48,7 @@ switch($headword){
 		
 		$entry = $dictionary->get_entry($headword);
 		
-		$layout = new Layout();
+		$layout = new Layout($localization);
 		$content .= $layout->parse($entry);
 		
 		break;
@@ -48,6 +57,8 @@ switch($headword){
 
 //====================================================
 // presentation
+//====================================================
+// is it really an optimal method for caching output?
 //====================================================
 
 $output = '';
@@ -65,9 +76,18 @@ $output .=
 
 if(!isset($config['hide_toolbar']) || !$config['hide_toolbar']){
 	$output .=
-		'<div class="toolbar">' .
-		'<div class="editor_toolbar">' .
-		'<div class="editor_log_in" onclick="showEditorCredentialsInput(this)">zaloguj się</div>' .
+		'<div id="toolbar" class="toolbar">' .
+		'<div id="editor_toolbar" class="editor_toolbar">';
+	
+	if(isset($_SESSION['editor'])){
+		$output .=
+			'<div class="editor">' . $_SESSION['editor'] . '</div>' .
+			'<button onclick="logEditorOut(showEditorLogIn)">wyloguj się</button>';
+	} else {
+		$output .= '<div class="editor_log_in" onclick="showEditorCredentialsInput()">zaloguj się</div>';
+	}
+	
+	$output .=
 		'</div>' .
 		'</div>' . "\n";
 }

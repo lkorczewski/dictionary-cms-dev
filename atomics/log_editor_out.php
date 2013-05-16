@@ -1,13 +1,6 @@
 <?php
 
-//====================================================
-// Atomic operation
-// Updating phrase
-//====================================================
-
 session_start();
-
-if(!isset($_SESSION['editor'])) die('no authorization');
 
 require_once '../include/script.php';
 
@@ -25,23 +18,29 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$node_id = Script::get_parameter('n');
-if($node_id === false) Script::fail('no parameter');
-
-$phrase = Script::get_parameter('t', '...');
+// no parameters...
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$result = $data->update_phrase($node_id, $phrase);
+// no query...
 
-if($result === false){
-	die('query failure');
-}
+//----------------------------------------------------
+// registering user
+//----------------------------------------------------
 
-// returning OK
+unset($_SESSION['editor']);
 
-echo 'OK';
+//----------------------------------------------------
+// returning confirmation
+//----------------------------------------------------
+
+$output =
+	'{' .
+	'"status":"OK"' .
+	'}';
+
+echo $output;
 
 ?>

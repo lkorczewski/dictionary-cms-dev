@@ -25,25 +25,10 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$parent_node_id = '';
-if(isset($_POST['n'])){
-	$parent_node_id = $_POST['n'];
-} else {
-	if(isset($_GET['n'])){
-		$parent_node_id = $_GET['n'];
-	} else {
-		die('no parameter');
-	}
-}
+$parent_node_id = Script::get_parameter('n');
+if($parent_node_id === false) Script::fail('no parameter');
 
-$phrase = '...';
-if(isset($_POST['t'])){
-	$phrase = $_POST['t'];
-} else {
-	if(isset($_GET['t'])){
-		$phrase = $_GET['t'];
-	}
-}
+$phrase = Script::get_parameter('t', '...');
 
 //----------------------------------------------------
 // executing query
