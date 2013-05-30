@@ -239,6 +239,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 	//--------------------------------
 	editorToolbar.innerHTML = '';
 	editorToolbar.appendChild(editorCredentialsInput)
+	editorLoginInput.focus()
 	
 }
 

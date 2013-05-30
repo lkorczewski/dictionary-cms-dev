@@ -36,7 +36,9 @@ $success = $data->delete_translation($translation_id);
 
 if($success === false) die('query failure');
 
+//----------------------------------------------------
 // returning OK
+//----------------------------------------------------
 
 echo 'OK';
 

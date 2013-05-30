@@ -3,13 +3,6 @@ html {
 	margin: auto;
 }
 
-.toolbar {
-	background: lightgray;
-	overflow: hidden;
-	padding-left: 0.2em;
-	padding-right: 0.2em;
-}
-
 /* == constant elements ================================= */
 
 .warning {
@@ -17,6 +10,15 @@ html {
 	margin-bottom: 0.2em;
 	border: solid 2px firebrick;
 	background: lemonchiffon;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+}
+
+/* == toolbars ========================================== */
+
+.toolbar {
+	background: lightgray;
+	overflow: hidden;
 	padding-left: 0.2em;
 	padding-right: 0.2em;
 }
@@ -29,11 +31,31 @@ html {
 	display: inline-block;
 }
 
+.edition_toolbar {
+	/*background: gray;*/
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+	text-align: right;
+}
+
+.mode_switch:link, .mode_switch:active, .mode_switch:visited {
+	text-decoration: none;
+}
+
+.mode_switch:hover {
+	text-decoration: underline;
+}
+
 /* == entry structure =================================== */
 
-.entry_container {}
+.entry_container {html colosrs}
+
+.headword_bar {
+	overflow: hidden;
+}
 
 .headword {
+	display: inline-block;
 	margin-top: 0.2em;
 	margin-bottom: 0.2em;
 	/*background: red;*/
@@ -41,10 +63,24 @@ html {
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
 	padding-left: 0.25em;
-	padding-right:0.25em;
+	padding-right: 0.25em;
 	font-family: GFS Didot;
 	font-size: 120%;
 	font-weight: bold;
+}
+
+.entry_content {
+	margin-left: 1em;
+}
+
+.category_label_bar {
+	overflow: hidden;
+}
+
+.category_label {
+	display: inline-block;
+	color: green;
+	font-family: GFS Didot;
 }
 
 .form_bar {
@@ -63,9 +99,7 @@ html {
 	font-weight: bold;
 }
 
-.sense_container {
-	margin-left: 1em;
-}
+.sense_container {}
 
 .sense_label_bar {
 	margin-top: 0.2em;
@@ -85,6 +119,10 @@ html {
 	font-family: GFS Didot;
 }
 
+.sense_content {
+	margin-left: 1em;
+}
+
 .phrase_bar {
 	overflow: hidden;
 }
@@ -93,6 +131,10 @@ html {
 	display: inline-block;
 	font-weight: bold;
 	font-family: GFS Didot;
+}
+
+.phrase_content {
+	margin-left: 1em;
 }
 
 .translation_bar {

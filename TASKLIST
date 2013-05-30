@@ -1,0 +1,121 @@
+------------------------------------------------------------------------
+T O   D O :
+------------------------------------------------------------------------
+* categories
+  - dodawanie
+  - lepsze przechowywanie
+* info's
+* separating view from edition
+  - basic formatting
+  - classes renaming
+  - adding edition toolbar in JavaScript
+* kwestia rezultatu
+------------------------------------------------------------------------
+* kasowanie elementów, jeśli pusta wartość
+* wrong get parameters handling
+  - h
+* entry editing
+  - making editable
+  - saving changes
+* returning JSON entry
+  - parsing into DOM
+* równoczesny podgląd listy haseł i atykułu hasłowego
+* sterowanie dostępnością opcji z config-u
+* poprawienie <div>-ów: poziom content
+  - testy
+* hiding buttons
+  - CSS preventing change of height
+  - new translations
+* ujednolicenie zmiennych (id vs. n w atomicach)
+* parsowanie XML-a do bazy
+* poprawienie logowania
+  - formularz lub obsługa enterów
+  - internacjonalizacja
+* unifikacja akcji w atomikach {
+	1. wg typu akcji: add.php?node=57&type=sense
+	2. wg typu węzła: sense.php?node=57&action=move_up
+	3. razem: atomic.php?action=add&type=sense&node=57
+}
+* notatki edytora
+
+# wersja 2
+
+* examples
+
+------------------------------------------------------------------------
+D O N E :
+------------------------------------------------------------------------
+
+2013-05-28
+
+* separating view from edition
+  - switching between modes
+
+2013-05-25
+
+* edytowanie etykiety kategorii
+
+2013-05-19
+
+* universal element edition
+
+2013-05-17
+
+* returning JSON entry
+  - atomic action returning
+
+2013-05-16
+
+* klasa node
+* separating view from edition
+  - minimal view layout
+
+2013-05-14(?)
+
+* edycja formy
+
+2013-05-11
+
+* interfejs internacjonalizacji
+
+2013-05-10(?)
+
+* obsługa błędnego zalogowania
+  - ramka ostrzeżenia
+* refaktor
+  - var w funkcjach w common.js
+
+2013-05-08
+
+* refaktor javascript -- CamelCase
+  - senses
+* UI
+  - wyjście z edycji przez kliknięcie poza input
+  - wyjście z edycji przez naciśnięcie ESC
+
+2013-05
+
+* logout
+
+2013-04-26
+
+* generacja XML-a na podstawie aktualnej struktury
+* poprawienie <div>-ów: poziom content
+  - edycja layoutu
+
+2013-04-25
+
+* separating view from edition
+  - session management
+* ujednolicenie zmiennych (id vs. n w atomicach)
+  - senses
+
+2013-04-24
+
+* hiding buttons
+  - layout
+* phrases
+  - deleting
+* refaktor javascript -- CamelCase
+  - phrases
+  - translations

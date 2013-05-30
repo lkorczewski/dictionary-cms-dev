@@ -36,7 +36,9 @@ $success = $data->delete_sense($node_id);
 
 if($success === false) die('query failure');
 
-// returning node id of new sense
+//----------------------------------------------------
+// returning OK
+//----------------------------------------------------
 
 echo 'OK';
 

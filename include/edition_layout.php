@@ -11,7 +11,7 @@ require_once 'dictionary/translation.php';
 
 require_once 'include/localization.php';
 
-class Layout{
+class Edition_Layout{
 	
 	private $output;
 	private $depth;
@@ -40,14 +40,42 @@ class Layout{
 	}
 	
 	//--------------------------------------------------------------------
-	// private entry parser
+	// entry parser
 	//--------------------------------------------------------------------
 
 	private function parse_entry(Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
-		$this->output .= '<div class="headword">' . $entry->get_headword() . '</div>' . "\n";
+		
+		$this->output .=
+			'<div class="headword_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' .
+			'<div class="headword" onclick="edit_entry_headword(this.parentNode, ' .
+			$entry->get_node_id() .
+			')">' .
+			$entry->get_headword() .
+			'</div>' . "\n" .
+			'<div class="buttons">' .
+					
+					'<button class="button delete" onclick="delete_entry(' .
+					$entry->get_node_id() .
+					')">' .
+					$this->localization->get_text('delete') .
+					'</button>' . "\n" .
+					
+					'<button class="button edit" onclick="edit_entry_headword(this.parentNode.parentNode, ' .
+					$entry->get_node_id() .
+					')">' .
+					$this->localization->get_text('edit') .
+					'</button>' . "\n" .
+					
+			'</div>' . "\n" .
+			'</div>' . "\n";
+			
+		
 		$this->output .= '<div class="entry_content">' . "\n";
 		
+		// category label
+		$this->parse_category_label($entry);
+
 		// forms
 		$this->parse_forms($entry);
 		
@@ -62,7 +90,7 @@ class Layout{
 	}
 	
 	//--------------------------------------------------------------------
-	// private sense nest parser
+	// sense nest parser
 	//--------------------------------------------------------------------
 	
 	private function parse_senses(/*Node*/ $node){
@@ -83,7 +111,7 @@ class Layout{
 	}
 	
 	//--------------------------------------------------------------------
-	// private sense parser
+	// sense parser
 	//--------------------------------------------------------------------
 	
 	private function parse_sense(Sense $sense){
@@ -93,20 +121,28 @@ class Layout{
 		// sense 
 		$this->output .=
 			'<div class="sense_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-				'<div class="sense_label">' . $sense->get_label() . '</div>' . "\n" .
+				'<div class="sense_label">' .
+				$sense->get_label() .
+				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 					
 					'<button class="button delete" onclick="delete_sense(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
-					')">usuń</button>' . "\n" .
+					')">' .
+					$this->localization->get_text('delete') .
+					'</button>' . "\n" .
 					
 					'<button class="button move_up" onclick="move_sense_up(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
-					')">do góry</button>' . "\n" .
+					')">' .
+					$this->localization->get_text('up') .
+					'</button>' . "\n" .
 					
 					'<button class="button move_down" onclick="move_sense_down(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
-					')">na dół</button>' . "\n" .
+					')">' .
+					$this->localization->get_text('down') .
+					'</button>' . "\n" .
 					
 				'</div>' . "\n" .
 			'</div>' . "\n"
@@ -114,9 +150,11 @@ class Layout{
 		
 		$this->output .= '<div class="sense_content">' . "\n";
 		
+		// category label
+		$this->parse_category_label($sense);
+		
 		// forms
-		// waiting for implementation in Sense
-		//$this->parse_forms($sense);
+		$this->parse_forms($sense);
 		
 		// translations
 		$this->parse_translations($sense);
@@ -215,12 +253,67 @@ class Layout{
 		$this->output .= '</div>' . "\n";
 		
 	}
+	
+	//--------------------------------------------------------------------
+	// category label parser
+	//--------------------------------------------------------------------
+	
+	private function parse_category_label(Headword_Node $node){
+		
+		$category_label = $node->get_category_label();
+		
+		$this->output .=
+			'<div class="category_labels">' . "\n";
+		
+		if($category_label){
+			$this->output .=
+				'<div class="category_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+					'<div class="category_label" onclick="editCategoryLabel(this.parentNode, ' .
+					$node->get_node_id() .
+					')">' .
+					$category_label->get() .
+					'</div>' . "\n" .
+					'<div class="buttons">' . "\n" .
+						
+						'<button class="button delete" onclick="deleteCategoryLabel(this.parentNode.parentNode, ' .
+						$node->get_node_id() .
+						')">' .
+						$this->localization->get_text('delete') .
+						'</button>' . "\n" .
+						
+						'<button class="button edit" onclick="editCategoryLabel(this.parentNode.parentNode, ' .
+						$node->get_node_id() .
+						')">' .
+						$this->localization->get_text('edit') .
+						'</button>' . "\n" .
+						
+					'</div>' . "\n" .
+				'</div>' . "\n";
+		}
+		
+		$this->output .=
+			'</div>' . "\n";
+		
+		if(!$category_label){
+		
+			$this->output .=
+				'<div>' . "\n" .
+					'<button class="button add_category_label" onclick="addCategoryLabel(this.parentNode.parentNode, ' . 
+					$node->get_node_id() .
+					')">' .
+					$this->localization->get_text('add category label') .
+					'</button>' . "\n" .
+				'</div>' . "\n";
+			
+		}
+		
+	}
 
 	//--------------------------------------------------------------------
 	// form nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_forms(/*Node*/ $node){
+	private function parse_forms(Headword_Node $node){
 		
 		// forms
 		$this->output .= '<div class="forms">' . "\n";
@@ -248,7 +341,7 @@ class Layout{
 			'<div class="form_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="form_label" onclick="editForm(this.parentNode, ' .
 				$form->get_id() .
-				')">' .
+				', \'label\')">' .
 				$form->get_label() .
 				'</div>' . "\n" .
 				'<div class="form" onclick="editForm(this.parentNode, ' .
@@ -285,7 +378,7 @@ class Layout{
 	// translation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translations(/*Node*/ $node){
+	private function parse_translations(Node $node){
 	
 		// translations
 		$this->output .= '<div class="translations">' . "\n";

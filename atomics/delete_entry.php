@@ -25,26 +25,20 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$entry_id = '';
-if(isset($_POST['id'])){
-	$entry_id = $_POST['id'];
-} else {
-	if(isset($_GET['id'])){
-		$entry_id = $_GET['id'];
-	} else {
-		die('no parameter');
-	}
-}
+$node_id = Script::get_parameter('n');
+if($node_id === false) Script::fail('no parameter');
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$success = $data->delete_entry($entry_id);
+$success = $data->delete_entry($node_id);
 
 if($success === false) die('query failure');
 
-// returning id of new translation
+//----------------------------------------------------
+// returning OK
+//----------------------------------------------------
 
 echo 'OK';
 

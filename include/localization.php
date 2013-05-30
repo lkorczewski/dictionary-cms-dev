@@ -37,8 +37,7 @@ class Localization {
 	// loading texts from file
 	//------------------------------------------------
 	function load_texts(){
-		$this->texts = array();
-		
+		$texts = array();
 		include($this->path . '/' . $this->locale . '.php');
 		$this->texts = $texts;
 	}
@@ -51,7 +50,7 @@ class Localization {
 			$this->load_texts();
 		}
 		
-		return $this->texts[$text] ? $this->texts[$text] : '[[NO TRANSLATION]]';
+		return isset($this->texts[$text]) && $this->texts[$text] ? $this->texts[$text] : '[[NO TRANSLATION]]';
 	}
 
 }

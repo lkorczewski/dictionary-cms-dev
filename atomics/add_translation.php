@@ -25,25 +25,10 @@ $data = new MySQL_Data($database);
 // setting parameters
 //----------------------------------------------------
 
-$sense_id = '';
-if(isset($_POST['id'])){
-	$sense_id = $_POST['id'];
-} else {
-	if(isset($_GET['id'])){
-		$sense_id = $_GET['id'];
-	} else {
-		die('no parameter');
-	}
-}
+$sense_id = Script::get_parameter('id');
+if($sense_id === false) Script::fail('no parameter');
 
-$text = '...';
-if(isset($_POST['t'])){
-	$text = $_POST['t'];
-} else {
-	if(isset($_GET['t'])){
-		$text = $_GET['t'];
-	}
-}
+$text = Script::get_parameter('t');
 
 //----------------------------------------------------
 // executing query

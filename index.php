@@ -12,13 +12,33 @@ require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
 
 require_once 'include/localization.php';
-require_once 'include/layout.php';
+require_once 'include/edition_layout.php';
+require_once 'include/view_layout.php';
 
 $database = Script::connect_to_database();
 
 $localization = new Localization();
 $localization->set_path($config['locale_path']);
 $localization->set_locale($config['locale']);
+
+//====================================================
+// presentation variables
+//====================================================
+
+$show_toolbar = true;
+if(isset($config['hide_toolbar']) && $config['hide_toolbar'] === true){
+	$show_toolbar = false;
+}
+
+$editor_logged_in  = isset($_SESSION['editor']);
+
+$mode = 'view';
+if(isset($_GET['m']) && $_GET['m'] == 'edition'){
+	$mode = 'edition';
+}
+if(isset($_SESSION['edition_mode']) && $_SESSION['edition_mode'] === true){
+	$mode = 'edition';
+}
 
 //====================================================
 // content construction
@@ -31,28 +51,33 @@ $dictionary = new Dictionary($data);
 
 $content = '';
 
-switch($headword){
+if($headword == ''){
 	
-	// list of headwords
-	case '':
+	$headwords = $dictionary->get_headwords();
+	
+	foreach($headwords as $headword){
+		$content .= "<p><a href=\"?h=$headword\">$headword</p>\n";
+	}
+	
+} else {
+	
+	$entry = $dictionary->get_entry($headword);
+	
+	if($entry){
 		
-		$headwords = $dictionary->get_headwords();
-		
-		foreach($headwords as $headword){
-			$content .= "<p><a href=\"?h=$headword\">$headword</p>\n";
+		switch($mode){
+			case 'edition' :
+				$layout = new Edition_Layout($localization);
+				break;
+			case 'view' :
+				$layout = new View_Layout($localization);
+				break;
 		}
 		
-		break;
-	
-	default :
-		
-		$entry = $dictionary->get_entry($headword);
-		
-		$layout = new Layout($localization);
 		$content .= $layout->parse($entry);
 		
-		break;
-		
+	}
+	
 }
 
 //====================================================
@@ -60,6 +85,8 @@ switch($headword){
 //====================================================
 // is it really an optimal method for caching output?
 //====================================================
+
+// header
 
 $output = '';
 $output .=
@@ -70,21 +97,29 @@ $output .=
 	'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
 	'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
 	'<script type="text/javascript" src="scripts/common.js"></script>' . "\n" .
+	'<script type="text/javascript" src="scripts/construction.js"></script>' . "\n" .
 	'<script type="text/javascript" src="scripts/editing.js"></script>' . "\n" .
 	'</head>' . "\n" .
 	'<body>' . "\n";
 
-if(!isset($config['hide_toolbar']) || !$config['hide_toolbar']){
+// login toolbar
+
+if($show_toolbar){
 	$output .=
 		'<div id="toolbar" class="toolbar">' .
 		'<div id="editor_toolbar" class="editor_toolbar">';
 	
-	if(isset($_SESSION['editor'])){
+	if($editor_logged_in){
 		$output .=
 			'<div class="editor">' . $_SESSION['editor'] . '</div>' .
-			'<button onclick="logEditorOut(showEditorLogIn)">wyloguj się</button>';
+			'<button class="button" onclick="logEditorOut(showEditorLogIn)">' .
+			$localization->get_text('log out') .
+			'</button>';
 	} else {
-		$output .= '<div class="editor_log_in" onclick="showEditorCredentialsInput()">zaloguj się</div>';
+		$output .=
+			'<div class="editor_log_in" onclick="showEditorCredentialsInput()">' .
+			$localization->get_text('log in') .
+			'</div>';
 	}
 	
 	$output .=
@@ -92,11 +127,37 @@ if(!isset($config['hide_toolbar']) || !$config['hide_toolbar']){
 		'</div>' . "\n";
 }
 
+// edition toolbar
+
+if($show_toolbar && $editor_logged_in){
+	$output .=
+		'<div class="edition_toolbar">';
+	if($mode == 'edition'){
+		$output .=
+			'<a class="mode_switch" href="?h=' . $headword . '">' .
+			$localization->get_text('view') .
+			'</a>';
+	} else {
+		$output .=
+			'<a class="mode_switch" href="?h=' . $headword . '&m=edition">' .
+			$localization->get_text('edition') .
+			'</a>';
+	}
+	$output .=
+		'</div>' . "\n";
+}
+
+// content itself
+
 $output .= $content;
+
+// footer
 	
 $output .=
 	'</body>' .
 	'</html>' ;
+
+//====================================================
 
 echo $output;
 	
