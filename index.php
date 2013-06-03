@@ -151,6 +151,18 @@ if($show_toolbar && $editor_logged_in){
 
 $output .= $content;
 
+// alternative
+
+if($editor_logged_in && $headword && !$entry){
+	$output .=
+		'<div>' .
+		'Entry doesn\'t exist. Create a new one?' .
+		'</div>' .
+		'<button onclick="addEntry(\'' . $headword . '\')">' .
+		'create' .
+		'</button>';
+}
+
 // footer
 	
 $output .=

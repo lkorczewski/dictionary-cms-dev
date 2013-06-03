@@ -1,15 +1,13 @@
 ------------------------------------------------------------------------
 T O   D O :
 ------------------------------------------------------------------------
-* categories
-  - dodawanie
-  - lepsze przechowywanie
 * info's
 * separating view from edition
   - basic formatting
   - classes renaming
   - adding edition toolbar in JavaScript
 * kwestia rezultatu
+* XML with categories and informations
 ------------------------------------------------------------------------
 * kasowanie elementów, jeśli pusta wartość
 * wrong get parameters handling
@@ -45,6 +43,12 @@ T O   D O :
 ------------------------------------------------------------------------
 D O N E :
 ------------------------------------------------------------------------
+
+2013-06-01
+
+* categories
+  - adding
+  - better storage
 
 2013-05-28
 

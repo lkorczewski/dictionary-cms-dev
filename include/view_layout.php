@@ -54,6 +54,12 @@ class View_Layout{
 		// forms
 		$this->parse_forms($entry);
 		
+		// translations
+		$this->parse_translations($entry);
+		
+		// phrases
+		$this->parse_phrases($entry);
+		
 		// senses
 		$this->parse_senses($entry);
 		

@@ -1,4 +1,5 @@
 /* configuration */
+
 var actionPath = 'atomics'
 
 /* misc */
@@ -52,6 +53,17 @@ function editElement(elementBar, elementClass, inputClass, doOnChange, id){
 /* atomic actions */
 
 /* entry */
+
+function addEntry(headword){
+	makeRequest(actionPath + '/add_entry.php', 'h=' + headword, {
+		success: function(response){
+			console.log('add_entry: ' + response)
+			if(response == 'OK'){
+				location.reload()
+			}
+		}
+	})
+}
 
 function editEntryHeadword(headwordBar, nodeId){
 	editElement(
