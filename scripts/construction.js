@@ -34,13 +34,13 @@ function makeCategoryLabelBar(text, parentNodeId){
 	
 	var buttonDelete = document.createElement('button')
 	buttonDelete.setAttribute('class', 'button delete')
-	buttonDelete.onclick = function(){ deleteTranslation(translationBar, translationId) }
+	buttonDelete.onclick = function(){ deleteCategoryLabel(categoryLabelBar, parentNodeId) }
 	buttonDelete.textContent = localization.get_text('delete')
 	buttons.appendChild(buttonDelete)
 	
 	var buttonEdit = document.createElement('button')
 	buttonEdit.setAttribute('class', 'button edit')
-	buttonEdit.onclick = function(){ editTranslation(translationBar, translationId) }
+	buttonEdit.onclick = function(){ editCategoryLabel(categoryLabelBar, parentNodeId) }
 	buttonEdit.textContent = localization.get_text('edit')
 	buttons.appendChild(buttonEdit)
 	

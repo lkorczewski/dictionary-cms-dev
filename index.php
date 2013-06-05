@@ -55,8 +55,8 @@ if($headword == ''){
 	
 	$headwords = $dictionary->get_headwords();
 	
-	foreach($headwords as $headword){
-		$content .= "<p><a href=\"?h=$headword\">$headword</p>\n";
+	foreach($headwords as $headword_item){
+		$content .= "<p><a href=\"?h=$headword_item\">$headword_item</p>\n";
 	}
 	
 } else {
