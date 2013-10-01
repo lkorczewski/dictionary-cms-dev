@@ -1,13 +1,14 @@
 ------------------------------------------------------------------------
 T O   D O :
 ------------------------------------------------------------------------
-* info's
 * separating view from edition
   - basic formatting
   - classes renaming
   - adding edition toolbar in JavaScript
 * kwestia rezultatu
 * XML with categories and informations
+* multiple logouts
+* correct logging in
 ------------------------------------------------------------------------
 * kasowanie elementów, jeśli pusta wartość
 * wrong get parameters handling
@@ -34,6 +35,7 @@ T O   D O :
 	2. wg typu węzła: sense.php?node=57&action=move_up
 	3. razem: atomic.php?action=add&type=sense&node=57
 }
+* zcentralizowane console.log
 * notatki edytora
 
 # wersja 2
@@ -43,6 +45,14 @@ T O   D O :
 ------------------------------------------------------------------------
 D O N E :
 ------------------------------------------------------------------------
+
+2013-06-12
+
+* ...
+
+2013-06-08
+
+* info's
 
 2013-06-01
 

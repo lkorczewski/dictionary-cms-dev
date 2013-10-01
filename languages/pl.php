@@ -14,10 +14,13 @@ $texts['down'] = 'na dół';
 $texts['delete'] = 'usuń';
 $texts['edit'] = 'zmień';
 
-$texts['add category label'] = 'dodaj etykietę kategorii';
-$texts['add form'] = 'dodaj formę';
 $texts['add sense'] = 'dodaj znaczenie';
 $texts['add phrase'] = 'dodaj wyrażenie';
+
+$texts['add headword'] = 'dodaj hasło';
+$texts['add category label'] = 'dodaj etykietę kategorii';
+$texts['add form'] = 'dodaj formę';
+$texts['add context'] = 'dodaj kontekst';
 $texts['add translation'] = 'dodaj tłumaczenie';
 
 ?>

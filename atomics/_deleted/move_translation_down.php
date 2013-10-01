@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Moving translation up
+// Moving translation down
 //====================================================
 
 session_start();
@@ -32,7 +32,7 @@ if($translation_id === false) Script::fail('no parameter');
 // executing query
 //----------------------------------------------------
 
-$result = $data->move_translation_up($id);
+$result = $data->move_translation_down($translation_id);
 
 if($result === false){
 	die('query failure');

@@ -14,10 +14,13 @@ $texts['down'] = 'down';
 $texts['delete'] = 'delete';
 $texts['edit'] = 'edit';
 
-$texts['add category label'] = 'add category label';
-$texts['add form'] = 'add form';
 $texts['add sense'] = 'add sense';
 $texts['add phrase'] = 'add phrase';
+
+$texts['add headword'] = 'add headword';
+$texts['add category label'] = 'add category label';
+$texts['add form'] = 'add form';
+$texts['add context'] = 'add context';
 $texts['add translation'] = 'add translation';
 
 ?>

@@ -61,9 +61,9 @@ if($headword == ''){
 	
 } else {
 	
-	$entry = $dictionary->get_entry($headword);
+	$entries = $dictionary->get_entries($headword);
 	
-	if($entry){
+	if(is_array($entries) && count($entries)){
 		
 		switch($mode){
 			case 'edition' :
@@ -74,7 +74,9 @@ if($headword == ''){
 				break;
 		}
 		
-		$content .= $layout->parse($entry);
+		foreach($entries as $entry){
+			$content .= $layout->parse($entry);
+		}
 		
 	}
 	
@@ -96,6 +98,7 @@ $output .=
 	'<title>Dictionary</title>' . "\n" .
 	'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
 	'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
+	'<script type="text/javascript" src="scripts/DOM_extension.js"></script>' . "\n" .
 	'<script type="text/javascript" src="scripts/common.js"></script>' . "\n" .
 	'<script type="text/javascript" src="scripts/construction.js"></script>' . "\n" .
 	'<script type="text/javascript" src="scripts/editing.js"></script>' . "\n" .
@@ -112,7 +115,7 @@ if($show_toolbar){
 	if($editor_logged_in){
 		$output .=
 			'<div class="editor">' . $_SESSION['editor'] . '</div>' .
-			'<button class="button" onclick="logEditorOut(showEditorLogIn)">' .
+			'<button class="button" onclick="logEditorOut(showEditorLogIn); location.reload()">' .
 			$localization->get_text('log out') .
 			'</button>';
 	} else {
@@ -153,10 +156,10 @@ $output .= $content;
 
 // alternative
 
-if($editor_logged_in && $headword && !$entry){
+if($editor_logged_in && $headword && !$entries){
 	$output .=
 		'<div>' .
-		'Entry doesn\'t exist. Create a new one?' .
+		"Entry <b>$headword</b> doesn't exist. Create a new one?" .
 		'</div>' .
 		'<button onclick="addEntry(\'' . $headword . '\')">' .
 		'create' .

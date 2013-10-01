@@ -34,7 +34,7 @@ function editElement(elementBar, elementClass, inputClass, doOnChange, id){
 		if(event.keyCode == 13){
 			if(input.value != element.textContent){
 				input.disabled = true
-				doOnChange(input.parentNode, id, input.value, cancelEditingElement)
+				doOnChange(elementBar, id, input.value, cancelEditingElement, cancelEditingElement)
 			} else {
 				cancelEditingElement()
 			}
@@ -50,12 +50,36 @@ function editElement(elementBar, elementClass, inputClass, doOnChange, id){
 	input.focus()
 }
 
+function updateElement(element, action, parameters, id, newText, doOnSuccess, doOnFailure){
+	make_request(action, parameters, {
+		success: function(response){
+			console.log(action + '?' + parameters + ': ' + response)
+			if(response == 'OK'){
+				element.textContent = newText
+				
+				if(doOnSuccess){
+					doOnSuccess()
+				}
+			} else {
+				if(doOnFailure){
+					doOnFailure()
+				}
+			}
+		},
+		failure: function(){
+			if(doOnFailure){
+				doOnFailure()
+			}
+		}
+	})
+}
+
 /* atomic actions */
 
 /* entry */
 
 function addEntry(headword){
-	makeRequest(actionPath + '/add_entry.php', 'h=' + headword, {
+	makeRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
 		success: function(response){
 			console.log('add_entry: ' + response)
 			if(response == 'OK'){
@@ -77,7 +101,11 @@ function editEntryHeadword(headwordBar, nodeId){
 edit_entry_headword = editEntryHeadword
 
 function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doOnFailure){
-	make_request(actionPath + '/update_entry.php', 'n=' + nodeId + '&h=' + headwordText, {
+	action = actionPath + '/update_entry.php'
+	parameter =
+		'n=' + encodeURIComponent(nodeId) +
+		'&h=' + encodeURIComponent(headwordText)
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('update_translation: ' + response)
 			if(response == 'OK'){
@@ -88,7 +116,7 @@ function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doO
 					doOnSuccess()
 				}
 				
-				window.location = '?h=' + headwordText + '&m=edition' // here will be problem with
+				window.location = '?h=' + encodeURIComponent(headwordText) + '&m=edition' // here will be problem with
 			} else {
 				if(doOnFailure){
 					doOnFailure()
@@ -104,7 +132,7 @@ function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doO
 }
 
 function deleteEntry(nodeId){
-	make_request(actionPath + '/delete_entry.php', 'n=' + nodeId, {
+	make_request(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
 			console.log('delete_entry: ' + response)
 			if(response == 'OK'){
@@ -118,7 +146,7 @@ delete_entry = deleteEntry
 /* senses */
 
 function addSense(entryElement, nodeId){
-	make_request(actionPath + '/add_sense.php', 'n=' + nodeId, {
+	make_request(actionPath + '/add_sense.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
 			console.log('add_sense: ' + response)
 			if(parseInt(response)){
@@ -130,14 +158,18 @@ function addSense(entryElement, nodeId){
 add_sense = addSense
 
 function moveSenseUp(senseElement, nodeId){
-	make_request(actionPath + '/move_sense_up.php', 'n=' + nodeId, {
+	action = actionPath + '/sense.php'
+	parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=move_up'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_sense_up: ' + response)
 			if(response == 'OK'){
-				previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
-				senseElement.parentNode.insertBefore(senseElement, previousSenseElement)
+				senseElement.moveUp()
 				
-				senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
+				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				
 				bufferedSenseLabel = senseLabelElement.textContent;
@@ -150,13 +182,17 @@ function moveSenseUp(senseElement, nodeId){
 move_sense_up = moveSenseUp
 
 function moveSenseDown(senseElement, nodeId){
-	make_request(actionPath + '/move_sense_down.php', 'n=' + nodeId, {
+	action = actionPath + '/sense.php'
+	parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=move_down'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_sense_down: ' + response)
 			if(response == 'OK'){
-				var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
-				senseElement.parentNode.insertBefore(nextSenseElement, senseElement)
+				senseElement.moveDown()
 				
+				var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
 				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				
@@ -170,11 +206,15 @@ function moveSenseDown(senseElement, nodeId){
 move_sense_down = moveSenseDown
 
 function deleteSense(senseElement, nodeId){
-	make_request(actionPath + '/delete_sense.php', 'n=' + nodeId, {
+	action = actionPath + '/sense.php'
+	parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=delete'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('delete_sense: ' + response)
 			if(response == 'OK'){
-				senseElement.parentNode.removeChild(senseElement)
+				senseElement.delete()
 			}
 		}
 	})
@@ -184,7 +224,10 @@ delete_sense = deleteSense
 /* phrases */
 
 function addPhrase(parentElement, nodeId){
-	make_request(actionPath + '/add_phrase.php', 'n=' + nodeId, {
+	action = actionPath + '/add_phrase.php'; 
+	parameters =
+		'n=' + encodeURIComponent(nodeId)
+	make_request(actioin, parameters, {
 		success: function(response){
 			console.log('add_phrase: ' + response)
 			if(parseInt(response)){
@@ -205,7 +248,11 @@ function editPhrase(phraseBar, nodeId){
 }
 
 function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
-	make_request(actionPath + '/update_phrase.php', 'n=' + nodeId + '&t=' + phraseText, {
+	action = actionPath + '/update_phrase.php'
+	parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&t=' + encodeURIComponent(phraseText)
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('update_phrase: ' + response)
 			if(response == 'OK'){
@@ -230,33 +277,149 @@ function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
 }
 
 function movePhraseUp(phraseContainer, nodeId){
-	make_request(actionPath + '/move_phrase_up.php', 'n=' + nodeId, {
+	action = actionPath + '/phrase.php' 
+	parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=move_up'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_phrase_up: ' + response)
 			if(response == 'OK'){
-				phraseContainer.parentNode.insertBefore(phraseContainer, phraseContainer.previousElementSibling) /* not working in IE<9 */
+				phraseContainer.moveUp()
 			}
 		}
 	})
 }
 
 function movePhraseDown(phraseContainer, nodeId){
-	make_request(actionPath + '/move_phrase_down.php', 'n=' + nodeId, {
+	action = actionPath + '/phrase.php'
+	parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=move_down'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_phrase_down: ' + response)
 			if(response == 'OK'){
-				phraseContainer.parentNode.insertBefore(phraseContainer.nextElementSibling, phraseContainer) /* not working in IE<9 */
+				phraseContainer.moveDown()
 			}
 		}
 	})
 }
 
-function deletePhrase(phraseElement, nodeId){
-	make_request(actionPath + '/delete_phrase.php', 'n=' + nodeId, {
+function deletePhrase(phraseContainer, nodeId){
+	action = actionPath + '/phrase.php'
+	parameters =
+		'n=' + encodeURICOmponent(nodId) +
+		'&a=delete'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('delete_phrase: ' + response)
 			if(response == 'OK'){
-				phraseElement.parentNode.removeChild(phraseElement)
+				phraseContainer.delete()
+			}
+		}
+	})
+}
+
+//==============================================================================
+// headwords
+//==============================================================================
+
+function addHeadword(parentElement, parentNodeId){
+	action = actionPath + '/headword_node.php'
+	parameters =
+		'n=' + encodeURIComponent(parentNodeId) +
+		'&a=add_headword'
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('add_headword: ' + response)
+			if(parseInt(response)){
+				location.reload()
+			}
+		}
+	})
+}
+
+function editHeadword(headwordBar, parentNodeId){
+	editElement(
+		headwordBar,
+		'headword',
+		'headword_input',
+		updateHeadword,
+		parentNodeId
+	)
+}
+
+function updateHeadword(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
+	action = actionPath + '/headword.php'
+	parameters =
+		'id=' + encodeURIComponent(headwordId) +
+		'&a=update' +
+		'&t=' + encodeURIComponent(headwordText)
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('update_headword: ' + response)
+			if(response == 'OK'){
+				var headword = headwordBar.getElementsByClassName('headword')[0]
+				headword.textContent = headwordText
+				
+				if(doOnSuccess){
+					doOnSuccess()
+				}
+			} else {
+				if(doOnFailure){
+					doOnFailure()
+				}
+			}
+		},
+		failure: function(){
+			if(doOnFailure){
+				doOnFailure()
+			}
+		}
+	})
+}
+
+function moveHeadwordUp(headwordBar, headwordId){
+	action = actionPath + '/headword.php'
+	parameters =
+		'id=' + encodeURIComponent(headwordId) +
+		'&a=move_up'
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('move_headword_up: ' + response)
+			if(response == 'OK'){
+				headwordBar.moveUp();
+			}
+		}
+	})
+}
+
+function moveHeadowrdDown(headwordBar, headwordId){
+	action = actionPath + '/headword.php'
+	parameters =
+		'id=' + encodeURIComponent(headwordId) +
+		'&a=move_down'
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('move_headword_down: ' + response)
+			if(response == 'OK'){
+				headwordBar.moveDown()
+			}
+		}
+	})
+}
+
+function deleteHeadword(headwordBar, headwordId){
+	action = actionPath + '/headword.php'
+	parameters =
+		'id=' + encodeURIComponent(headwordId) +
+		'&a=delete'
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('delete_headword: ' + response)
+			if(response == 'OK'){
+				headwordBar.parentNode.removeChild(headwordBar)
 			}
 		}
 	})
@@ -265,7 +428,7 @@ function deletePhrase(phraseElement, nodeId){
 /* category labels */
 
 function addCategoryLabel(nodeContent, parentNodeId){
-	make_request(actionPath + '/headword_node.php', 'n=' + parentNodeId + '&a=add_category_label', {
+	make_request(actionPath + '/headword_node.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=add_category_label', {
 		success: function(response){
 			console.log('add_category_label: ' + response)
 			if(parseInt(response) || response == 'OK'){ // to be decided
@@ -289,7 +452,12 @@ function editCategoryLabel(categoryLabelBar, parentNodeId){
 }
 
 function updateCategoryLabel(categoryLabelBar, parentNodeId, categoryLabelText, doOnSuccess, doOnFailure){
-	make_request(actionPath + '/category_label.php', 'n=' + parentNodeId + '&a=set&t=' + categoryLabelText, {
+	action = actionPath + '/category_label.php'
+	parameters =
+		'n=' + encodeURIComponent(parentNodeId) +
+		'&a=set' +
+		'&t=' + encodeURIComponent(categoryLabelText)
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('update_category_label: ' + response)
 			if(response == 'OK'){
@@ -313,6 +481,7 @@ function updateCategoryLabel(categoryLabelBar, parentNodeId, categoryLabelText, 
 	})
 }
 
+/*
 function setCategoryLabel(categoryLabelBar, parentNodeId, categoryLabel){
 	make_request(actionPath + '/category_label.php', 'n=' + parentNodeId + '&a=set&l=' + categoryLabel, {
 		success: function(response){
@@ -324,23 +493,24 @@ function setCategoryLabel(categoryLabelBar, parentNodeId, categoryLabel){
 		}
 	})
 }
+*/
 
 function deleteCategoryLabel(categoryLabelBar, parentNodeId){
-	make_request(actionPath + '/category_label.php', 'n=' + parentNodeId + '&a=delete', {
+	make_request(actionPath + '/category_label.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=delete', {
 		success: function(response){
 			console.log('delete_category_label: ' + response)
 			if(response == 'OK'){
-				categoryLabelBar.parentNode.removeChild(categoryLabelBar)
+				categoryLabelBar.delete()
 				// there needs to show the button adding the label
 			}
 		}
-	})	
+	})
 }
 
 /* forms */
 
 function addForm(nodeContent, nodeId){
-	make_request(actionPath + '/add_form.php', 'n=' + nodeId, {
+	make_request(actionPath + '/add_form.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
 			console.log('add_form: ' + response)
 			/*
@@ -408,8 +578,8 @@ function editForm(formBar, formId, focus){
 	/*formInput.onblur = cancelEditingForm*/
 	
 	// displaying
-	label.style.display = 'none';
-	form.style.display = 'none';
+	label.style.display = 'none'
+	form.style.display = 'none'
 	formBar.insertBefore(labelInput, label.nextElementSibling) /* not working in IE<9 */
 	formBar.insertBefore(formInput, form.nextElementSibling) /* not working in IE<9 */
 	switch(focus){
@@ -419,7 +589,12 @@ function editForm(formBar, formId, focus){
 }
 
 function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnFailure){
-	make_request(actionPath + '/update_form.php', 'id=' + formId + '&l=' + formLabel + '&h=' + formHeadword, {
+	action = actionPath + '/update_form.php'
+	parameters = 
+		'id=' + formId +
+		'&l=' + encodeURIComponent(formLabel) +
+		'&h=' + encodeURIComponent(formHeadword)
+	make_request(action, parameters,{
 		success: function(response){
 			console.log('update_form: ' + response)
 			if(response == 'OK'){
@@ -447,42 +622,142 @@ function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnF
 }
 
 function moveFormUp(formBar, formId){
-	make_request(actionPath + '/form.php', 'id=' + formId + '&a=move_up', {
+	make_request(actionPath + '/form.php', 'id=' + encodeURIComponent(formId) + '&a=move_up', {
 		success: function(response){
 			console.log('move_form_up: ' + response)
 			if(response == 'OK'){
-				formBar.parentNode.insertBefore(formBar, formBar.previousElementSibling) /* not working in IE<9 */
+				formBar.moveUp()
 			}
 		}
 	})
 }
 
 function moveFormDown(formBar, formId){
-	make_request(actionPath + '/form.php', 'id=' + formId + '&a=move_down', {
+	make_request(actionPath + '/form.php', 'id=' + encodeURIComponent(formId) + '&a=move_down', {
 		success: function(response){
 			console.log('move_form_down: ' + response)
 			if(response == 'OK'){
-				formBar.parentNode.insertBefore(formBar.nextElementSibling, formBar) /* not working in IE<9 */
+				formBar.moveDown()
 			}
 		}
 	})
 }
 
 function deleteForm(formBar, formId){
-	make_request(actionPath + '/form.php', 'id=' + formId + '&a=delete', {
+	action = actionPath + '/form.php'
+	parameters =
+		'id=' + encodeURIComponent(formId) +
+		'&a=delete'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('delete_form: ' + response)
 			if(response == 'OK'){
-				formBar.parentNode.removeChild(formBar)
+				formBar.delete()
 			}
 		}
 	})
 }
 
+/* contexts */
+
+function addContext(nodeContent, parentNodeId){
+	action = actionPath + '/sense.php'
+	parameters =
+		'n=' + encodeURIComponent(parentNodeId) +
+		'&a=add_context'
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('add_context: ' + response)
+			if(parseInt(response) || response == 'OK'){ // to be decided
+				/*
+				location.reload()
+				*/
+				var contexts = nodeContent.getElementsByClassName('contexts')[0]
+				var contextBar = makeContextBar('...', parentNodeId)
+				contexts.appendChild(contextBar)
+				editContext(contextBar, parentNodeId)
+			}
+		}
+	})
+}
+
+function editContext(contextBar, parentNodeId){
+	editElement(
+		contextBar,
+		'context',
+		'context_input',
+		updateContext,
+		parentNodeId
+	)
+}
+
+function updateContext(contextBar, parentNodeId, contextText, doOnSuccess, doOnFailure){
+	action = actionPath + '/context.php'
+	parameters =
+		'n=' + encodeURIComponent(parentNodeId) +
+		'&a=set' +
+		'&t=' + encodeURIComponent(contextText)
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('update_context: ' + response)
+			if(response == 'OK'){
+				context = contextBar.getElementsByClassName('context')[0]
+				context.textContent = contextText
+				
+				if(doOnSuccess){
+					doOnSuccess()
+				}
+			} else {
+				if(doOnFailure){
+					doOnFailure
+				}
+			}
+		},
+		failure: function(){
+			if(doOnFailure){
+				doOnFailure()
+			}
+		}
+	})
+}
+
+/*
+function setContext(contextBar, parentNodeId, context){
+	make_request(actionPath + '/sense.php', 'n=' + parentNodeId + '&a=set&l=' + encodeURIComponent(categoryLabel), {
+		success: function(response){
+			console.log('set_category_label: ' + response)
+			if(response == 'OK'){
+				// shoud be replaced by DOM modification
+				location.reload()
+			}
+		}
+	})
+}
+*/
+
+function deleteContext(contextBar, parentNodeId){
+	action = actionPath + '/context.php'
+	parameters =
+		'n=' + parentNodeId +
+		'&a=delete'
+	make_request(action, parameters, {
+		success: function(response){
+			console.log('delete_category_label: ' + response)
+			if(response == 'OK'){
+				contextBar.parentNode.removeChild(contextBar)
+				// there needs to show the button adding the label
+			}
+		}
+	})	
+}
+
 /* translations */
 
 function addTranslation(nodeContent, nodeId){
-	make_request(actionPath + '/add_translation.php', 'id=' + nodeId, {
+	action = actionPath + '/add_translation.php'
+	parameters =
+		'id=' + encodeURIComponent(nodeId)
+	make_request(action, patameters, {
 		success: function(response){
 			console.log('add_translation: ' + response)
 			if(parseInt(response)){
@@ -497,7 +772,6 @@ function addTranslation(nodeContent, nodeId){
 }
 
 function editTranslation(translationBar, translationId){
-
 	editElement(
 		translationBar,
 		'translation',
@@ -505,11 +779,15 @@ function editTranslation(translationBar, translationId){
 		updateTranslation,
 		translationId
 	)
-	
 }
 
 function updateTranslation(translationBar, translationId, translationText, doOnSuccess, doOnFailure){
-	make_request(actionPath + '/update_translation.php', 'id=' + translationId + '&t=' + translationText, {
+	action = actionPath + '/translation.php'
+	parameters =
+		'id=' + encodeURIComponent(translationId) +
+		'&a=update' +
+		'&t=' + encodeURIComponent(translationText)
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('update_translation: ' + response)
 			if(response == 'OK'){
@@ -534,35 +812,46 @@ function updateTranslation(translationBar, translationId, translationText, doOnS
 }
 
 function moveTranslationUp(translationBar, translationId){
-	make_request(actionPath + '/move_translation_up.php', 'id=' + translationId, {
+	action = actionPath + '/translation.php'
+	parameters =
+		'id=' + encodeURIComponent(translationId) +
+		'&a=move_up'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_translation_up: ' + response)
 			if(response == 'OK'){
-				translationBar.parentNode.insertBefore(translationBar, translationBar.previousElementSibling) /* not working in IE<9 */
+				translationBar.moveUp()
 			}
 		}
 	})
 }
 
 function moveTranslationDown(translationBar, translationId){
-	make_request(actionPath + '/move_translation_down.php', 'id=' + translationId, {
+	action = actionPath + '/translation.php'
+	parameters =
+		'id=' + encodeURIComponent(translationId) +
+		'&a=move_down'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_translation_down: ' + response)
 			if(response == 'OK'){
-				translationBar.parentNode.insertBefore(translationBar.nextElementSibling, translationBar) /* not working in IE<9 */
+				translationBar.moveDown()
 			}
 		}
 	})
 }
 
 function deleteTranslation(translationBar, translationId){
-	make_request(actionPath + '/delete_translation.php', 'id=' + translationId, {
+	action = actionPath + '/translation.php'
+	parameters =
+		'id=' + encodeURIComponent(translationId) +
+		'&a=delete'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('delete_translation: ' + response)
 			if(response == 'OK'){
-				translationBar.parentNode.removeChild(translationBar)
+				translationBar.delete()
 			}
 		}
 	})
 }
-

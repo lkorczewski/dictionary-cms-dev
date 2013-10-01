@@ -7,7 +7,7 @@ function makeRequest(url, parameters, handler){
 	httpRequest.onreadystatechange = function(){
 		
 		done = false;
-		//console.log('readyState == ' + http_request.readyState)
+		//console.log('readyState == ' + httpRequest.readyState)
 				
 		// do when response received
 		
@@ -152,11 +152,12 @@ function showEditorCredentialsInput(editorToolbarContent){
 	var editorToolbar = document.getElementById('editor_toolbar')
 	
 	//--------------------------------
-	// creating credentials input
+	// creating credentials form
 	//--------------------------------
-	var editorCredentialsInput = document.createElement('div')
-	editorCredentialsInput.className = 'editor_credentials'
 	
+	var editorCredentialsForm = document.createElement('form')
+	editorCredentialsForm.className = 'editor_credentials'
+		
 	//--------------------------------
 	// creating login input
 	//--------------------------------
@@ -174,7 +175,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 		}
 	}
 	*/
-	editorCredentialsInput.appendChild(editorLoginInput)
+	editorCredentialsForm.appendChild(editorLoginInput)
 	
 	//--------------------------------
 	// creating password input
@@ -196,7 +197,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 		}
 	}
 	*/
-	editorCredentialsInput.appendChild(editorPasswordInput)
+	editorCredentialsForm.appendChild(editorPasswordInput)
 	
 	//--------------------------------
 	// creating log in button
@@ -213,6 +214,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 				switch(response.status){
 					case 'OK' :
 						showEditor(response.editor_name)
+						location.reload()
 						break
 					case 'failure' :
 						showWarning('Incorrect credentials.')
@@ -222,7 +224,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 			}
 		})
 	}
-	editorCredentialsInput.appendChild(editorLogInButton)
+	editorCredentialsForm.appendChild(editorLogInButton)
 	
 	//--------------------------------
 	// creating cancel button
@@ -232,13 +234,13 @@ function showEditorCredentialsInput(editorToolbarContent){
 	editorCancelButton.onclick = function(){
 		showEditorLogIn(editorCredentialsInput)
 	}
-	editorCredentialsInput.appendChild(editorCancelButton)
+	editorCredentialsForm.appendChild(editorCancelButton)
 	
 	//--------------------------------
 	// displaying
 	//--------------------------------
 	editorToolbar.innerHTML = '';
-	editorToolbar.appendChild(editorCredentialsInput)
+	editorToolbar.appendChild(editorCredentialsForm)
 	editorLoginInput.focus()
 	
 }
@@ -264,7 +266,7 @@ function showEditor(editorName){
 	logOutButton.className = 'button log_out'
 	logOutButton.textContent = 'wyloguj się'
 	logOutButton.onclick = function(){
-		logEditorOut(showEditorLogIn)
+		logEditorOut(function(){ showEditorLogIn; location.reload() })
 	}
 	
 	//--------------------------------

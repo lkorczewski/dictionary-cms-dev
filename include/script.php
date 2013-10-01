@@ -6,7 +6,7 @@ class Script {
 	private static $debug_enabled = false;
 	
 	//--------------------------------------------------------------------
-	// ...
+	// setting path for different 
 	//--------------------------------------------------------------------
 	
 	static function set_root_path($root_path){
@@ -69,7 +69,7 @@ class Script {
 	}
 	
 	//--------------------------------------------------------------------
-	// accquiring value from parameter
+	// acquiring value from parameter
 	//--------------------------------------------------------------------
 	
 	static function get_parameter($parameter, $default = false){

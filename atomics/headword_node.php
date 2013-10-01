@@ -28,6 +28,9 @@ $text = Script::get_parameter('t', '...');
 //----------------------------------------------------
 
 switch($action){
+	case 'add_headword':
+		$result = $data->add_headword($node_id, $text);
+		break;
 	case 'add_category_label':
 		$result = $data->set_category_label($node_id, $text);
 		break;

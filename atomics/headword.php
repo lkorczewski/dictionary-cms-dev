@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operations
-// Form
+// Headword
 //====================================================
 
 require '_atomic_header.php';
@@ -11,11 +11,22 @@ require '_atomic_header.php';
 // setting parameters
 //----------------------------------------------------
 
-$form_id = Script::get_parameter('id');
-if($form_id === false) Script::fail('no parameter');
+$headword_id = Script::get_parameter('id');
+if($headword_id === false){
+	Script::fail('no parameter');
+}
 
 $action = Script::get_parameter('a');
-if($action === false) Script::fail('no parameter');
+if($action === false){
+	Script::fail('no parameter');
+}
+
+if($action == 'update'){
+	$text = Script::get_parameter('t');
+	if($text === false){
+		Script::fail('no parameter');
+	}
+}
 
 //----------------------------------------------------
 // executing query
@@ -23,16 +34,20 @@ if($action === false) Script::fail('no parameter');
 
 switch($action){
 	
+	case 'update':
+		$affected_rows = $data->update_headword($headword_id, $text);
+		break;
+	
 	case 'move_up':
-		$affected_rows = $data->move_form_up($form_id);
+		$affected_rows = $data->move_headword_up($headword_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->move_form_down($form_id);
+		$affected_rows = $data->move_headword_down($headword_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_form($form_id);
+		$affected_rows = $data->delete_headword($headword_id);
 		break;
 	
 }

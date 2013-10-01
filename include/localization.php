@@ -20,14 +20,15 @@ class Localization {
 	}
 	
 	//------------------------------------------------
-	// setting path
+	// setting path to localization files
 	//------------------------------------------------
 	function set_path($path){
 		$this->path = $path;
 	}
 	
 	//------------------------------------------------
-	// setting locale
+	// setting locale identifier
+	//  recommended: pl, en_US, etc.
 	//------------------------------------------------
 	function set_locale($locale){
 		$this->locale = $locale;

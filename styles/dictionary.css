@@ -23,7 +23,7 @@ html {
 	padding-right: 0.2em;
 }
 
-.editor_toolbar {
+.editor_toolbar { /* rather toolbox */
 	float: right;
 }
 
@@ -46,25 +46,38 @@ html {
 	text-decoration: underline;
 }
 
-/* == entry structure =================================== */
+/* == entry structure: general elements ================= */
 
-.entry_container {html colosrs}
+.container {
+}
 
-.headword_bar {
+.bar {
 	overflow: hidden;
 }
 
-.headword {
+.bar_element {
 	display: inline-block;
+	font-family: GFS Didot;
+}
+
+.content {
+	margin-left: 1em;
+}
+
+/* == entry structure: particular elements ============== */
+
+.entry_container {}
+
+.headword_bar {}
+
+.headword {
 	margin-top: 0.2em;
 	margin-bottom: 0.2em;
-	/*background: red;*/
 	color: blue;
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
 	padding-left: 0.25em;
 	padding-right: 0.25em;
-	font-family: GFS Didot;
 	font-size: 120%;
 	font-weight: bold;
 }
@@ -73,29 +86,19 @@ html {
 	margin-left: 1em;
 }
 
-.category_label_bar {
-	overflow: hidden;
-}
+.category_label_bar {}
 
 .category_label {
-	display: inline-block;
 	color: green;
-	font-family: GFS Didot;
 }
 
-.form_bar {
-	overflow: hidden;
-}
+.form_bar {}
 
 .form_label {
-	display: inline-block;
-	font-family: GFS Didot;
 	font-style: italic;
 }
 
 .form {
-	display: inline-block;
-	font-family: GFS Didot;
 	font-weight: bold;
 }
 
@@ -109,43 +112,52 @@ html {
 	padding-bottom: 0.1em;
 	padding-left: 0.25em;
 	padding-right:0.25em;
-	overflow: hidden;
 }
 
 .sense_label {
-	display: inline-block;
 	margin: 0;
 	font-weight: bold;
-	font-family: GFS Didot;
 }
 
 .sense_content {
 	margin-left: 1em;
 }
 
-.phrase_bar {
-	overflow: hidden;
-}
+.phrase_bar {}
 
 .phrase {
-	display: inline-block;
 	font-weight: bold;
-	font-family: GFS Didot;
 }
 
 .phrase_content {
 	margin-left: 1em;
 }
 
+/* -- context ------------------------------------------- */
+
+.context_bar {
+}
+
+.context {
+	font-style: italic;
+}
+
+.context:before {
+	content: '[';
+}
+
+.context:after {
+	content: ']';
+}
+
+/* -- translation --------------------------------------- */
+
 .translation_bar {
 	margin: 0;
-	overflow: hidden;
 }
 
 .translation {
 	margin: 0;
-	font-family: GFS Didot;
-	display: inline-block;
 }
 
 /* == buttons =========================================== */

@@ -40,13 +40,16 @@ class View_Layout{
 	}
 	
 	//--------------------------------------------------------------------
-	// private entry parser
+	// entry parser
 	//--------------------------------------------------------------------
 
 	private function parse_entry(Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
-		$this->output .= '<div class="headword">' . $entry->get_headword() . '</div>' . "\n";
-		$this->output .= '<div class="entry_content">' . "\n";
+
+		// forms
+		$this->parse_headwords($entry);
+		
+		$this->output .= '<div class="content entry_content">' . "\n";
 		
 		// category label
 		$this->parse_category_label($entry);
@@ -71,20 +74,22 @@ class View_Layout{
 	}
 	
 	//--------------------------------------------------------------------
-	// private sense nest parser
+	// sense nest parser
 	//--------------------------------------------------------------------
 	
 	private function parse_senses(/*Node*/ $node){
 		
 		// senses
+		$this->output .= '<div class="senses">' . "\n";
 		while($sense = $node->get_sense()){
 			$this->parse_sense($sense);
 		}
+		$this->output .= '</div>' . "\n";
 		
 	}
 	
 	//--------------------------------------------------------------------
-	// private sense parser
+	// sense parser
 	//--------------------------------------------------------------------
 	
 	private function parse_sense(Sense $sense){
@@ -93,20 +98,23 @@ class View_Layout{
 		
 		// sense 
 		$this->output .=
-			'<div class="sense_label_bar">' . "\n" .
-				'<div class="sense_label">' .
-				$sense->get_label() .
+			'<div class="bar sense_label_bar">' . "\n" .
+				'<div class="bar_element sense_label">' .
+					$sense->get_label() .
 				'</div>' . "\n" .
 			'</div>' . "\n"
 			;
 		
-		$this->output .= '<div class="sense_content">' . "\n";
+		$this->output .= '<div class="content sense_content">' . "\n";
 		
 		// category label
 		$this->parse_category_label($sense);
 		
 		// forms
 		$this->parse_forms($sense);
+		
+		// context
+		$this->parse_context($sense);
 		
 		// translations
 		$this->parse_translations($sense);
@@ -149,14 +157,14 @@ class View_Layout{
 		
 		// phrase
 		$this->output .=
-			'<div class="phrase_bar">' . "\n" .
-				'<div class="phrase">' .
-				$phrase->get() .
+			'<div class="bar phrase_bar">' . "\n" .
+				'<div class="bar_element phrase">' .
+					$phrase->get() .
 				'</div>' . "\n" .
 			'</div>' . "\n"
 			;
 		
-		$this->output .= '<div class="phrase_content">' . "\n";
+		$this->output .= '<div class="content phrase_content">' . "\n";
 		
 		// translations
 		$this->parse_translations($phrase);
@@ -170,6 +178,33 @@ class View_Layout{
 	}
 	
 	//--------------------------------------------------------------------
+	// headword nest parser
+	//--------------------------------------------------------------------
+	
+	private function parse_headwords(Entry $entry){
+		
+		$this->output .= '<div class="headwords">' . "\n";
+		while($headword = $entry->get_headword()){
+			$this->parse_headword($headword);
+		}
+		$this->output .= '</div>' . "\n";
+		
+	}
+	
+	//--------------------------------------------------------------------
+	// headword parser
+	//--------------------------------------------------------------------
+	
+	private function parse_headword(Headword $headword){
+		$this->output .=
+			'<div class="headword_bar">' . "\n" .
+				'<div class="headword">' .
+					$headword->get() .
+				'</div>' . "\n";
+			'</div>' . "\n";
+	}
+	
+	//--------------------------------------------------------------------
 	// category label parser
 	//--------------------------------------------------------------------
 	
@@ -177,9 +212,9 @@ class View_Layout{
 		
 		if($category_label = $node->get_category_label()){
 			$this->output .=
-				'<div class="category_label_bar">' . "\n" .
-					'<div class="category_label">' .
-					$category_label->get() .
+				'<div class="bar category_label_bar">' . "\n" .
+					'<div class="bar_element category_label">' .
+						$category_label->get() .
 					'</div>' . "\n" .
 				'</div>' . "\n";
 		}
@@ -207,17 +242,42 @@ class View_Layout{
 	
 	private function parse_form(Form $form){
 		$this->output .=
-			'<div class="form_bar">' . "\n" .
-				'<div class="form_label">' .
-				$form->get_label() .
+			'<div class="bar form_bar">' . "\n" .
+				'<div class="bar_element form_label">' .
+					$form->get_label() .
 				'</div>' . "\n" .
-				'<div class="form">' .
-				$form->get_form() .
+				'<div class="bar_element form">' .
+					$form->get_form() .
 				'</div>' . "\n" .
 			'</div>' . "\n"
 			;
 	}
 
+	//--------------------------------------------------------------------
+	// context parser
+	//--------------------------------------------------------------------
+	
+	private function parse_context(Sense $node){
+		
+		$context = $node->get_context();
+		
+		$this->output .=
+			'<div class="contexts">' . "\n";
+		
+		if($context){
+			$this->output .=
+				'<div class="bar context_bar">' .
+					'<div class="bar_element context">' .
+						$context->get() .
+					'</div>' .
+				'</div>' . "\n";
+		}
+		
+		$this->output .=
+			'</div>' . "\n";
+		
+	}
+	
 	//--------------------------------------------------------------------
 	// translation nest parser
 	//--------------------------------------------------------------------
@@ -239,9 +299,9 @@ class View_Layout{
 	
 	private function parse_translation(Translation $translation){
 		$this->output .=
-			'<div class="translation_bar">' . "\n" .
-				'<div class="translation">' .
-				$translation->get_text()
+			'<div class="bar translation_bar">' . "\n" .
+				'<div class="bar_element translation">' .
+					$translation->get_text()
 				. '</div>' . "\n" .
 			'</div>' . "\n"
 			;

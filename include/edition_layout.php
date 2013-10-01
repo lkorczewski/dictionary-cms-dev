@@ -46,36 +46,14 @@ class Edition_Layout{
 	private function parse_entry(Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
 		
-		$this->output .=
-			'<div class="headword_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' .
-			'<div class="headword" onclick="edit_entry_headword(this.parentNode, ' .
-			$entry->get_node_id() .
-			')">' .
-			$entry->get_headword() .
-			'</div>' . "\n" .
-			'<div class="buttons">' .
-					
-					'<button class="button delete" onclick="delete_entry(' .
-					$entry->get_node_id() .
-					')">' .
-					$this->localization->get_text('delete') .
-					'</button>' . "\n" .
-					
-					'<button class="button edit" onclick="edit_entry_headword(this.parentNode.parentNode, ' .
-					$entry->get_node_id() .
-					')">' .
-					$this->localization->get_text('edit') .
-					'</button>' . "\n" .
-					
-			'</div>' . "\n" .
-			'</div>' . "\n";
-			
+		// forms
+		$this->parse_headwords($entry);
 		
-		$this->output .= '<div class="entry_content">' . "\n";
+		$this->output .= '<div class="content entry_content">' . "\n";
 		
 		// category label
 		$this->parse_category_label($entry);
-
+		
 		// forms
 		$this->parse_forms($entry);
 		
@@ -102,17 +80,21 @@ class Edition_Layout{
 	private function parse_senses(/*Node*/ $node){
 		
 		// senses
+		$this->output .= '<div class="senses">' . "\n";
 		while($sense = $node->get_sense()){
 			$this->parse_sense($sense);
 		}
+		$this->output .= '</div>' . "\n";
 		
 		// new sense
 		$this->output .=
-			'<div><button class="button add_sense" onclick="add_sense(this.parentNode.parentNode, ' .
-			$node->get_node_id() .
-			')">' .
-			$this->localization->get_text('add sense') .
-			'</button></div>' . "\n";
+			'<div class="button_bar sense_button_bar">' .
+				'<button class="button add_sense" onclick="add_sense(this.parentNode.parentNode, ' .
+				$node->get_node_id() .
+				')">' .
+					$this->localization->get_text('add sense') .
+				'</button>' .
+			'</div>' . "\n";
 		
 	}
 	
@@ -126,8 +108,8 @@ class Edition_Layout{
 		
 		// sense 
 		$this->output .=
-			'<div class="sense_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-				'<div class="sense_label">' .
+			'<div class="bar sense_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+				'<div class="bar_element sense_label">' .
 				$sense->get_label() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
@@ -135,26 +117,25 @@ class Edition_Layout{
 					'<button class="button delete" onclick="delete_sense(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
-					$this->localization->get_text('delete') .
+						$this->localization->get_text('delete') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_up" onclick="move_sense_up(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
-					$this->localization->get_text('up') .
+						$this->localization->get_text('up') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_down" onclick="move_sense_down(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
-					$this->localization->get_text('down') .
+						$this->localization->get_text('down') .
 					'</button>' . "\n" .
 					
 				'</div>' . "\n" .
-			'</div>' . "\n"
-			;
+			'</div>' . "\n";
 		
-		$this->output .= '<div class="sense_content">' . "\n";
+		$this->output .= '<div class="content sense_content">' . "\n";
 		
 		// category label
 		$this->parse_category_label($sense);
@@ -162,6 +143,9 @@ class Edition_Layout{
 		// forms
 		$this->parse_forms($sense);
 		
+		// context
+		$this->parse_context($sense);
+
 		// translations
 		$this->parse_translations($sense);
 		
@@ -193,11 +177,13 @@ class Edition_Layout{
 		
 		// new phrase
 		$this->output .=
-			'<div><button class="button add_phrase" onclick="addPhrase(this.parentNode.parentNode, ' .
+			'<div class="button_bar phrase_button_bar">' .
+			'<button class="button add_phrase" onclick="addPhrase(this.parentNode.parentNode, ' .
 			$node->get_node_id() .
 			')">' .
-			$this->localization->get_text('add phrase') .
-			'</button></div>' . "\n";
+				$this->localization->get_text('add phrase') .
+			'</button>' .
+			'</div>' . "\n";
 		
 	}
 	
@@ -211,43 +197,42 @@ class Edition_Layout{
 		
 		// phrase
 		$this->output .=
-			'<div class="phrase_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-				'<div class="phrase" onclick="editPhrase(this.parentNode, ' .
+			'<div class="bar phrase_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+				'<div class="bar_element phrase" onclick="editPhrase(this.parentNode, ' .
 				$phrase->get_node_id() .
 				')">' .
-				$phrase->get() .
+					$phrase->get() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 					
 					'<button class="button delete" onclick="deletePhrase(this.parentNode.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
-					$this->localization->get_text('delete') .
+						$this->localization->get_text('delete') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_up" onclick="movePhraseUp(this.parentNode.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
-					$this->localization->get_text('up') .
+						$this->localization->get_text('up') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_down" onclick="movePhraseDown(this.parentNode.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
-					$this->localization->get_text('down') .
+						$this->localization->get_text('down') .
 					'</button>' . "\n" .
 					
 					'<button class="button edit" onclick="editPhrase(this.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
-					$this->localization->get_text('edit') .
+						$this->localization->get_text('edit') .
 					'</buton>' . "\n" .
 					
 				'</div>' . "\n" .
-			'</div>' . "\n"
-			;
+			'</div>' . "\n";
 		
-		$this->output .= '<div class="phrase_content">' . "\n";
+		$this->output .= '<div class="content phrase_content">' . "\n";
 		
 		// translations
 		$this->parse_translations($phrase);
@@ -258,6 +243,73 @@ class Edition_Layout{
 		// closing phrase container
 		$this->output .= '</div>' . "\n";
 		
+	}
+	
+	//--------------------------------------------------------------------
+	// headword nest parser
+	//--------------------------------------------------------------------
+	
+	private function parse_headwords(Entry $entry){
+		
+		$this->output .= '<div class="headwords">' . "\n";
+		while($headword = $entry->get_headword()){
+			$this->parse_headword($headword);
+		}
+		$this->output .= '</div>' . "\n";
+		
+		// new phrase
+		$this->output .=
+			'<div class="button_bar headword_button_bar">' .
+			'<button class="button add_phrase" onclick="addHeadword(this.parentNode.parentNode, ' .
+			$entry->get_node_id() .
+			')">' .
+				$this->localization->get_text('add headword') .
+			'</button>' .
+			'</div>' . "\n";
+		
+	}
+	
+	//--------------------------------------------------------------------
+	// headword parser
+	//--------------------------------------------------------------------
+	
+	private function parse_headword(Headword $headword){
+		$this->output .=
+			'<div class="bar headword_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+				'<div class="bar_element headword" onclick="editHeadword(this.parentNode, ' .
+				$headword->get_id().
+				')">' .
+					$headword->get() .
+				'</div>' . "\n" .
+				'<div class="buttons">' .
+					
+					'<button class="button delete" onclick="deleteHeadword(this.parentNode.parentNode, ' .
+					$headword->get_id() .
+					')">' .
+						$this->localization->get_text('delete') .
+					'</button>' . "\n" .
+					
+					'<button class="button move_up" onclick="moveHeadwordUp(this.parentNode.parentNode, ' .
+					$headword->get_id() .
+					')">' .
+						$this->localization->get_text('up') .
+					'</button>' . "\n" .
+					
+					'<button class="button move_down" onclick="moveHeadwordDown(this.parentNode.parentNode, ' .
+					$headword->get_id() .
+					')">' .
+						$this->localization->get_text('down') .
+					'</buton>' . "\n" .
+					
+					'<button class="button edit" onclick="editHeadword(this.parentNode.parentNode, ' .
+					$headword->get_id() .
+					')">' .
+						$this->localization->get_text('edit') .
+					'</button>' . "\n" .
+					
+				'</div>' . "\n" .
+				
+			'</div>' . "\n";
 	}
 	
 	//--------------------------------------------------------------------
@@ -273,24 +325,24 @@ class Edition_Layout{
 		
 		if($category_label){
 			$this->output .=
-				'<div class="category_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-					'<div class="category_label" onclick="editCategoryLabel(this.parentNode, ' .
+				'<div class="bar category_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+					'<div class="bar_element category_label" onclick="editCategoryLabel(this.parentNode, ' .
 					$node->get_node_id() .
 					')">' .
-					$category_label->get() .
+						$category_label->get() .
 					'</div>' . "\n" .
 					'<div class="buttons">' . "\n" .
 						
 						'<button class="button delete" onclick="deleteCategoryLabel(this.parentNode.parentNode, ' .
 						$node->get_node_id() .
 						')">' .
-						$this->localization->get_text('delete') .
+							$this->localization->get_text('delete') .
 						'</button>' . "\n" .
 						
 						'<button class="button edit" onclick="editCategoryLabel(this.parentNode.parentNode, ' .
 						$node->get_node_id() .
 						')">' .
-						$this->localization->get_text('edit') .
+							$this->localization->get_text('edit') .
 						'</button>' . "\n" .
 						
 					'</div>' . "\n" .
@@ -333,7 +385,7 @@ class Edition_Layout{
 			'<div><button class="button add_form" onclick="addForm(this.parentNode.parentNode, ' .
 			$node->get_node_id() .
 			')">' .
-			$this->localization->get_text('add form') .
+				$this->localization->get_text('add form') .
 			'</button></div>' . "\n";
 		
 	}
@@ -344,40 +396,94 @@ class Edition_Layout{
 	
 	private function parse_form(Form $form){
 		$this->output .=
-			'<div class="form_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-				'<div class="form_label" onclick="editForm(this.parentNode, ' .
+			'<div class="bar form_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+				'<div class="bar_element form_label" onclick="editForm(this.parentNode, ' .
 				$form->get_id() .
 				', \'label\')">' .
-				$form->get_label() .
+					$form->get_label() .
 				'</div>' . "\n" .
-				'<div class="form" onclick="editForm(this.parentNode, ' .
+				'<div class="bar_element form" onclick="editForm(this.parentNode, ' .
 				$form->get_id() .
 				')">' .
-				$form->get_form() .
+					$form->get_form() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 				
 					'<button class="button delete" onclick="deleteForm(this.parentNode.parentNode, ' .
 					$form->get_id() .
 					')">' .
-					$this->localization->get_text('delete') .
+						$this->localization->get_text('delete') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_up" onclick="moveFormUp(this.parentNode.parentNode, ' .
 					$form->get_id() .
 					')">' .
-					$this->localization->get_text('up') .
+						$this->localization->get_text('up') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_down" onclick="moveFormDown(this.parentNode.parentNode, ' .
 					$form->get_id() .
 					')">' .
-					$this->localization->get_text('down') .
+						$this->localization->get_text('down') .
 					'</button>' . "\n" .
 				
 				'</div>' . "\n" .
-			'</div>' . "\n"
-			;
+			'</div>' . "\n";
+	}
+	
+	//--------------------------------------------------------------------
+	// context parser
+	//--------------------------------------------------------------------
+	
+	private function parse_context(Sense $node){
+		
+		$context = $node->get_context();
+		
+		$this->output .=
+			'<div class="contexts">' . "\n";
+		
+		if($context){
+			$this->output .=
+				'<div class="bar context_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' .
+					'<div class="bar_element context" onclick="editContext(this.parentNode, ' .
+					$node->get_node_id() .
+					')">' .
+						$context->get() .
+					'</div>' .
+					'<div class="buttons">' . "\n" .
+						
+						'<button class="button delete" onclick="deleteContext(this.parentNode.parentNode, ' .
+						$node->get_node_id() .
+						')">' .
+							$this->localization->get_text('delete') .
+						'</button>' . "\n" .
+						
+						'<button class="button edit" onclick="editContext(this.parentNode.parentNode, ' .
+						$node->get_node_id() .
+						')">' .
+							$this->localization->get_text('edit') .
+						'</button>' . "\n" .
+						
+					'</div>' . "\n" .
+				'</div>' . "\n";
+		}
+		
+		$this->output .=
+			'</div>' . "\n";
+		
+		if(!$context){
+			
+			$this->output .=
+				'<div class="button_bar context_button_bar">' . "\n" .
+					'<button class="button add_context" onclick="addContext(this.parentNode.parentNode, ' . 
+					$node->get_node_id() .
+					')">' .
+						$this->localization->get_text('add context') .
+					'</button>' . "\n" .
+				'</div>' . "\n";
+			
+		}
+		
 	}
 
 	//--------------------------------------------------------------------
@@ -398,7 +504,7 @@ class Edition_Layout{
 			'<div><button class="button add_translation" onclick="addTranslation(this.parentNode.parentNode, ' .
 			$node->get_node_id() .
 			')">' .
-			$this->localization->get_text('add translation') .
+				$this->localization->get_text('add translation') .
 			'</button></div>' . "\n";
 		
 	}
@@ -409,41 +515,40 @@ class Edition_Layout{
 	
 	private function parse_translation(Translation $translation){
 		$this->output .=
-			'<div class="translation_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-				'<div class="translation" onclick="editTranslation(this.parentNode, ' .
+			'<div class="bar translation_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+				'<div class="bar_element translation" onclick="editTranslation(this.parentNode, ' .
 				$translation->get_id() .
 				')">' .
-				$translation->get_text()
-				. '</div>' . "\n" .
+					$translation->get_text() .
+				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 				
 					'<button class="button delete" onclick="deleteTranslation(this.parentNode.parentNode, ' .
 					$translation->get_id() .
 					')">' .
-					$this->localization->get_text('delete') .
+						$this->localization->get_text('delete') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_up" onclick="moveTranslationUp(this.parentNode.parentNode, ' .
 					$translation->get_id() .
 					')">' .
-					$this->localization->get_text('up') .
+						$this->localization->get_text('up') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_down" onclick="moveTranslationDown(this.parentNode.parentNode, ' .
 					$translation->get_id() .
 					')">' .
-					$this->localization->get_text('down') .
+						$this->localization->get_text('down') .
 					'</buton>' . "\n" .
 					
 					'<button class="button edit" onclick="editTranslation(this.parentNode.parentNode, ' .
 					$translation->get_id() .
 					')">' .
-					$this->localization->get_text('edit') .
+						$this->localization->get_text('edit') .
 					'</buton>' . "\n" .
 				
 				'</div>' . "\n" .
-			'</div>' . "\n"
-			;
+			'</div>' . "\n";
 	}
 }
 
