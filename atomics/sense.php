@@ -35,15 +35,15 @@ if($action == 'add_context'){
 switch($action){
 	
 	case 'move_up':
-		$affected_rows = $data->move_sense_up($node_id, $text);
+		$affected_rows = $data->move_sense_up($node_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data>move_sense_down($node_id, $text);
+		$affected_rows = $data->move_sense_down($node_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_sense($node_id, $text);
+		$affected_rows = $data->delete_sense($node_id);
 		break;
 	
 	case 'add_context':
