@@ -3,6 +3,11 @@ html {
 	margin: auto;
 }
 
+h1 {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+
 /* == constant elements ================================= */
 
 .warning {
@@ -44,6 +49,52 @@ html {
 
 .mode_switch:hover {
 	text-decoration: underline;
+}
+
+/* == general structure ================================= */
+
+/* -- search panel -------------------------------------- */
+
+#search_panel {
+	float: left;
+	width: 200px;
+}
+
+#search_form {
+	display: table;
+	width: 100%;
+}
+
+#search_mask_input_wrapper {
+	display: table-cell;
+	/*padding-right: 0.5em;*/
+}
+
+#search_mask_input {
+	box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	width: 100%;
+}
+
+#search_button {
+	display: table-cell;
+}
+
+.search_result a {
+	font-weight: bold;
+}
+
+/* -- content panel ------------------------------------- */
+
+#content_panel {
+	margin-left: 200px;
+}
+
+/* -- footer -------------------------------------------- */
+
+.footer {
+	
 }
 
 /* == entry structure: general elements ================= */
@@ -92,6 +143,8 @@ html {
 	color: green;
 }
 
+/* -- form ----------------------------------------------- */
+
 .form_bar {}
 
 .form_label {
@@ -101,6 +154,8 @@ html {
 .form {
 	font-weight: bold;
 }
+
+/* -- sense ---------------------------------------------- */
 
 .sense_container {}
 
@@ -122,6 +177,8 @@ html {
 .sense_content {
 	margin-left: 1em;
 }
+
+/* -- phrase -------------------------------------------- */
 
 .phrase_bar {}
 

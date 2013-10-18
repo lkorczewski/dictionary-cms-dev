@@ -1,12 +1,27 @@
 ----------------------------------------
- current
+ 0.11.0
 ----------------------------------------
- * DOM extension: moveUp, moveDown, 
- * grouping of 
+ * search panel
+ * database creation tool (without editor table!)
+ * code: more grouping of atomic actions
+ * code: view separation
+ * this changelog
+
+----------------------------------------
+ 0.10.1
+----------------------------------------
+ * code: cleaned atomic/sense.php
+
+----------------------------------------
+ 0.10.0
+----------------------------------------
  * automatic numbering of senses
- * logging in as a form
+ * logging in as a form (with enter-button support)
+ * code: DOM extension: moveUp, moveDown, 
+ * code: grouping of atomic actions
  * a lot of previous changes
 
 ----------------------------------------
  many previous changes
 ----------------------------------------
+

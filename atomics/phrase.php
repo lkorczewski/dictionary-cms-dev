@@ -31,7 +31,7 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update' :
-		$affected_rows = $data->update_phrase($node_id);
+		$affected_rows = $data->update_phrase($node_id, $text);
 		break;
 	
 	case 'move_up':

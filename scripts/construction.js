@@ -1,25 +1,8 @@
-var localization = new Object();
-
-localization.texts = {
-	'delete':'usuń',
-	'up':'do góry',
-	'down':'na dół',
-	'edit':'edytuj',
-}
-
-localization.get_text = function(label){
-	if(this.texts && this.texts[label]){
-		return this.texts[label]
-	} else {
-		return '[[NO TRANSLATION]]'
-	}
-}
-
 function makeButton(name, action){
 	var button = document.createElement('button')
 	button.setAttribute('class', 'button ' + name)
 	button.onclick = action
-	button.textContent = localization.get_text(name)
+	button.textContent = localization.getText(name)
 	return button
 }
 

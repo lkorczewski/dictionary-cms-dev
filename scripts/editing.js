@@ -166,9 +166,10 @@ function moveSenseUp(senseElement, nodeId){
 		success: function(response){
 			console.log('move_sense_up: ' + response)
 			if(response == 'OK'){
+				var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
+				
 				senseElement.moveUp()
 				
-				var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
 				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				
@@ -190,9 +191,10 @@ function moveSenseDown(senseElement, nodeId){
 		success: function(response){
 			console.log('move_sense_down: ' + response)
 			if(response == 'OK'){
+				var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
+				
 				senseElement.moveDown()
 				
-				var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
 				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				
@@ -757,7 +759,7 @@ function addTranslation(nodeContent, nodeId){
 	action = actionPath + '/add_translation.php'
 	parameters =
 		'id=' + encodeURIComponent(nodeId)
-	make_request(action, patameters, {
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('add_translation: ' + response)
 			if(parseInt(response)){

@@ -11,26 +11,23 @@ require_once 'database/database.php';
 require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
 
-require_once 'include/localization.php';
-require_once 'include/edition_layout.php';
-require_once 'include/view_layout.php';
+require_once 'include/view.php';
 
 $database = Script::connect_to_database();
-
-$localization = new Localization();
-$localization->set_path($config['locale_path']);
-$localization->set_locale($config['locale']);
 
 //====================================================
 // presentation variables
 //====================================================
+
+// should be replaced by some "mode" declaration
+// if mode = READ_ONLY, then the log-in toolbar is not shown
 
 $show_toolbar = true;
 if(isset($config['hide_toolbar']) && $config['hide_toolbar'] === true){
 	$show_toolbar = false;
 }
 
-$editor_logged_in  = isset($_SESSION['editor']);
+$editor  = isset($_SESSION['editor']) ? $_SESSION['editor'] : ''; // do wyrzucenia
 
 $mode = 'view';
 if(isset($_GET['m']) && $_GET['m'] == 'edition'){
@@ -39,6 +36,11 @@ if(isset($_GET['m']) && $_GET['m'] == 'edition'){
 if(isset($_SESSION['edition_mode']) && $_SESSION['edition_mode'] === true){
 	$mode = 'edition';
 }
+
+//----------------------------------------------------
+
+$search_mask     = isset($_SESSION['search_mask']) ? $_SESSION['search_mask'] : '';
+$search_results  = isset($_SESSION['search_results']) ? $_SESSION['search_results'] : false;
 
 //====================================================
 // content construction
@@ -49,131 +51,45 @@ $headword = isset($_GET['h']) ? $_GET['h'] : '';
 $data = new MySQL_Data($database);
 $dictionary = new Dictionary($data);
 
-$content = '';
+//====================================================
+
+//----------------------------------------------------
+// data obtaining and processing
+//----------------------------------------------------
+
+if($headword){
+	$entries = $dictionary->get_entries($headword);
+}
+
+if($search_results == false){
+	$search_results = $data->pull_headwords($search_mask, $config['search_results_limit']);
+	$_SESSION['search_results'] = $search_results;
+}
+
+//----------------------------------------------------
+// data for view
+//----------------------------------------------------
+
+$data = array(
+	'config'          => $config,
+	'headword'        => $headword,
+	'search_mask'     => $search_mask,
+	'search_results'  => $search_results,
+	'mode'            => $mode,
+	'editor'          => $editor,
+	'show_toolbar'    => $show_toolbar,
+);
+
+if($headword){
+	$data['entries'] = $entries;
+}
+
+$view = new \DCMS\View($data);
 
 if($headword == ''){
-	
-	$headwords = $dictionary->get_headwords();
-	
-	foreach($headwords as $headword_item){
-		$content .= "<p><a href=\"?h=$headword_item\">$headword_item</p>\n";
-	}
-	
+	$view->show_home_page();
 } else {
-	
-	$entries = $dictionary->get_entries($headword);
-	
-	if(is_array($entries) && count($entries)){
-		
-		switch($mode){
-			case 'edition' :
-				$layout = new Edition_Layout($localization);
-				break;
-			case 'view' :
-				$layout = new View_Layout($localization);
-				break;
-		}
-		
-		foreach($entries as $entry){
-			$content .= $layout->parse($entry);
-		}
-		
-	}
-	
+	$view->show_entries();
 }
 
-//====================================================
-// presentation
-//====================================================
-// is it really an optimal method for caching output?
-//====================================================
-
-// header
-
-$output = '';
-$output .=
-	'<!DOCTYPE html>' . "\n" .
-	'<html>' . "\n" .
-	'<head>' . "\n" .
-	'<title>Dictionary</title>' . "\n" .
-	'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
-	'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
-	'<script type="text/javascript" src="scripts/DOM_extension.js"></script>' . "\n" .
-	'<script type="text/javascript" src="scripts/common.js"></script>' . "\n" .
-	'<script type="text/javascript" src="scripts/construction.js"></script>' . "\n" .
-	'<script type="text/javascript" src="scripts/editing.js"></script>' . "\n" .
-	'</head>' . "\n" .
-	'<body>' . "\n";
-
-// login toolbar
-
-if($show_toolbar){
-	$output .=
-		'<div id="toolbar" class="toolbar">' .
-		'<div id="editor_toolbar" class="editor_toolbar">';
-	
-	if($editor_logged_in){
-		$output .=
-			'<div class="editor">' . $_SESSION['editor'] . '</div>' .
-			'<button class="button" onclick="logEditorOut(showEditorLogIn); location.reload()">' .
-			$localization->get_text('log out') .
-			'</button>';
-	} else {
-		$output .=
-			'<div class="editor_log_in" onclick="showEditorCredentialsInput()">' .
-			$localization->get_text('log in') .
-			'</div>';
-	}
-	
-	$output .=
-		'</div>' .
-		'</div>' . "\n";
-}
-
-// edition toolbar
-
-if($show_toolbar && $editor_logged_in){
-	$output .=
-		'<div class="edition_toolbar">';
-	if($mode == 'edition'){
-		$output .=
-			'<a class="mode_switch" href="?h=' . $headword . '">' .
-			$localization->get_text('view') .
-			'</a>';
-	} else {
-		$output .=
-			'<a class="mode_switch" href="?h=' . $headword . '&m=edition">' .
-			$localization->get_text('edition') .
-			'</a>';
-	}
-	$output .=
-		'</div>' . "\n";
-}
-
-// content itself
-
-$output .= $content;
-
-// alternative
-
-if($editor_logged_in && $headword && !$entries){
-	$output .=
-		'<div>' .
-		"Entry <b>$headword</b> doesn't exist. Create a new one?" .
-		'</div>' .
-		'<button onclick="addEntry(\'' . $headword . '\')">' .
-		'create' .
-		'</button>';
-}
-
-// footer
-	
-$output .=
-	'</body>' .
-	'</html>' ;
-
-//====================================================
-
-echo $output;
-	
 ?>

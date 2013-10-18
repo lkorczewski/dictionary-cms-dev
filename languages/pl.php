@@ -1,8 +1,16 @@
 <?php
 
+// search
+$texts['search'] = 'szukaj';
+$texts['no results found'] = 'Nie znaleziono szukanego hasła.';
+
 // log in toolbar
+$texts['login'] = 'login';
+$texts['password'] = 'hasło';
 $texts['log in'] = 'zaloguj się';
 $texts['log out'] = 'wyloguj się';
+$texts['cancel'] = 'anuluj';
+$texts['incorrect credentials'] = 'Niepoprawne dane do logowania.'
 
 // edition toolbar
 $texts['view'] = 'podgląd';

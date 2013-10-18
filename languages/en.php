@@ -1,8 +1,16 @@
 <?php
 
+// search
+$texts['search'] = 'search';
+$texts['no results found'] = 'The searched entry was not found.';
+
 // log in toolbar
+$texts['login'] = 'login';
+$texts['password'] = 'password';
 $texts['log in'] = 'log in';
 $texts['log out'] = 'log out';
+$texts['cancel'] = 'cancel';
+$texts['incorrect credentials'] = 'Incorrect credentials.';
 
 // edition toolbar
 $texts['view'] = 'view';

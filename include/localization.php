@@ -46,12 +46,16 @@ class Localization {
 	//------------------------------------------------
 	// getting localized text
 	//------------------------------------------------
-	function get_text($text){
+	function get_text($label){
 		if(!$this->is_loaded){
 			$this->load_texts();
 		}
 		
-		return isset($this->texts[$text]) && $this->texts[$text] ? $this->texts[$text] : '[[NO TRANSLATION]]';
+		if(!isset($this->texts[$label]) || !$this->texts[$label]){
+			return '[[NO TRANSLATION]]';
+		}
+		
+		return $this->texts[$label];
 	}
 
 }

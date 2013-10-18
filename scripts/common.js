@@ -1,4 +1,20 @@
 //==========================================================
+// localization
+//==========================================================
+
+var localization = new Object();
+
+localization.getText = function(label){
+	if(this.texts && this.texts[label]){
+		return this.texts[label]
+	} else {
+		return '[[NO TRANSLATION]]'
+	}
+}
+
+localization.get_text = localization.getText
+
+//==========================================================
 // making AJAX request
 //==========================================================
 
@@ -7,7 +23,7 @@ function makeRequest(url, parameters, handler){
 	httpRequest.onreadystatechange = function(){
 		
 		done = false;
-		//console.log('readyState == ' + httpRequest.readyState)
+		// console.log('readyState == ' + httpRequest.readyState)
 				
 		// do when response received
 		
@@ -64,7 +80,6 @@ function showWarning(message){
 	
 }
 
-
 //==========================================================
 // logging editor in
 //==========================================================
@@ -100,7 +115,9 @@ function logEditorOut(doOnSuccess, doOnFailure){
 					doOnSuccess()
 					break
 				case 'failure' :
-					if(doOnFailure){ doOnFailure() }
+					if(doOnFailure){
+						doOnFailure()
+					}
 					break
 			}
 		}
@@ -116,7 +133,7 @@ function showEditorLogIn(){
 	
 	var editorLogIn = document.createElement('div')
 	editorLogIn.className = 'editor_log_in'
-	editorLogIn.textContent = 'zaloguj się';
+	editorLogIn.textContent = localization.getText('log in');
 	editorLogIn.onclick = function(){
 		showEditorCredentialsInput()
 	}
@@ -163,7 +180,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 	//--------------------------------
 	var editorLoginInput = document.createElement('input')
 	editorLoginInput.type = 'text'
-	editorLoginInput.placeholder = 'login'
+	editorLoginInput.placeholder = localization.getText('login')
 	/*
 	editorLoginInput.value = 'login'
 	editorLoginInput.onfocus = function(){
@@ -183,7 +200,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 	var editorPasswordInput = document.createElement('input')
 	//editorPasswordInput.type = 'text'
 	editorPasswordInput.type = 'password'
-	editorPasswordInput.placeholder = 'hasło'
+	editorPasswordInput.placeholder = localization.getText('password')
 	/*
 	editorPasswordInput.value = 'password'
 	editorPasswordInput.onfocus = function(){
@@ -203,8 +220,10 @@ function showEditorCredentialsInput(editorToolbarContent){
 	// creating log in button
 	//--------------------------------
 	var editorLogInButton = document.createElement('button')
-	editorLogInButton.textContent = 'zaloguj się'
-	editorLogInButton.onclick = function(){
+	editorLogInButton.textContent = localization.getText('log in')
+	editorLogInButton.setAttribute('type', 'submit')
+	editorLogInButton.onclick = function(event){
+		event.preventDefault()
 		disableEditorCredentialsInput()
 		login = editorLoginInput.value
 		password = editorPasswordInput.value
@@ -217,7 +236,7 @@ function showEditorCredentialsInput(editorToolbarContent){
 						location.reload()
 						break
 					case 'failure' :
-						showWarning('Incorrect credentials.')
+						showWarning(localization.getText('incorrect credentials'))
 						enableEditorCredentialsInput()
 						break
 				}
@@ -230,9 +249,10 @@ function showEditorCredentialsInput(editorToolbarContent){
 	// creating cancel button
 	//--------------------------------
 	var editorCancelButton = document.createElement('button')
-	editorCancelButton.textContent = 'anuluj'
+	editorCancelButton.setAttribute('type', 'cancel')
+	editorCancelButton.textContent = localization.getText('cancel')
 	editorCancelButton.onclick = function(){
-		showEditorLogIn(editorCredentialsInput)
+		showEditorLogIn()
 	}
 	editorCredentialsForm.appendChild(editorCancelButton)
 	
@@ -264,9 +284,12 @@ function showEditor(editorName){
 	//--------------------------------
 	var logOutButton = document.createElement('button')
 	logOutButton.className = 'button log_out'
-	logOutButton.textContent = 'wyloguj się'
+	logOutButton.textContent = localization.getText('log out')
 	logOutButton.onclick = function(){
-		logEditorOut(function(){ showEditorLogIn; location.reload() })
+		logEditorOut(function(){
+			showEditorLogIn()
+			location.reload()
+		})
 	}
 	
 	//--------------------------------
@@ -275,4 +298,39 @@ function showEditor(editorName){
 	editorToolbar.innerHTML = ''
 	editorToolbar.appendChild(editor)
 	editorToolbar.appendChild(logOutButton)
+	
+}
+
+//==========================================================
+// searching for headwords matching pattern
+//==========================================================
+
+function searchHeadwordsLike(headwordMask){
+	/*document.getElementById('search_form').onsubmit.returnValue = false;*/
+	makeRequest('atomics/get_headwords.php', 'h=' + headwordMask, {
+		success: function(response){
+			headwords = JSON.parse(response)
+			searchResultsContainer = document.getElementById('search_results_container')
+			searchResultsContainer.innerHTML = ''; // to be replaced
+			if(headwords.length){
+				for(index in headwords){
+					var searchResult = document.createElement('div')
+					searchResult.className = 'search_result'
+					
+					var searchResultAnchor = document.createElement('a')
+					searchResultAnchor.textContent = headwords[index]
+					searchResultAnchor.setAttribute('href', '?h=' + headwords[index]);
+					searchResult.appendChild(searchResultAnchor)
+					
+					searchResultsContainer.appendChild(searchResult)
+				}
+			} else {
+				var searchMessage = document.createElement('div')
+				searchMessage.className = 'search_message'
+				searchMessage.textContent = localization.getText('no results found')
+				
+				searchResultsContainer.appendChild(searchMessage)
+			}
+		}
+	})
 }
