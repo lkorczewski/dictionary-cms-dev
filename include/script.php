@@ -48,6 +48,28 @@ class Script {
 		
 		return $config;
 	}
+
+	//--------------------------------------------------------------------
+	// start session
+	//--------------------------------------------------------------------
+	
+	static function start_session(){
+		
+		if(isset(self::$config['session_name'])){
+			session_name(self::$config['session_name']);
+		}
+		
+		if(isset(self::$config['session_domain']) || isset(self::$config['session_path'])){
+			$session_domain = isset(self::$config['session_domain'])
+				? self::$config['session_domain'] : '';
+			$session_path = isset(self::$config['session_path'])
+				? self::$config['session_path'] : '/';
+
+			session_set_cookie_params(0, $session_path, $session_domain);
+		}
+		
+		session_start();
+	}
 	
 	//--------------------------------------------------------------------
 	// connecting to database

@@ -591,11 +591,12 @@ function editForm(formBar, formId, focus){
 }
 
 function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnFailure){
-	action = actionPath + '/update_form.php'
+	action = actionPath + '/form.php'
 	parameters = 
 		'id=' + formId +
+		'a=update' +
 		'&l=' + encodeURIComponent(formLabel) +
-		'&h=' + encodeURIComponent(formHeadword)
+		'&t=' + encodeURIComponent(formHeadword)
 	make_request(action, parameters,{
 		success: function(response){
 			console.log('update_form: ' + response)
@@ -624,7 +625,11 @@ function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnF
 }
 
 function moveFormUp(formBar, formId){
-	make_request(actionPath + '/form.php', 'id=' + encodeURIComponent(formId) + '&a=move_up', {
+	action = actionPath + '/form.php'
+	parameters =
+		'id=' + encodeURIComponent(formId) +
+		'&a=move_up'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_form_up: ' + response)
 			if(response == 'OK'){
@@ -635,7 +640,11 @@ function moveFormUp(formBar, formId){
 }
 
 function moveFormDown(formBar, formId){
-	make_request(actionPath + '/form.php', 'id=' + encodeURIComponent(formId) + '&a=move_down', {
+	action = actionPath + '/form.php'
+	parameters =
+		'id=' + encodeURIComponent(formId) +
+		'&a=move_up'
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_form_down: ' + response)
 			if(response == 'OK'){

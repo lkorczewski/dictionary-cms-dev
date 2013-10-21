@@ -1,19 +1,16 @@
 <?php
 
-// może sesja powinna być wyłączana, jeśli nie ma logowania?
-session_start();
-
 require_once 'include/script.php';
 
 $config = Script::load_config();
+
+Script::start_session();
 
 require_once 'database/database.php';
 require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
 
 require_once 'include/view.php';
-
-$database = Script::connect_to_database();
 
 //====================================================
 // presentation variables
@@ -48,6 +45,7 @@ $search_results  = isset($_SESSION['search_results']) ? $_SESSION['search_result
 
 $headword = isset($_GET['h']) ? $_GET['h'] : '';
 
+$database = Script::connect_to_database();
 $data = new MySQL_Data($database);
 $dictionary = new Dictionary($data);
 

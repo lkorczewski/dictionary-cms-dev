@@ -5,25 +5,8 @@
 // Getting entry as JSON
 //====================================================
 
-//----------------------------------------------------
-// session
-//----------------------------------------------------
+require '_atomic_header.php';
 
-session_start();
-
-if(!isset($_SESSION['editor'])) die('no authorization');
-
-//----------------------------------------------------
-// including libraries
-//----------------------------------------------------
-
-require_once '../include/script.php';
-
-Script::set_root_path('..');
-$config = Script::load_config();
-
-require_once 'database/database.php';
-require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
 require_once 'dictionary/entry.php';
 require_once 'dictionary/layouts/table_layout.php';
@@ -33,7 +16,8 @@ require_once 'dictionary/layouts/table_layout.php';
 //----------------------------------------------------
 
 $headword = Script::get_parameter('h');
-if($headword === false) Script::fail('no parameter');
+if($headword === false)
+	Script::fail('no parameter');
 
 //----------------------------------------------------
 // executing query

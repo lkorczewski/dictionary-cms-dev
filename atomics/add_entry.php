@@ -12,9 +12,8 @@ require '_atomic_header.php';
 //----------------------------------------------------
 
 $headword = Script::get_parameter('h');
-if($headword === false){
+if($headword === false)
 	Script::fail('no parameter');
-}
 
 //----------------------------------------------------
 // executing query

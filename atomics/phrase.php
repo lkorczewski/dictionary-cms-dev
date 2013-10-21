@@ -12,10 +12,12 @@ require '_atomic_header.php';
 //----------------------------------------------------
 
 $node_id = Script::get_parameter('n');
-if($node_id === false) Script::fail('no parameter');
+if($node_id === false)
+	Script::fail('no parameter');
 
 $action = Script::get_parameter('a');
-if($action === false) Script::fail('no parameter');
+if($action === false)
+	Script::fail('no parameter');
 
 if($action == 'update'){
 	$text = Script::get_parameter('t');

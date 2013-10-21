@@ -1,15 +1,15 @@
 <?php
 
-session_start();
-
-if(!isset($_SESSION['editor'])){
-	die('no authorization');
-}
-
 require_once '../include/script.php';
 
 Script::set_root_path('..');
 $config = Script::load_config();
+
+Script::start_session();
+
+if(!isset($_SESSION['editor'])){
+	die('no authorization');
+}
 
 require_once 'database/database.php';
 require_once 'dictionary/data.php';
