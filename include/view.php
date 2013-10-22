@@ -224,10 +224,15 @@ class View {
 					$this->localization->get_text('no results found') .
 				'</div>';
 		} else {
+			
+			$mode_parameter = '';
+			if($this->data['mode'] == 'edition')
+				$mode_parameter = '&m=edition';
+			
 			foreach($this->data['search_results'] as $search_result){
 				$output .=
 					'<div class="search_result">' .
-						'<a href="' . '?h=' . $search_result . '">' .
+						'<a href="' . '?h=' . $search_result . $mode_parameter . '">' .
 							$search_result .
 						'</a>' .
 					'</div>' . "\n";

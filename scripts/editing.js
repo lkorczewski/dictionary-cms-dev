@@ -229,7 +229,7 @@ function addPhrase(parentElement, nodeId){
 	action = actionPath + '/add_phrase.php'; 
 	parameters =
 		'n=' + encodeURIComponent(nodeId)
-	make_request(actioin, parameters, {
+	make_request(action, parameters, {
 		success: function(response){
 			console.log('add_phrase: ' + response)
 			if(parseInt(response)){
