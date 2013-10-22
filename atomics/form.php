@@ -40,7 +40,7 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update':
-		$affected_rows = $data->update_form($form_id, $label, $form);
+		$affected_rows = $data->update_form($form_id, $label, $text);
 		break;
 	
 	case 'move_up':
