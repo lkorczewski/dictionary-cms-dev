@@ -306,12 +306,15 @@ function showEditor(editorName){
 //==========================================================
 
 function searchHeadwordsLike(headwordMask){
-	/*document.getElementById('search_form').onsubmit.returnValue = false;*/
 	makeRequest('atomics/get_headwords.php', 'h=' + headwordMask, {
 		success: function(response){
 			headwords = JSON.parse(response)
 			searchResultsContainer = document.getElementById('search_results_container')
 			searchResultsContainer.innerHTML = ''; // to be replaced
+			isEditionMode = false
+			if(window.location.search.indexOf('m=edition') >= 0){
+				isEditionMode = true
+			}
 			if(headwords.length){
 				for(index in headwords){
 					var searchResult = document.createElement('div')
@@ -319,7 +322,11 @@ function searchHeadwordsLike(headwordMask){
 					
 					var searchResultAnchor = document.createElement('a')
 					searchResultAnchor.textContent = headwords[index]
-					searchResultAnchor.setAttribute('href', '?h=' + headwords[index]);
+					link =
+						'?h=' +
+						headwords[index] +
+						(isEditionMode ? '&m=edition' : '')
+					searchResultAnchor.setAttribute('href', link);
 					searchResult.appendChild(searchResultAnchor)
 					
 					searchResultsContainer.appendChild(searchResult)
