@@ -1,5 +1,7 @@
 <?php
 
+//namespace DCMS;
+
 class Script {
 	private static $config = '';
 	private static $root_path;

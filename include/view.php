@@ -9,7 +9,9 @@ require_once 'include/view_layout.php';
 class View {
 	private $data;
 	private $localization;
-	
+
+	//------------------------------------------------------------------------
+	// constructor
 	//------------------------------------------------------------------------
 	
 	public function __construct($data){

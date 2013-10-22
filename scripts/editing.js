@@ -594,7 +594,7 @@ function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnF
 	action = actionPath + '/form.php'
 	parameters = 
 		'id=' + formId +
-		'a=update' +
+		'&a=update' +
 		'&l=' + encodeURIComponent(formLabel) +
 		'&t=' + encodeURIComponent(formHeadword)
 	make_request(action, parameters,{
@@ -643,7 +643,7 @@ function moveFormDown(formBar, formId){
 	action = actionPath + '/form.php'
 	parameters =
 		'id=' + encodeURIComponent(formId) +
-		'&a=move_up'
+		'&a=move_down'
 	make_request(action, parameters, {
 		success: function(response){
 			console.log('move_form_down: ' + response)

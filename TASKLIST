@@ -1,6 +1,14 @@
 ------------------------------------------------------------------------
 T O   D O :
 ------------------------------------------------------------------------
+* namespaces
+* closing notifications
+* creating entries from search panel
+* styling links
+* displaying senses even without order labels
+* change of first headword should redirect
+
+
 * separating view from edition
   - basic formatting
   - classes renaming
