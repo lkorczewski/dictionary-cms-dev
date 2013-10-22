@@ -10,7 +10,7 @@ $texts['password'] = 'hasło';
 $texts['log in'] = 'zaloguj się';
 $texts['log out'] = 'wyloguj się';
 $texts['cancel'] = 'anuluj';
-$texts['incorrect credentials'] = 'Niepoprawne dane do logowania.'
+$texts['incorrect credentials'] = 'Niepoprawne dane do logowania.';
 
 // edition toolbar
 $texts['view'] = 'podgląd';
