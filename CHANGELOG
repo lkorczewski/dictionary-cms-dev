@@ -1,4 +1,10 @@
 ----------------------------------------
+ 0.11.5
+----------------------------------------
+ * fixed "entry not found" texts not maintained through localization
+ * fixed keeping of edition mode in search panel, even after new search
+
+----------------------------------------
  0.11.4
 ----------------------------------------
  * form editing bugfix

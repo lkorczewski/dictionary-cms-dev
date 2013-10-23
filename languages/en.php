@@ -4,6 +4,11 @@
 $texts['search'] = 'search';
 $texts['no results found'] = 'The searched entry was not found.';
 
+// missing entry
+$texts['entry not found'] = 'Entry {{1}} have not been found.';
+$texts['create a new one?'] = ' Create a new one?';
+$texts['create'] = 'create';
+
 // log in toolbar
 $texts['login'] = 'login';
 $texts['password'] = 'password';

@@ -291,15 +291,16 @@ class View {
 		if($this->data['mode'] == 'edition'){
 			$output .=
 				'<div>' .
-				'Entry <b>' . $this->data['headword'] . '</b> doesn\'t exist. Create a new one?' .
+				str_replace('{{1}}', '<b>' . $this->data['headword'] . '</b>', $this->localization->get_text('entry not found')) .
+				$this->localization->get_text('create a new one?') .
 				'</div>' . "\n" .
 				'<button onclick="addEntry(\'' . $this->data['headword'] . '\')">' .
-				'create' .
+				$this->localization->get_text('create') .
 				'</button>' . "\n";
 		} else {
 			$output .=
 				'<div>' .
-				'Entry <b>' . $this->data['headword'] . '</b> doesn\'t exist.' .
+				str_replace('{{1}}', $this->data['headword'], $this->localization->get_text('entry not found')) .
 				'</div>' . "\n";
 		}
 		
