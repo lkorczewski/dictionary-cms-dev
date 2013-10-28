@@ -15,7 +15,7 @@ require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
 
 $database = Script::connect_to_database();
-$data = new MySQL_Data($database);
+$data = new \Dictionary\MySQL_Data($database);
 
 //====================================================
 // creating storage
