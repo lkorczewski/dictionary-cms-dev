@@ -46,8 +46,8 @@ $search_results  = isset($_SESSION['search_results']) ? $_SESSION['search_result
 $headword = isset($_GET['h']) ? $_GET['h'] : '';
 
 $database = Script::connect_to_database();
-$data = new MySQL_Data($database);
-$dictionary = new Dictionary($data);
+$data = new \Dictionary\MySQL_Data($database);
+$dictionary = new \Dictionary\Dictionary($data);
 
 //====================================================
 

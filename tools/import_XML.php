@@ -16,7 +16,7 @@ require_once 'dictionary/import/XML_importer.php';
 
 $database = Script::connect_to_database();
 
-$data = new MySQL_Data($database);
+$data = new Dictionary\MySQL_Data($database);
 
 //====================================================
 // parsing

@@ -31,7 +31,7 @@ class Edition_Layout{
 	// public parser
 	//--------------------------------------------------------------------
 
-	function parse(Entry $entry){
+	function parse(\Dictionary\Entry $entry){
 		
 		$this->output = '';
 		$this->parse_entry($entry);
@@ -43,7 +43,7 @@ class Edition_Layout{
 	// entry parser
 	//--------------------------------------------------------------------
 
-	private function parse_entry(Entry $entry){
+	private function parse_entry(\Dictionary\Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
 		
 		// forms
@@ -102,7 +102,7 @@ class Edition_Layout{
 	// sense parser
 	//--------------------------------------------------------------------
 	
-	private function parse_sense(Sense $sense){
+	private function parse_sense(\Dictionary\Sense $sense){
 		
 		$this->output .= '<div class="sense_container">' . "\n";
 		
@@ -191,7 +191,7 @@ class Edition_Layout{
 	// phrase parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrase(Phrase $phrase){
+	private function parse_phrase(\Dictionary\Phrase $phrase){
 		
 		$this->output .= '<div class="phrase_container">' . "\n";
 		
@@ -249,7 +249,7 @@ class Edition_Layout{
 	// headword nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headwords(Entry $entry){
+	private function parse_headwords(\Dictionary\Entry $entry){
 		
 		$this->output .= '<div class="headwords">' . "\n";
 		while($headword = $entry->get_headword()){
@@ -273,7 +273,7 @@ class Edition_Layout{
 	// headword parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headword(Headword $headword){
+	private function parse_headword(\Dictionary\Headword $headword){
 		$this->output .=
 			'<div class="bar headword_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element headword" onclick="editHeadword(this.parentNode, ' .
@@ -316,7 +316,7 @@ class Edition_Layout{
 	// category label parser
 	//--------------------------------------------------------------------
 	
-	private function parse_category_label(Headword_Node $node){
+	private function parse_category_label(\Dictionary\Headword_Node $node){
 		
 		$category_label = $node->get_category_label();
 		
@@ -371,7 +371,7 @@ class Edition_Layout{
 	// form nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_forms(Headword_Node $node){
+	private function parse_forms(\Dictionary\Headword_Node $node){
 		
 		// forms
 		$this->output .= '<div class="forms">' . "\n";
@@ -394,7 +394,7 @@ class Edition_Layout{
 	// form parser
 	//--------------------------------------------------------------------
 	
-	private function parse_form(Form $form){
+	private function parse_form(\Dictionary\Form $form){
 		$this->output .=
 			'<div class="bar form_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element form_label" onclick="editForm(this.parentNode, ' .
@@ -435,7 +435,7 @@ class Edition_Layout{
 	// context parser
 	//--------------------------------------------------------------------
 	
-	private function parse_context(Sense $node){
+	private function parse_context(\Dictionary\Sense $node){
 		
 		$context = $node->get_context();
 		
@@ -490,7 +490,7 @@ class Edition_Layout{
 	// translation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translations(Node $node){
+	private function parse_translations(\Dictionary\Node $node){
 	
 		// translations
 		$this->output .= '<div class="translations">' . "\n";
@@ -513,7 +513,7 @@ class Edition_Layout{
 	// translation parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translation(Translation $translation){
+	private function parse_translation(\Dictionary\Translation $translation){
 		$this->output .=
 			'<div class="bar translation_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element translation" onclick="editTranslation(this.parentNode, ' .

@@ -17,8 +17,8 @@ require_once 'dictionary/layouts/XML_layout.php';
 
 $database = Script::connect_to_database();
 
-$data = new MySQL_Data($database);
-$dictionary = new Dictionary($data);
+$data = new Dictionary\MySQL_Data($database);
+$dictionary = new Dictionary\Dictionary($data);
 
 //====================================================
 // parsing dictionary
