@@ -24,7 +24,7 @@ $dictionary = new Dictionary($data);
 // parsing dictionary
 //====================================================
 
-$layout = new XML_Layout();
+$layout = new Dictionary\XML_Layout();
 $layout->parse_dictionary($dictionary, 'php://stdout');
 
 ?>
