@@ -1,7 +1,6 @@
 ------------------------------------------------------------------------
 T O   D O :
 ------------------------------------------------------------------------
- * namespaces
  * closing notifications
  * creating entries from search panel
  * styling links
@@ -14,6 +13,7 @@ D O N E :
 2013-10-28:
 
  * displaying senses even without order labels
+ * namespaces
 
 ------------------------------------------------------------------------
 O L D   T O   D O :
@@ -36,7 +36,6 @@ O L D   T O   D O :
   - saving changes
 * returning JSON entry
   - parsing into DOM
-* równoczesny podgląd listy haseł i atykułu hasłowego
 * sterowanie dostępnością opcji z config-u
 * poprawienie <div>-ów: poziom content
   - testy
@@ -44,15 +43,6 @@ O L D   T O   D O :
   - CSS preventing change of height
   - new translations
 * ujednolicenie zmiennych (id vs. n w atomicach)
-* parsowanie XML-a do bazy
-* poprawienie logowania
-  - formularz lub obsługa enterów
-  - internacjonalizacja
-* unifikacja akcji w atomikach {
-	1. wg typu akcji: add.php?node=57&type=sense
-	2. wg typu węzła: sense.php?node=57&action=move_up
-	3. razem: atomic.php?action=add&type=sense&node=57
-}
 * zcentralizowane console.log
 * notatki edytora
 

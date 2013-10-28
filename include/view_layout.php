@@ -1,5 +1,7 @@
 <?php
 
+namespace DCMS;
+
 require_once 'dictionary/dictionary.php';
 
 require_once 'dictionary/entry.php';

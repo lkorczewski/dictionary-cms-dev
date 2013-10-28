@@ -256,10 +256,10 @@ class View {
 		
 		switch($this->data['mode']){
 			case 'edition' :
-				$layout = new \Edition_Layout($this->localization);
+				$layout = new Edition_Layout($this->localization);
 				break;
 			case 'view' :
-				$layout = new \View_Layout($this->localization);
+				$layout = new View_Layout($this->localization);
 				break;
 		}
 		
