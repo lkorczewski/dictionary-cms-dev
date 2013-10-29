@@ -352,7 +352,7 @@ function searchHeadwordsLike(headwordMask){
 					buttonBar.appendChild(createButton)
 					searchMessage.appendChild(buttonBar)
 				} else {
-					searchMessage.textContent = localization.getText('no results found')
+					searchMessage.textContent = localization.getText('entry not found').replace('{{1}}', '<b>' + headwordMask + '</b>')
 				}
 				
 				searchResultsContainer.appendChild(searchMessage)

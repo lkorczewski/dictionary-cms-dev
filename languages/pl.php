@@ -2,7 +2,7 @@
 
 // search
 $texts['search'] = 'szukaj';
-$texts['no results found'] = 'Nie znaleziono szukanego hasła.';
+//$texts['no results found'] = 'Nie znaleziono szukanego hasła.';
 
 // missing entry
 $texts['entry not found'] = 'Hasło {{1}} nie zostało znalezione.';
