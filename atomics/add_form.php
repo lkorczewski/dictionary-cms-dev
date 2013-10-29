@@ -5,7 +5,7 @@
 // Adding form
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -26,13 +26,13 @@ $form = Script::get_parameter('h', '...');
 $form_id = $data->add_form($parent_node_id, $label, $form);
 
 if($form_id === false){
-	die('query failure');
+	Script::fail('query failure');
 }
 
 //----------------------------------------------------
 // returning inserted form id
 //----------------------------------------------------
 
-echo $form_id;
+echo Scritp::succeed(array('form_id' => $form_id));
 
 ?>

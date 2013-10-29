@@ -5,7 +5,7 @@
 // Category label
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -45,17 +45,17 @@ switch($action){
 }
 
 if($rows_affected === false){
-	die('query failure');
+	Script::fail('query failure');
 }
 
 if($rows_affected === 0){
-	die('nothing affected');
+	Script::fail('nothing affected');
 }
 
 //----------------------------------------------------
 // returning OK
 //----------------------------------------------------
 
-echo 'OK';
+Script::succeed();
 
 ?>

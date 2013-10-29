@@ -5,7 +5,7 @@
 // Form
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -58,15 +58,15 @@ switch($action){
 }
 
 if($affected_rows === false){
-	die('query failure');
+	Scritp::fail('query failure');
 }
 
 if($affected_rows === 0){
-	die('nothing affected');
+	Script::fail('nothing affected');
 }
 
 // returning OK
 
-echo 'OK';
+Script::succeed();
 
 ?>

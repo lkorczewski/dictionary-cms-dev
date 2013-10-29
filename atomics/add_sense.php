@@ -5,7 +5,7 @@
 // Adding sense
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -24,11 +24,13 @@ $label = Script::get_parameter('l', '...');
 $node_id = $data->add_sense($parent_node_id, $label);
 
 if($node_id === false){
-	die('query failure');
+	Script::fail('query failure');
 }
 
-// returning inserted id
+//----------------------------------------------------
+// returning id of new node
+//----------------------------------------------------
 
-echo $node_id;
+Script::succeed(array('node_id' => $node_id))
 
 ?>

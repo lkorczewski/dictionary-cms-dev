@@ -121,7 +121,24 @@ class Script {
 			',' .
 			'"message":"' . $message . '"' .
 			'}';
-		die($output);
+		exit($output);
+	}
+	
+	static function succeed($results = false){
+		$output = '';
+		
+		$output .= '{';
+		$output .= '"status":"success"';
+		
+		if(is_array($results)){
+			foreach($results as $result_key => $result_value){
+				$output .= ',"' . $result_key . '":"' . $result_value . '"';
+			}
+		}
+		
+		$output .= '}';
+		
+		exit($output);
 	}
 	
 }

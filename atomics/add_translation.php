@@ -5,7 +5,7 @@
 // Adding translation
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -24,11 +24,13 @@ $text = Script::get_parameter('t');
 $translation_id = $data->add_translation($sense_id, $text);
 
 if($translation_id === false){
-	die('query failure');
+	Script::fail('query failure');
 }
 
+//----------------------------------------------------
 // returning id of new translation
+//----------------------------------------------------
 
-echo $translation_id;
+Script::succeed(array('translation_id' => $translation_id));
 
 ?>

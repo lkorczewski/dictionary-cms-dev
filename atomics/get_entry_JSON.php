@@ -5,7 +5,7 @@
 // Getting entry as JSON
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 require_once 'dictionary/dictionary.php';
 require_once 'dictionary/entry.php';

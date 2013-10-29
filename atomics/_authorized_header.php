@@ -8,7 +8,7 @@ $config = Script::load_config();
 Script::start_session();
 
 if(!isset($_SESSION['editor'])){
-	die('no authorization');
+	Script::fail('no authorization');
 }
 
 require_once 'database/database.php';

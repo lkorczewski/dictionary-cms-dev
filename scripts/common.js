@@ -51,6 +51,43 @@ function makeRequest(url, parameters, handler){
 make_request = makeRequest
 
 //==========================================================
+// making AJAX request for JSON
+//==========================================================
+
+function makeJsonRequest(url, parameters, handler){
+	httpRequest = new XMLHttpRequest()
+	httpRequest.onreadystatechange = function(){
+		
+		done = false;
+		// console.log('readyState == ' + httpRequest.readyState)
+				
+		// do when response received
+		
+		if(httpRequest.readyState == 4){
+			if(httpRequest.status == 200){
+				if(done == false){
+					handler.success(JSON.parse(httpRequest.responseText))
+					done = true
+				} else {
+					console.log('redundant call')
+				}
+			} else {
+				if(handler.failure){
+					handler.failure()
+				}
+				console.log(httpRequest.status + ' : ' + httpRequest.statusText)
+			}
+		}
+		
+	}
+	httpRequest.open('POST', url, true)
+	httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); 
+	httpRequest.send(parameters)
+}
+make_request = makeRequest
+
+
+//==========================================================
 // showing warning
 //==========================================================
 
@@ -85,9 +122,8 @@ function showWarning(message){
 //==========================================================
 
 function logEditorIn(login, password, doOnSuccess, doOnFailure){
-	make_request('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
-		success: function(responseText){
-			var response = JSON.parse(responseText)
+	makeJsonRequest('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
+		success: function(response){
 			switch(response.status){
 				case 'OK' :
 					doOnSuccess(response.editor_name)
@@ -107,9 +143,8 @@ function logEditorIn(login, password, doOnSuccess, doOnFailure){
 //==========================================================
 
 function logEditorOut(doOnSuccess, doOnFailure){
-	make_request('atomics/log_editor_out.php', '', {
-		success: function(responseText){
-			var response = JSON.parse(responseText)
+	makeJsonRequest('atomics/log_editor_out.php', '', {
+		success: function(response){
 			switch(response.status){
 				case 'OK' :
 					doOnSuccess()
@@ -306,9 +341,9 @@ function showEditor(editorName){
 //==========================================================
 
 function searchHeadwordsLike(headwordMask){
-	makeRequest('atomics/get_headwords.php', 'h=' + headwordMask, {
+	makeJsonRequest('atomics/get_headwords.php', 'h=' + headwordMask, {
 		success: function(response){
-			headwords = JSON.parse(response)
+			headwords = response
 			searchResultsContainer = document.getElementById('search_results_container')
 			searchResultsContainer.innerHTML = ''; // to be replaced
 			isEditionMode = false
@@ -352,7 +387,7 @@ function searchHeadwordsLike(headwordMask){
 					buttonBar.appendChild(createButton)
 					searchMessage.appendChild(buttonBar)
 				} else {
-					searchMessage.textContent = localization.getText('entry not found').replace('{{1}}', '<b>' + headwordMask + '</b>')
+					searchMessage.innerHTML = localization.getText('entry not found').replace('{{1}}', '<b>' + headwordMask + '</b>')
 				}
 				
 				searchResultsContainer.appendChild(searchMessage)

@@ -51,10 +51,10 @@ function editElement(elementBar, elementClass, inputClass, doOnChange, id){
 }
 
 function updateElement(element, action, parameters, id, newText, doOnSuccess, doOnFailure){
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
 			console.log(action + '?' + parameters + ': ' + response)
-			if(response == 'OK'){
+			if(response.status == 'success'){
 				element.textContent = newText
 				
 				if(doOnSuccess){
@@ -79,10 +79,10 @@ function updateElement(element, action, parameters, id, newText, doOnSuccess, do
 /* entry */
 
 function addEntry(headword){
-	makeRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
+	makeJsonRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
 		success: function(response){
-			console.log('add_entry: ' + response)
-			if(response == 'OK'){
+			console.log('add_entry: ' + response.status)
+			if(response.status == 'success'){
 				window.location = '?h=' + encodeURIComponent(headword) + '&m=edition'
 			}
 		}
@@ -105,10 +105,10 @@ function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doO
 	parameter =
 		'n=' + encodeURIComponent(nodeId) +
 		'&h=' + encodeURIComponent(headwordText)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_translation: ' + response)
-			if(response == 'OK'){
+			console.log('update_headword: ' + response.status)
+			if(response.status == 'success'){
 				var headword = headwordBar.getElementsByClassName('headword')[0]
 				headword.textContent = headwordText
 				
@@ -132,10 +132,10 @@ function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doO
 }
 
 function deleteEntry(nodeId){
-	make_request(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
+	makeJsonRequest(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
-			console.log('delete_entry: ' + response)
-			if(response == 'OK'){
+			console.log('delete_entry: ' + response.status)
+			if(response.status == 'success'){
 				location.reload()
 			}
 		}
@@ -146,10 +146,10 @@ delete_entry = deleteEntry
 /* senses */
 
 function addSense(entryElement, nodeId){
-	make_request(actionPath + '/add_sense.php', 'n=' + encodeURIComponent(nodeId), {
+	makeJsonRequest(actionPath + '/add_sense.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
-			console.log('add_sense: ' + response)
-			if(parseInt(response)){
+			console.log('add_sense: ' + response.status)
+			if(response.status == 'success'){
 				location.reload()
 			}
 		}
@@ -162,10 +162,10 @@ function moveSenseUp(senseElement, nodeId){
 	parameters =
 		'n=' + encodeURIComponent(nodeId) +
 		'&a=move_up'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_sense_up: ' + response)
-			if(response == 'OK'){
+			console.log('move_sense_up: ' + response.status)
+			if(response.status == 'success'){
 				var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
 				
 				senseElement.moveUp()
@@ -187,10 +187,10 @@ function moveSenseDown(senseElement, nodeId){
 	parameters =
 		'n=' + encodeURIComponent(nodeId) +
 		'&a=move_down'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_sense_down: ' + response)
-			if(response == 'OK'){
+			console.log('move_sense_down: ' + response.status)
+			if(response.status == 'success'){
 				var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
 				
 				senseElement.moveDown()
@@ -212,10 +212,10 @@ function deleteSense(senseElement, nodeId){
 	parameters =
 		'n=' + encodeURIComponent(nodeId) +
 		'&a=delete'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('delete_sense: ' + response)
-			if(response == 'OK'){
+			console.log('delete_sense: ' + response.status)
+			if(response.status == 'success'){
 				senseElement.delete()
 			}
 		}
@@ -229,10 +229,10 @@ function addPhrase(parentElement, nodeId){
 	action = actionPath + '/add_phrase.php'; 
 	parameters =
 		'n=' + encodeURIComponent(nodeId)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('add_phrase: ' + response)
-			if(parseInt(response)){
+			console.log('add_phrase: ' + response.status)
+			if(response.status == 'success'){
 				location.reload()
 			}
 		}
@@ -254,10 +254,10 @@ function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
 	parameters =
 		'n=' + encodeURIComponent(nodeId) +
 		'&t=' + encodeURIComponent(phraseText)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_phrase: ' + response)
-			if(response == 'OK'){
+			console.log('update_phrase: ' + response.status)
+			if(response.status == 'success'){
 				phrase = phraseBar.getElementsByClassName('phrase')[0]
 				phrase.textContent = phraseText
 				
@@ -283,10 +283,10 @@ function movePhraseUp(phraseContainer, nodeId){
 	parameters =
 		'n=' + encodeURIComponent(nodeId) +
 		'&a=move_up'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_phrase_up: ' + response)
-			if(response == 'OK'){
+			console.log('move_phrase_up: ' + response.status)
+			if(response.status == 'success'){
 				phraseContainer.moveUp()
 			}
 		}
@@ -298,10 +298,10 @@ function movePhraseDown(phraseContainer, nodeId){
 	parameters =
 		'n=' + encodeURIComponent(nodeId) +
 		'&a=move_down'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_phrase_down: ' + response)
-			if(response == 'OK'){
+			console.log('move_phrase_down: ' + response.status)
+			if(response.status == 'success'){
 				phraseContainer.moveDown()
 			}
 		}
@@ -313,10 +313,10 @@ function deletePhrase(phraseContainer, nodeId){
 	parameters =
 		'n=' + encodeURICOmponent(nodId) +
 		'&a=delete'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('delete_phrase: ' + response)
-			if(response == 'OK'){
+			console.log('delete_phrase: ' + response.status)
+			if(response.status == 'success'){
 				phraseContainer.delete()
 			}
 		}
@@ -332,10 +332,10 @@ function addHeadword(parentElement, parentNodeId){
 	parameters =
 		'n=' + encodeURIComponent(parentNodeId) +
 		'&a=add_headword'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('add_headword: ' + response)
-			if(parseInt(response)){
+			console.log('add_headword: ' + response.status)
+			if(response.status == 'success'){
 				location.reload()
 			}
 		}
@@ -358,10 +358,10 @@ function updateHeadword(headwordBar, headwordId, headwordText, doOnSuccess, doOn
 		'id=' + encodeURIComponent(headwordId) +
 		'&a=update' +
 		'&t=' + encodeURIComponent(headwordText)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_headword: ' + response)
-			if(response == 'OK'){
+			console.log('update_headword: ' + response.status)
+			if(response.status == 'success'){
 				var headword = headwordBar.getElementsByClassName('headword')[0]
 				headword.textContent = headwordText
 				
@@ -387,10 +387,10 @@ function moveHeadwordUp(headwordBar, headwordId){
 	parameters =
 		'id=' + encodeURIComponent(headwordId) +
 		'&a=move_up'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_headword_up: ' + response)
-			if(response == 'OK'){
+			console.log('move_headword_up: ' + response.status)
+			if(response.status == 'success'){
 				headwordBar.moveUp();
 			}
 		}
@@ -402,10 +402,10 @@ function moveHeadowrdDown(headwordBar, headwordId){
 	parameters =
 		'id=' + encodeURIComponent(headwordId) +
 		'&a=move_down'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_headword_down: ' + response)
-			if(response == 'OK'){
+			console.log('move_headword_down: ' + response.status)
+			if(response.status == 'success'){
 				headwordBar.moveDown()
 			}
 		}
@@ -417,10 +417,10 @@ function deleteHeadword(headwordBar, headwordId){
 	parameters =
 		'id=' + encodeURIComponent(headwordId) +
 		'&a=delete'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('delete_headword: ' + response)
-			if(response == 'OK'){
+			console.log('delete_headword: ' + response.status)
+			if(response.status == 'success'){
 				headwordBar.parentNode.removeChild(headwordBar)
 			}
 		}
@@ -430,10 +430,14 @@ function deleteHeadword(headwordBar, headwordId){
 /* category labels */
 
 function addCategoryLabel(nodeContent, parentNodeId){
-	make_request(actionPath + '/headword_node.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=add_category_label', {
+	action = actionPath + '/headword_node.php'
+	parameters =
+		'n=' + encodeURIComponent(parentNodeId) +
+		'&a=add_category_label'
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('add_category_label: ' + response)
-			if(parseInt(response) || response == 'OK'){ // to be decided
+			console.log('add_category_label: ' + response.status)
+			if(response.status == 'success'){
 				var categoryLabels = nodeContent.getElementsByClassName('category_labels')[0]
 				var categoryLabelBar = makeCategoryLabelBar('...', parentNodeId)
 				categoryLabels.appendChild(categoryLabelBar)
@@ -459,10 +463,10 @@ function updateCategoryLabel(categoryLabelBar, parentNodeId, categoryLabelText, 
 		'n=' + encodeURIComponent(parentNodeId) +
 		'&a=set' +
 		'&t=' + encodeURIComponent(categoryLabelText)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_category_label: ' + response)
-			if(response == 'OK'){
+			console.log('update_category_label: ' + response.status)
+			if(response.status == 'success'){
 				categoryLabel = categoryLabelBar.getElementsByClassName('category_label')[0]
 				categoryLabel.textContent = categoryLabelText
 				
@@ -498,10 +502,10 @@ function setCategoryLabel(categoryLabelBar, parentNodeId, categoryLabel){
 */
 
 function deleteCategoryLabel(categoryLabelBar, parentNodeId){
-	make_request(actionPath + '/category_label.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=delete', {
+	makeJsonRequest(actionPath + '/category_label.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=delete', {
 		success: function(response){
-			console.log('delete_category_label: ' + response)
-			if(response == 'OK'){
+			console.log('delete_category_label: ' + response.status)
+			if(response.status == 'success'){
 				categoryLabelBar.delete()
 				// there needs to show the button adding the label
 			}
@@ -512,7 +516,7 @@ function deleteCategoryLabel(categoryLabelBar, parentNodeId){
 /* forms */
 
 function addForm(nodeContent, nodeId){
-	make_request(actionPath + '/add_form.php', 'n=' + encodeURIComponent(nodeId), {
+	makeJsonRequest(actionPath + '/add_form.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
 			console.log('add_form: ' + response)
 			/*
@@ -524,7 +528,7 @@ function addForm(nodeContent, nodeId){
 				editForm(formBar, formId)
 			}
 			*/
-			if(parseInt(response)){
+			if(response.status == 'success'){
 				location.reload()
 			}
 		}
@@ -597,10 +601,10 @@ function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnF
 		'&a=update' +
 		'&l=' + encodeURIComponent(formLabel) +
 		'&t=' + encodeURIComponent(formHeadword)
-	make_request(action, parameters,{
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_form: ' + response)
-			if(response == 'OK'){
+			console.log('update_form: ' + response.status)
+			if(response.status == 'success'){
 				var labelElement = formBar.getElementsByClassName('form_label')[0]
 				labelElement.textContent = formLabel
 				
@@ -629,10 +633,10 @@ function moveFormUp(formBar, formId){
 	parameters =
 		'id=' + encodeURIComponent(formId) +
 		'&a=move_up'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_form_up: ' + response)
-			if(response == 'OK'){
+			console.log('move_form_up: ' + response.status)
+			if(response.status == 'success'){
 				formBar.moveUp()
 			}
 		}
@@ -644,10 +648,10 @@ function moveFormDown(formBar, formId){
 	parameters =
 		'id=' + encodeURIComponent(formId) +
 		'&a=move_down'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_form_down: ' + response)
-			if(response == 'OK'){
+			console.log('move_form_down: ' + response.status)
+			if(response.status == 'success'){
 				formBar.moveDown()
 			}
 		}
@@ -659,9 +663,9 @@ function deleteForm(formBar, formId){
 	parameters =
 		'id=' + encodeURIComponent(formId) +
 		'&a=delete'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('delete_form: ' + response)
+			console.log('delete_form: ' + response.status)
 			if(response == 'OK'){
 				formBar.delete()
 			}
@@ -676,13 +680,10 @@ function addContext(nodeContent, parentNodeId){
 	parameters =
 		'n=' + encodeURIComponent(parentNodeId) +
 		'&a=add_context'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('add_context: ' + response)
-			if(parseInt(response) || response == 'OK'){ // to be decided
-				/*
-				location.reload()
-				*/
+			console.log('add_context: ' + response.status)
+			if(response.status == 'success'){
 				var contexts = nodeContent.getElementsByClassName('contexts')[0]
 				var contextBar = makeContextBar('...', parentNodeId)
 				contexts.appendChild(contextBar)
@@ -708,10 +709,10 @@ function updateContext(contextBar, parentNodeId, contextText, doOnSuccess, doOnF
 		'n=' + encodeURIComponent(parentNodeId) +
 		'&a=set' +
 		'&t=' + encodeURIComponent(contextText)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_context: ' + response)
-			if(response == 'OK'){
+			console.log('update_context: ' + response.status)
+			if(response.status == 'success'){
 				context = contextBar.getElementsByClassName('context')[0]
 				context.textContent = contextText
 				
@@ -751,11 +752,11 @@ function deleteContext(contextBar, parentNodeId){
 	parameters =
 		'n=' + parentNodeId +
 		'&a=delete'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('delete_category_label: ' + response)
-			if(response == 'OK'){
-				contextBar.parentNode.removeChild(contextBar)
+			console.log('delete_category_label: ' + response.status)
+			if(response.status == 'success'){
+				contextBar.delete()
 				// there needs to show the button adding the label
 			}
 		}
@@ -768,11 +769,11 @@ function addTranslation(nodeContent, nodeId){
 	action = actionPath + '/add_translation.php'
 	parameters =
 		'id=' + encodeURIComponent(nodeId)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('add_translation: ' + response)
-			if(parseInt(response)){
-				var translationId = response
+			console.log('add_translation: ' + response.status)
+			if(response.status == 'success'){
+				var translationId = response.translation_id
 				var translations = nodeContent.getElementsByClassName('translations')[0]
 				var translationBar = makeTranslationBar('...', translationId)
 				translations.appendChild(translationBar)
@@ -798,10 +799,10 @@ function updateTranslation(translationBar, translationId, translationText, doOnS
 		'id=' + encodeURIComponent(translationId) +
 		'&a=update' +
 		'&t=' + encodeURIComponent(translationText)
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('update_translation: ' + response)
-			if(response == 'OK'){
+			console.log('update_translation: ' + response.status)
+			if(response.status == 'success'){
 				var translation = translationBar.getElementsByClassName('translation')[0]
 				translation.textContent = translationText
 				
@@ -827,10 +828,10 @@ function moveTranslationUp(translationBar, translationId){
 	parameters =
 		'id=' + encodeURIComponent(translationId) +
 		'&a=move_up'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_translation_up: ' + response)
-			if(response == 'OK'){
+			console.log('move_translation_up: ' + response.status)
+			if(response.status == 'success'){
 				translationBar.moveUp()
 			}
 		}
@@ -842,10 +843,10 @@ function moveTranslationDown(translationBar, translationId){
 	parameters =
 		'id=' + encodeURIComponent(translationId) +
 		'&a=move_down'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('move_translation_down: ' + response)
-			if(response == 'OK'){
+			console.log('move_translation_down: ' + response.status)
+			if(response.status == 'success'){
 				translationBar.moveDown()
 			}
 		}
@@ -857,10 +858,10 @@ function deleteTranslation(translationBar, translationId){
 	parameters =
 		'id=' + encodeURIComponent(translationId) +
 		'&a=delete'
-	make_request(action, parameters, {
+	makeJsonRequest(action, parameters, {
 		success: function(response){
-			console.log('delete_translation: ' + response)
-			if(response == 'OK'){
+			console.log('delete_translation: ' + response.status)
+			if(response.status == 'success'){
 				translationBar.delete()
 			}
 		}

@@ -5,7 +5,7 @@
 // Adding entry
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -23,10 +23,12 @@ if($headword === false)
 
 $entry_id = $data->add_entry($headword);
 
-if($entry_id === false)	die('query failure');
+if($entry_id === false){
+	Scritp::fail('query failure');
+}
 
 // returning OK
 
-echo 'OK';
+Script::succeed();
 
 ?>

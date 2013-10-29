@@ -5,7 +5,7 @@
 // Deleting entry
 //====================================================
 
-require '_atomic_header.php';
+require '_authorized_header.php';
 
 //----------------------------------------------------
 // setting parameters
@@ -20,12 +20,14 @@ if($node_id === false) Script::fail('no parameter');
 
 $success = $data->delete_entry($node_id);
 
-if($success === false) die('query failure');
+if($success === false){
+	Script::fail('query failure');
+}
 
 //----------------------------------------------------
 // returning OK
 //----------------------------------------------------
 
-echo 'OK';
+Script::succeed();
 
 ?>
