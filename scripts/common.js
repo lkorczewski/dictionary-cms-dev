@@ -334,7 +334,26 @@ function searchHeadwordsLike(headwordMask){
 			} else {
 				var searchMessage = document.createElement('div')
 				searchMessage.className = 'search_message'
-				searchMessage.textContent = localization.getText('no results found')
+				if(isEditionMode){
+					/* TODO: invent some name for div1 */
+					var div1 = document.createElement('div')
+					div1.innerHTML = // so that <b/> works
+						localization.getText('entry not found').replace('{{1}}', '<b>' + headwordMask + '</b>')
+						+ localization.getText('create a new one?')
+					searchMessage.appendChild(div1)
+					
+					var buttonBar = document.createElement('div')
+					var createButton = document.createElement('button')
+					createButton.className = 'button create'
+					createButton.textContent = localization.getText('create')
+					createButton.onclick = function(){
+						addEntry(document.getElementById('search_mask_input').value)
+					}
+					buttonBar.appendChild(createButton)
+					searchMessage.appendChild(buttonBar)
+				} else {
+					searchMessage.textContent = localization.getText('no results found')
+				}
 				
 				searchResultsContainer.appendChild(searchMessage)
 			}

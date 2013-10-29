@@ -83,7 +83,7 @@ function addEntry(headword){
 		success: function(response){
 			console.log('add_entry: ' + response)
 			if(response == 'OK'){
-				location.reload()
+				window.location = '?h=' + encodeURIComponent(headword) + '&m=edition'
 			}
 		}
 	})
