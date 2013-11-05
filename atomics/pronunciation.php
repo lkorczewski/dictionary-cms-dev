@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operations
-// Headword
+// Pronunciation
 //====================================================
 
 require '_authorized_header.php';
@@ -11,8 +11,8 @@ require '_authorized_header.php';
 // setting parameters
 //----------------------------------------------------
 
-$headword_id = Script::get_parameter('id');
-if($headword_id === false){
+$pronunciation_id = Script::get_parameter('id');
+if($pronunciation_id === false){
 	Script::fail('no parameter');
 }
 
@@ -32,22 +32,34 @@ if($action == 'update'){
 // executing query
 //----------------------------------------------------
 
+$parameters = array();
+
 switch($action){
 	
 	case 'update':
-		$affected_rows = $data->update_headword($headword_id, $text);
+		
+		// parsing
+		require_once 'phonetics/XSAMPA_parser.php';
+		$xsampa = new \Phonetics\XSAMPA_Parser();
+		$text = $xsampa->parse($text);
+		
+		// feedback
+		$parameters['value'] = $text;
+		
+		$affected_rows = $data->update_pronunciation($pronunciation_id, $text);
+		
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->move_headword_up($headword_id);
+		$affected_rows = $data->move_pronunciation_up($pronunciation_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->move_headword_down($headword_id);
+		$affected_rows = $data->move_pronunciation_down($pronunciation_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_headword($headword_id);
+		$affected_rows = $data->delete_pronunciation($pronunciation_id);
 		break;
 	
 }
@@ -60,8 +72,8 @@ if($affected_rows === 0){
 	Script::fail('nothing affected');
 }
 
-// returning OK
+// returning success
 
-Script::succeed();
+Script::succeed($parameters);
 
 ?>

@@ -1,14 +1,27 @@
 ------------------------------------------------------------------------
 T O   D O :
 ------------------------------------------------------------------------
+ * dynamic edition
+ * unification of JS codes
+ * debugging mode in atomics (query runtime, total runtime)
  * closing notifications
  * creating entries from search panel
  * styling links
  * change of first headword should redirect
+ * mode in session vs mode in links
+ * separate and unique form labels
 
 ------------------------------------------------------------------------
 D O N E :
 ------------------------------------------------------------------------
+
+2013-11-02:
+
+ * pronunciation
+
+2013-10-29:
+
+ * creating entries from search panel (minimal version)
 
 2013-10-28:
 

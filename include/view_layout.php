@@ -8,8 +8,21 @@ require_once 'dictionary/entry.php';
 require_once 'dictionary/sense.php';
 require_once 'dictionary/phrase.php';
 
+require_once 'dictionary/headword.php';
+require_once 'dictionary/pronunciation.php';
+require_once 'dictionary/category_label.php';
 require_once 'dictionary/form.php';
+require_once 'dictionary/context.php';
 require_once 'dictionary/translation.php';
+
+require_once 'dictionary/traits/has_senses.php';
+require_once 'dictionary/traits/has_phrases.php';
+
+require_once 'dictionary/traits/has_headwords.php';
+require_once 'dictionary/traits/has_pronunciations.php';
+require_once 'dictionary/traits/has_category_label.php';
+require_once 'dictionary/traits/has_forms.php';
+require_once 'dictionary/traits/has_translations.php';
 
 require_once 'include/localization.php';
 
@@ -48,8 +61,11 @@ class View_Layout{
 	private function parse_entry(\Dictionary\Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
 
-		// forms
+		// headwords
 		$this->parse_headwords($entry);
+		
+		//pronunciations
+		$this->parse_pronunciations($entry);
 		
 		$this->output .= '<div class="content entry_content">' . "\n";
 		
@@ -138,7 +154,7 @@ class View_Layout{
 	// phrase nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrases(/*Node*/ $node){
+	private function parse_phrases(\Dictionary\Node_With_Phrases $node){
 		
 		// phrases
 		$this->output .= '<div class="phrases">' . "\n";
@@ -183,10 +199,10 @@ class View_Layout{
 	// headword nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headwords(\Dictionary\Entry $entry){
+	private function parse_headwords(\Dictionary\Node_With_Headwords $node){
 		
 		$this->output .= '<div class="headwords">' . "\n";
-		while($headword = $entry->get_headword()){
+		while($headword = $node->get_headword()){
 			$this->parse_headword($headword);
 		}
 		$this->output .= '</div>' . "\n";
@@ -202,7 +218,34 @@ class View_Layout{
 			'<div class="headword_bar">' . "\n" .
 				'<div class="headword">' .
 					$headword->get() .
-				'</div>' . "\n";
+				'</div>' . "\n" .
+			'</div>' . "\n";
+	}
+
+	//--------------------------------------------------------------------
+	// pronunciation nest parser
+	//--------------------------------------------------------------------
+	
+	private function parse_pronunciations(\Dictionary\Node_With_Pronunciations $node){
+		
+		$this->output .= '<div class="pronunciations">' . "\n";
+		while($pronunciation = $node->get_pronunciation()){
+			$this->parse_pronunciation($pronunciation);
+		}
+		$this->output .= '</div>' . "\n";
+		
+	}
+	
+	//--------------------------------------------------------------------
+	// pronunciation parser
+	//--------------------------------------------------------------------
+	
+	private function parse_pronunciation(\Dictionary\Pronunciation $pronunciation){
+		$this->output .=
+			'<div class="pronunciation_bar">' . "\n" .
+				'<div class="pronunciation">' .
+					'/' . $pronunciation->get() . '/' .
+				'</div>' . "\n" .
 			'</div>' . "\n";
 	}
 	
@@ -210,7 +253,7 @@ class View_Layout{
 	// category label parser
 	//--------------------------------------------------------------------
 	
-	private function parse_category_label(\Dictionary\Headword_Node $node){
+	private function parse_category_label(\Dictionary\Node_With_Category_Label $node){
 		
 		if($category_label = $node->get_category_label()){
 			$this->output .=
@@ -227,7 +270,7 @@ class View_Layout{
 	// form nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_forms(\Dictionary\Headword_Node $node){
+	private function parse_forms(\Dictionary\Node_With_Forms $node){
 		
 		// forms
 		$this->output .= '<div class="forms">' . "\n";
@@ -284,7 +327,7 @@ class View_Layout{
 	// translation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translations(\Dictionary\Node $node){
+	private function parse_translations(\Dictionary\Node_With_Translations $node){
 	
 		// translations
 		$this->output .= '<div class="translations">' . "\n";

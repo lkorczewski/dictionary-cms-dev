@@ -32,6 +32,10 @@ switch($action){
 		$result = $data->add_headword($node_id, $text);
 		$result_name = 'headword_id';
 		break;
+	case 'add_pronunciation':
+		$result = $data->add_pronunciation($node_id, $text);
+		$result_name = 'pronunciation_id';
+		break;
 	case 'add_category_label':
 		$result = $data->set_category_label($node_id, $text);
 		$result_name = 'category_label_id';
@@ -42,7 +46,7 @@ switch($action){
 }
 
 if($result === false){
-	Scritp::fail('query failure');
+	Script::fail('query failure');
 }
 
 //----------------------------------------------------

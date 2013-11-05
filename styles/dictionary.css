@@ -133,6 +133,11 @@ h1 {
 	font-weight: bold;
 }
 
+.pronunciation_bar {}
+
+.pronunciation {
+}
+
 .entry_content {
 	margin-left: 1em;
 }

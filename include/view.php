@@ -269,11 +269,11 @@ class View {
 				'</div>' . "\n";
 		} else {
 			$output .=
-				$this->localization->get_text('no results found');
+				str_replace('{{1}}', '<b>' . $this->data['search_mask'] . '</b>' , $this->localization->get_text('entry not found'));
 		}
 		
 		$output .=
-			'</div> <!-- search message -->' . "\n"; // search message
+			'</div>' . "\n"; // search message
 		
 		return $output;
 	}

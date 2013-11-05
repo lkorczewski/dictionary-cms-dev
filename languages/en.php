@@ -31,6 +31,7 @@ $texts['add sense'] = 'add sense';
 $texts['add phrase'] = 'add phrase';
 
 $texts['add headword'] = 'add headword';
+$texts['add pronunciation'] = 'add pronunciation';
 $texts['add category label'] = 'add category label';
 $texts['add form'] = 'add form';
 $texts['add context'] = 'add context';

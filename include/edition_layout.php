@@ -8,8 +8,21 @@ require_once 'dictionary/entry.php';
 require_once 'dictionary/sense.php';
 require_once 'dictionary/phrase.php';
 
+require_once 'dictionary/headword.php';
+require_once 'dictionary/pronunciation.php';
+require_once 'dictionary/category_label.php';
 require_once 'dictionary/form.php';
+require_once 'dictionary/context.php';
 require_once 'dictionary/translation.php';
+
+require_once 'dictionary/traits/has_senses.php';
+require_once 'dictionary/traits/has_phrases.php';
+
+require_once 'dictionary/traits/has_headwords.php';
+require_once 'dictionary/traits/has_pronunciations.php';
+require_once 'dictionary/traits/has_category_label.php';
+require_once 'dictionary/traits/has_forms.php';
+require_once 'dictionary/traits/has_translations.php';
 
 require_once 'include/localization.php';
 
@@ -48,8 +61,11 @@ class Edition_Layout{
 	private function parse_entry(\Dictionary\Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
 		
-		// forms
+		// headwords
 		$this->parse_headwords($entry);
+		
+		// pronunciations
+		$this->parse_pronunciations($entry);
 		
 		$this->output .= '<div class="content entry_content">' . "\n";
 		
@@ -116,19 +132,19 @@ class Edition_Layout{
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 					
-					'<button class="button delete" onclick="delete_sense(this.parentNode.parentNode.parentNode, ' .
+					'<button class="button delete" onclick="deleteSense(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
 						$this->localization->get_text('delete') .
 					'</button>' . "\n" .
 					
-					'<button class="button move_up" onclick="move_sense_up(this.parentNode.parentNode.parentNode, ' .
+					'<button class="button move_up" onclick="moveSenseUp(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
 						$this->localization->get_text('up') .
 					'</button>' . "\n" .
 					
-					'<button class="button move_down" onclick="move_sense_down(this.parentNode.parentNode.parentNode, ' .
+					'<button class="button move_down" onclick="moveSenseDown(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
 						$this->localization->get_text('down') .
@@ -168,7 +184,7 @@ class Edition_Layout{
 	// phrase nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrases(/*Node*/ $node){
+	private function parse_phrases(\Dictionary\Node_With_Phrases $node){
 		
 		// phrases
 		$this->output .= '<div class="phrases">' . "\n";
@@ -251,10 +267,10 @@ class Edition_Layout{
 	// headword nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headwords(\Dictionary\Entry $entry){
+	private function parse_headwords(\Dictionary\Node_With_Headwords $node){
 		
 		$this->output .= '<div class="headwords">' . "\n";
-		while($headword = $entry->get_headword()){
+		while($headword = $node->get_headword()){
 			$this->parse_headword($headword);
 		}
 		$this->output .= '</div>' . "\n";
@@ -262,11 +278,11 @@ class Edition_Layout{
 		// new phrase
 		$this->output .=
 			'<div class="button_bar headword_button_bar">' .
-			'<button class="button add_phrase" onclick="addHeadword(this.parentNode.parentNode, ' .
-			$entry->get_node_id() .
-			')">' .
-				$this->localization->get_text('add headword') .
-			'</button>' .
+				'<button class="button add_phrase" onclick="addHeadword(this.parentNode.parentNode, ' .
+				$node->get_node_id() .
+				')">' .
+					$this->localization->get_text('add headword') .
+				'</button>' .
 			'</div>' . "\n";
 		
 	}
@@ -283,33 +299,47 @@ class Edition_Layout{
 				')">' .
 					$headword->get() .
 				'</div>' . "\n" .
-				'<div class="buttons">' .
-					
-					'<button class="button delete" onclick="deleteHeadword(this.parentNode.parentNode, ' .
-					$headword->get_id() .
-					')">' .
-						$this->localization->get_text('delete') .
-					'</button>' . "\n" .
-					
-					'<button class="button move_up" onclick="moveHeadwordUp(this.parentNode.parentNode, ' .
-					$headword->get_id() .
-					')">' .
-						$this->localization->get_text('up') .
-					'</button>' . "\n" .
-					
-					'<button class="button move_down" onclick="moveHeadwordDown(this.parentNode.parentNode, ' .
-					$headword->get_id() .
-					')">' .
-						$this->localization->get_text('down') .
-					'</buton>' . "\n" .
-					
-					'<button class="button edit" onclick="editHeadword(this.parentNode.parentNode, ' .
-					$headword->get_id() .
-					')">' .
-						$this->localization->get_text('edit') .
-					'</button>' . "\n" .
-					
+				$this->get_buttons($headword, array('js_name' => 'Headword')) .				
+			'</div>' . "\n";
+	}
+	
+	//--------------------------------------------------------------------
+	// pronunciation nest parser
+	//--------------------------------------------------------------------
+	
+	private function parse_pronunciations(\Dictionary\Node_With_Pronunciations $node){
+		
+		$this->output .= '<div class="pronunciations">' . "\n";
+		while($pronunciation = $node->get_pronunciation()){
+			$this->parse_pronunciation($pronunciation);
+		}
+		$this->output .= '</div>' . "\n";
+		
+		// new phrase
+		$this->output .=
+			'<div class="button_bar pronunciation_button_bar">' .
+				'<button class="button add_phrase" onclick="addPronunciation(this.parentNode.parentNode, ' .
+				$node->get_node_id() .
+				')">' .
+					$this->localization->get_text('add pronunciation') .
+				'</button>' .
+			'</div>' . "\n";
+		
+	}
+
+	//--------------------------------------------------------------------
+	// pronunciation parser
+	//--------------------------------------------------------------------
+	
+	private function parse_pronunciation(\Dictionary\Pronunciation $pronunciation){
+		$this->output .=
+			'<div class="bar pronunciation_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
+				'<div class="bar_element pronunciation" onclick="editPronunciation(this.parentNode, ' .
+				$pronunciation->get_id().
+				')">' .
+					$pronunciation->get() .
 				'</div>' . "\n" .
+				$this->get_buttons($pronunciation, array('js_name' => 'Pronunciation')) .
 				
 			'</div>' . "\n";
 	}
@@ -318,7 +348,7 @@ class Edition_Layout{
 	// category label parser
 	//--------------------------------------------------------------------
 	
-	private function parse_category_label(\Dictionary\Headword_Node $node){
+	private function parse_category_label(\Dictionary\Node_With_Category_Label $node){
 		
 		$category_label = $node->get_category_label();
 		
@@ -361,7 +391,7 @@ class Edition_Layout{
 					'<button class="button add_category_label" onclick="addCategoryLabel(this.parentNode.parentNode, ' . 
 					$node->get_node_id() .
 					')">' .
-					$this->localization->get_text('add category label') .
+						$this->localization->get_text('add category label') .
 					'</button>' . "\n" .
 				'</div>' . "\n";
 			
@@ -437,7 +467,7 @@ class Edition_Layout{
 	// context parser
 	//--------------------------------------------------------------------
 	
-	private function parse_context(\Dictionary\Sense $node){
+	private function parse_context(\Dictionary\Node_With_Context $node){
 		
 		$context = $node->get_context();
 		
@@ -492,7 +522,7 @@ class Edition_Layout{
 	// translation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translations(\Dictionary\Node $node){
+	private function parse_translations(\Dictionary\Node_With_Translations $node){
 	
 		// translations
 		$this->output .= '<div class="translations">' . "\n";
@@ -521,36 +551,46 @@ class Edition_Layout{
 				'<div class="bar_element translation" onclick="editTranslation(this.parentNode, ' .
 				$translation->get_id() .
 				')">' .
-					$translation->get_text() .
+					$translation->get() .
 				'</div>' . "\n" .
-				'<div class="buttons">' . "\n" .
-				
-					'<button class="button delete" onclick="deleteTranslation(this.parentNode.parentNode, ' .
-					$translation->get_id() .
-					')">' .
-						$this->localization->get_text('delete') .
-					'</button>' . "\n" .
-					
-					'<button class="button move_up" onclick="moveTranslationUp(this.parentNode.parentNode, ' .
-					$translation->get_id() .
-					')">' .
-						$this->localization->get_text('up') .
-					'</button>' . "\n" .
-					
-					'<button class="button move_down" onclick="moveTranslationDown(this.parentNode.parentNode, ' .
-					$translation->get_id() .
-					')">' .
-						$this->localization->get_text('down') .
-					'</buton>' . "\n" .
-					
-					'<button class="button edit" onclick="editTranslation(this.parentNode.parentNode, ' .
-					$translation->get_id() .
-					')">' .
-						$this->localization->get_text('edit') .
-					'</buton>' . "\n" .
-				
-				'</div>' . "\n" .
+				$this->get_buttons($translation, array('js_name' => 'Translation')) .
 			'</div>' . "\n";
+	}
+	
+	// four buttons
+	
+	private function get_buttons(\Dictionary\Value $value, $parameters){
+		
+		$output =
+			'<div class="buttons">' . "\n" .
+				
+				'<button class="button delete" onclick="delete' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
+				$value->get_id() .
+				')">' .
+					$this->localization->get_text('delete') .
+				'</button>' . "\n" .
+				
+				'<button class="button move_up" onclick="move' . $parameters['js_name']. 'Up(this.parentNode.parentNode, ' .
+				$value->get_id() .
+				')">' .
+					$this->localization->get_text('up') .
+				'</button>' . "\n" .
+				
+				'<button class="button move_down" onclick="move' . $parameters['js_name']. 'Down(this.parentNode.parentNode, ' .
+				$value->get_id() .
+				')">' .
+					$this->localization->get_text('down') .
+				'</buton>' . "\n" .
+				
+				'<button class="button edit" onclick="edit' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
+				$value->get_id() .
+				')">' .
+					$this->localization->get_text('edit') .
+				'</button>' . "\n" .
+				
+			'</div>' . "\n";
+		
+		return $output;
 	}
 }
 
