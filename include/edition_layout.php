@@ -223,12 +223,12 @@ class Edition_Layout{
 					$phrase->get() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
-					
-					'<button class="button delete" onclick="deletePhrase(this.parentNode.parentNode.parentNode, ' .
+
+					'<button class="button edit" onclick="editPhrase(this.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
-						$this->localization->get_text('delete') .
-					'</button>' . "\n" .
+						$this->localization->get_text('edit') .
+					'</buton>' . "\n" .
 					
 					'<button class="button move_up" onclick="movePhraseUp(this.parentNode.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
@@ -242,11 +242,11 @@ class Edition_Layout{
 						$this->localization->get_text('down') .
 					'</button>' . "\n" .
 					
-					'<button class="button edit" onclick="editPhrase(this.parentNode.parentNode, ' .
+					'<button class="button delete" onclick="deletePhrase(this.parentNode.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
-						$this->localization->get_text('edit') .
-					'</buton>' . "\n" .
+						$this->localization->get_text('delete') .
+					'</button>' . "\n" .
 					
 				'</div>' . "\n" .
 			'</div>' . "\n";
