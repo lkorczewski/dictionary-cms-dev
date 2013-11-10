@@ -64,10 +64,10 @@ class View_Layout{
 		// headwords
 		$this->parse_headwords($entry);
 		
+		$this->output .= '<div class="content entry_content">' . "\n";
+
 		//pronunciations
 		$this->parse_pronunciations($entry);
-		
-		$this->output .= '<div class="content entry_content">' . "\n";
 		
 		// category label
 		$this->parse_category_label($entry);
@@ -214,12 +214,7 @@ class View_Layout{
 	//--------------------------------------------------------------------
 	
 	private function parse_headword(\Dictionary\Headword $headword){
-		$this->output .=
-			'<div class="headword_bar">' . "\n" .
-				'<div class="headword">' .
-					$headword->get() .
-				'</div>' . "\n" .
-			'</div>' . "\n";
+		$this->parse_value('headword', $headword);
 	}
 
 	//--------------------------------------------------------------------
@@ -242,11 +237,12 @@ class View_Layout{
 	
 	private function parse_pronunciation(\Dictionary\Pronunciation $pronunciation){
 		$this->output .=
-			'<div class="pronunciation_bar">' . "\n" .
-				'<div class="pronunciation">' .
+			'<div class="bar pronunciation_bar">' . "\n" .
+				'<div class="bar_element pronunciation">' .
 					'/' . $pronunciation->get() . '/' .
 				'</div>' . "\n" .
-			'</div>' . "\n";
+			'</div>' . "\n"
+		;
 	}
 	
 	//--------------------------------------------------------------------
@@ -343,13 +339,21 @@ class View_Layout{
 	//--------------------------------------------------------------------
 	
 	private function parse_translation(\Dictionary\Translation $translation){
+		$this->parse_value('translation', $translation);
+	}
+
+	//--------------------------------------------------------------------
+	// value parser
+	//--------------------------------------------------------------------
+	
+	private function parse_value($name, \Dictionary\Value $value){
 		$this->output .=
-			'<div class="bar translation_bar">' . "\n" .
-				'<div class="bar_element translation">' .
-					$translation->get_text()
+			'<div class="bar ' . $name .  '_bar">' . "\n" .
+				'<div class="bar_element ' . $name . '">' .
+					$value->get()
 				. '</div>' . "\n" .
 			'</div>' . "\n"
-			;
+		;
 	}
 }
 

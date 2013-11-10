@@ -22,6 +22,7 @@ require_once 'dictionary/traits/has_headwords.php';
 require_once 'dictionary/traits/has_pronunciations.php';
 require_once 'dictionary/traits/has_category_label.php';
 require_once 'dictionary/traits/has_forms.php';
+require_once 'dictionary/traits/has_context.php';
 require_once 'dictionary/traits/has_translations.php';
 
 require_once 'include/localization.php';
@@ -64,10 +65,10 @@ class Edition_Layout{
 		// headwords
 		$this->parse_headwords($entry);
 		
+		$this->output .= '<div class="content entry_content">' . "\n";
+
 		// pronunciations
 		$this->parse_pronunciations($entry);
-		
-		$this->output .= '<div class="content entry_content">' . "\n";
 		
 		// category label
 		$this->parse_category_label($entry);
@@ -107,7 +108,7 @@ class Edition_Layout{
 		// new sense
 		$this->output .=
 			'<div class="button_bar sense_button_bar">' .
-				'<button class="button add_sense" onclick="add_sense(this.parentNode.parentNode, ' .
+				'<button class="button add_sense" onclick="addSense(this.parentNode.parentNode, ' .
 				$node->get_node_id() .
 				')">' .
 					$this->localization->get_text('add sense') .
@@ -196,11 +197,11 @@ class Edition_Layout{
 		// new phrase
 		$this->output .=
 			'<div class="button_bar phrase_button_bar">' .
-			'<button class="button add_phrase" onclick="addPhrase(this.parentNode.parentNode, ' .
-			$node->get_node_id() .
-			')">' .
-				$this->localization->get_text('add phrase') .
-			'</button>' .
+				'<button class="button add_phrase" onclick="addPhrase(this.parentNode.parentNode, ' .
+					$node->get_node_id() .
+				')">' .
+					$this->localization->get_text('add phrase') .
+				'</button>' .
 			'</div>' . "\n";
 		
 	}
@@ -299,7 +300,7 @@ class Edition_Layout{
 				')">' .
 					$headword->get() .
 				'</div>' . "\n" .
-				$this->get_buttons($headword, array('js_name' => 'Headword')) .				
+				$this->get_four_buttons($headword, array('js_name' => 'Headword')) .				
 			'</div>' . "\n";
 	}
 	
@@ -339,7 +340,7 @@ class Edition_Layout{
 				')">' .
 					$pronunciation->get() .
 				'</div>' . "\n" .
-				$this->get_buttons($pronunciation, array('js_name' => 'Pronunciation')) .
+				$this->get_four_buttons($pronunciation, array('js_name' => 'Pronunciation')) .
 				
 			'</div>' . "\n";
 	}
@@ -363,21 +364,7 @@ class Edition_Layout{
 					')">' .
 						$category_label->get() .
 					'</div>' . "\n" .
-					'<div class="buttons">' . "\n" .
-						
-						'<button class="button delete" onclick="deleteCategoryLabel(this.parentNode.parentNode, ' .
-						$node->get_node_id() .
-						')">' .
-							$this->localization->get_text('delete') .
-						'</button>' . "\n" .
-						
-						'<button class="button edit" onclick="editCategoryLabel(this.parentNode.parentNode, ' .
-						$node->get_node_id() .
-						')">' .
-							$this->localization->get_text('edit') .
-						'</button>' . "\n" .
-						
-					'</div>' . "\n" .
+					$this->get_two_buttons($node, array('js_name' => 'CategoryLabel')) .
 				'</div>' . "\n";
 		}
 		
@@ -440,11 +427,11 @@ class Edition_Layout{
 					$form->get_form() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
-				
-					'<button class="button delete" onclick="deleteForm(this.parentNode.parentNode, ' .
+					
+					'<button class="button edit" onclick="editForm(this.parentNode.parentNode, ' .
 					$form->get_id() .
 					')">' .
-						$this->localization->get_text('delete') .
+						$this->localization->get_text('edit') .
 					'</button>' . "\n" .
 					
 					'<button class="button move_up" onclick="moveFormUp(this.parentNode.parentNode, ' .
@@ -458,7 +445,13 @@ class Edition_Layout{
 					')">' .
 						$this->localization->get_text('down') .
 					'</button>' . "\n" .
-				
+
+					'<button class="button delete" onclick="deleteForm(this.parentNode.parentNode, ' .
+					$form->get_id() .
+					')">' .
+						$this->localization->get_text('delete') .
+					'</button>' . "\n" .
+					
 				'</div>' . "\n" .
 			'</div>' . "\n";
 	}
@@ -482,21 +475,7 @@ class Edition_Layout{
 					')">' .
 						$context->get() .
 					'</div>' .
-					'<div class="buttons">' . "\n" .
-						
-						'<button class="button delete" onclick="deleteContext(this.parentNode.parentNode, ' .
-						$node->get_node_id() .
-						')">' .
-							$this->localization->get_text('delete') .
-						'</button>' . "\n" .
-						
-						'<button class="button edit" onclick="editContext(this.parentNode.parentNode, ' .
-						$node->get_node_id() .
-						')">' .
-							$this->localization->get_text('edit') .
-						'</button>' . "\n" .
-						
-					'</div>' . "\n" .
+					$this->get_two_buttons($node, array('js_name' => 'Context')) .
 				'</div>' . "\n";
 		}
 		
@@ -533,11 +512,13 @@ class Edition_Layout{
 		
 		// new translation
 		$this->output .=
-			'<div><button class="button add_translation" onclick="addTranslation(this.parentNode.parentNode, ' .
-			$node->get_node_id() .
-			')">' .
-				$this->localization->get_text('add translation') .
-			'</button></div>' . "\n";
+			'<div class="button_bar translation_button_bar">' . "\n" .
+				'<button class="button add_translation" onclick="addTranslation(this.parentNode.parentNode, ' .
+				$node->get_node_id() .
+				')">' .
+					$this->localization->get_text('add translation') .
+				'</button>' . "\n" .
+			'</div>' . "\n";
 		
 	}
 	
@@ -553,21 +534,49 @@ class Edition_Layout{
 				')">' .
 					$translation->get() .
 				'</div>' . "\n" .
-				$this->get_buttons($translation, array('js_name' => 'Translation')) .
+				$this->get_four_buttons($translation, array('js_name' => 'Translation')) .
 			'</div>' . "\n";
 	}
 	
-	// four buttons
+	//--------------------------------------------------------------------
+	// two buttons
+	//--------------------------------------------------------------------
 	
-	private function get_buttons(\Dictionary\Value $value, $parameters){
+	private function get_two_buttons(\Dictionary\Node $parent_node, $parameters){
 		
 		$output =
 			'<div class="buttons">' . "\n" .
 				
+				'<button class="button edit" onclick="edit' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
+				$parent_node->get_node_id() .
+				')">' .
+					$this->localization->get_text('edit') .
+				'</button>' . "\n" .
+				
 				'<button class="button delete" onclick="delete' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
-				$value->get_id() .
+				$parent_node->get_node_id() .
 				')">' .
 					$this->localization->get_text('delete') .
+				'</button>' . "\n" .
+				
+			'</div>' . "\n";
+		
+		return $output;
+	}
+
+	//--------------------------------------------------------------------
+	// four buttons
+	//--------------------------------------------------------------------
+	
+	private function get_four_buttons(\Dictionary\Value $value, $parameters){
+		
+		$output =
+			'<div class="buttons">' . "\n" .
+				
+				'<button class="button edit" onclick="edit' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
+				$value->get_id() .
+				')">' .
+					$this->localization->get_text('edit') .
 				'</button>' . "\n" .
 				
 				'<button class="button move_up" onclick="move' . $parameters['js_name']. 'Up(this.parentNode.parentNode, ' .
@@ -582,10 +591,10 @@ class Edition_Layout{
 					$this->localization->get_text('down') .
 				'</buton>' . "\n" .
 				
-				'<button class="button edit" onclick="edit' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
+				'<button class="button delete" onclick="delete' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
 				$value->get_id() .
 				')">' .
-					$this->localization->get_text('edit') .
+					$this->localization->get_text('delete') .
 				'</button>' . "\n" .
 				
 			'</div>' . "\n";
