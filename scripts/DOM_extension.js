@@ -8,7 +8,9 @@ HTMLElement.prototype.moveDown = function(){
 	this.parentNode.insertBefore(this.nextElementSibling, this)
 }
 
-HTMLElement.prototype.delete = function(){
+HTMLElement.prototype.remove = function(){
 	this.parentNode.removeChild(this)
 }
+
+HTMLElement.prototype.delete = HTMLElement.prototype.remove
 

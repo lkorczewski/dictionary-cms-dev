@@ -16,9 +16,10 @@ function hideButtons(element){
 
 /* common actions */
 
-function editElement(elementBar, elementClass, inputClass, doOnChange, id){
+function editElement(elementClass, elementBar, doOnChange, id){
 	
 	function cancelEditingElement(){
+		console.log('cancel caller begin: ' + caller + '/' + caller.type)
 		input.onblur = null // hack for Chrome
 		input.parentNode.removeChild(input)
 		element.style.display = 'inline-block'
@@ -28,7 +29,7 @@ function editElement(elementBar, elementClass, inputClass, doOnChange, id){
 	
 	var input = document.createElement('input')
 	input.setAttribute('type', 'text')
-	input.setAttribute('class', inputClass) // TO DO: finding alternative
+	input.setAttribute('class', elementClass + '_input') // TO DO: finding alternative
 	input.value = element.textContent
 	input.onkeydown = function(event){
 		if(event.keyCode == 13){
@@ -50,16 +51,22 @@ function editElement(elementBar, elementClass, inputClass, doOnChange, id){
 	input.focus()
 }
 
-// not used
-// should be rethinked and implement
-function updateElement(element, action, parameters, id, newText, doOnSuccess, doOnFailure){
+function updateValue(valueName, valueBar, valueId, newText, doOnSuccess, doOnFailure){
+	// TODO: newText -- improve the name
+	var action = actionPath + '/' + valueName + '.php'
+	var parameters =
+		'id=' + encodeURIComponent(valueId) +
+		'&a=update' +
+		'&t=' + newText
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
+				valueElement = valueBar.getElementsByClassName(valueName)[0]
+				
 				if(response.value == undefined){
-					element.textContent = newText
+					valueElement.textContent = newText
 				} else {
-					element.textContent = response.value
+					valueElement.textContent = response.value
 				}
 				
 				if(doOnSuccess){
@@ -113,65 +120,69 @@ function moveNodeDown(name, element, nodeId){
 function deleteNode(name, element, nodeId){
 	var action = actionPath + '/' + name + '.php'
 	var parameters =
-		'n=' + encodeURIComponent(id) +
+		'n=' + encodeURIComponent(nodeId) +
 		'&a=delete'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				element.delete()
+				element.remove()
 			}
 		}
 	})
 }
 
 // move value up
-function moveValueUp(name, element, id){
-	var action = actionPath + '/' + name + '.php'
+function moveValueUp(valueName, valueBar, valueId){
+	var action = actionPath + '/' + valueName + '.php'
 	var parameters =
-		'id=' + encodeURIComponent(id) +
+		'id=' + encodeURIComponent(valueId) +
 		'&a=move_up'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				element.moveUp()
+				valueBar.moveUp()
 			}
 		}
 	})
 }
 
 // move value down
-function moveValueDown(name, element, id){
-	var action = actionPath + '/' + name + '.php'
+function moveValueDown(valueName, valueBar, valueId){
+	var action = actionPath + '/' + valueName + '.php'
 	var parameters =
-		'id=' + encodeURIComponent(id) +
+		'id=' + encodeURIComponent(valueId) +
 		'&a=move_down'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				element.moveDown()
+				valueBar.moveDown()
 			}
 		}
 	})
 }
 
 // delete value
-function deleteValue(name, element, id){
-	var action = actionPath + '/' + name + '.php'
+function deleteValue(valueName, valueBar, valueId){
+	var action = actionPath + '/' + valueName + '.php'
 	var parameters =
-		'id=' + encodeURIComponent(id) +
+		'id=' + encodeURIComponent(valueId) +
 		'&a=delete'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				element.delete()
+				valueBar.remove()
 			}
 		}
 	})
 }
 
-/* atomic actions */
+//==============================================================================
+// atomic actions
+//==============================================================================
 
-/* entry */
+//------------------------------------------------------------------------------
+// entry
+//------------------------------------------------------------------------------
 
 function addEntry(headword){
 	makeJsonRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
@@ -185,14 +196,12 @@ function addEntry(headword){
 
 function editEntryHeadword(headwordBar, nodeId){
 	editElement(
-		headwordBar,
 		'headword',
-		'headword_input',
+		headwordBar,
 		updateEntryHeadword,
 		nodeId
 	)
 }
-edit_entry_headword = editEntryHeadword
 
 function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doOnFailure){
 	action = actionPath + '/update_entry.php'
@@ -233,9 +242,10 @@ function deleteEntry(nodeId){
 		}
 	})	
 }
-delete_entry = deleteEntry
 
-/* senses */
+//------------------------------------------------------------------------------
+// senses
+//------------------------------------------------------------------------------
 
 function addSense(entryElement, nodeId){
 	makeJsonRequest(actionPath + '/add_sense.php', 'n=' + encodeURIComponent(nodeId), {
@@ -246,7 +256,6 @@ function addSense(entryElement, nodeId){
 		}
 	})
 }
-add_sense = addSense
 
 function moveSenseUp(senseElement, nodeId){
 	var action = actionPath + '/sense.php'
@@ -270,7 +279,6 @@ function moveSenseUp(senseElement, nodeId){
 		}
 	})
 }
-move_sense_up = moveSenseUp
 
 function moveSenseDown(senseElement, nodeId){
 	var action = actionPath + '/sense.php'
@@ -294,13 +302,14 @@ function moveSenseDown(senseElement, nodeId){
 		}
 	})
 }
-move_sense_down = moveSenseDown
 
 function deleteSense(senseElement, nodeId){
-	deleteNode(senseElement, nodeId)
+	deleteNode('sense', senseElement, nodeId)
 }
 
-/* phrases */
+//------------------------------------------------------------------------------
+// phrases
+//------------------------------------------------------------------------------
 
 function addPhrase(parentElement, nodeId){
 	var action = actionPath + '/add_phrase.php'; 
@@ -317,18 +326,18 @@ function addPhrase(parentElement, nodeId){
 
 function editPhrase(phraseBar, nodeId){
 	editElement(
-		phraseBar,
 		'phrase',
-		'phrase_input',
+		phraseBar,
 		updatePhrase,
 		nodeId
 	)
 }
 
 function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/update_phrase.php'
+	var action = actionPath + '/phrase.php'
 	var parameters =
 		'n=' + encodeURIComponent(nodeId) +
+		'a=update' +
 		'&t=' + encodeURIComponent(phraseText)
 	makeJsonRequest(action, parameters, {
 		success: function(response){
@@ -358,16 +367,16 @@ function movePhraseUp(phraseContainer, nodeId){
 }
 
 function movePhraseDown(phraseContainer, nodeId){
-	moveNodeDown(phraseContainer, nodeId)
+	moveNodeDown('phrase', phraseContainer, nodeId)
 }
 
 function deletePhrase(phraseContainer, nodeId){
-	deleteNode(phraseContainer, nodeId)
+	deleteNode('phrase', phraseContainer, nodeId)
 }
 
-//==============================================================================
+//------------------------------------------------------------------------------
 // headwords
-//==============================================================================
+//------------------------------------------------------------------------------
 
 function addHeadword(parentElement, parentNodeId){
 	var action = actionPath + '/headword_node.php'
@@ -384,42 +393,11 @@ function addHeadword(parentElement, parentNodeId){
 }
 
 function editHeadword(headwordBar, parentNodeId){
-	editElement(
-		headwordBar,
-		'headword',
-		'headword_input',
-		updateHeadword,
-		parentNodeId
-	)
+	editElement('headword', headwordBar, updateHeadword, parentNodeId)
 }
 
 function updateHeadword(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/headword.php'
-	var parameters =
-		'id=' + encodeURIComponent(headwordId) +
-		'&a=update' +
-		'&t=' + encodeURIComponent(headwordText)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var headword = headwordBar.getElementsByClassName('headword')[0]
-				headword.textContent = headwordText
-				
-				if(doOnSuccess){
-					doOnSuccess()
-				}
-			} else {
-				if(doOnFailure){
-					doOnFailure()
-				}
-			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
+	updateValue('headword', headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure)
 }
 
 function moveHeadwordUp(headwordBar, headwordId){
@@ -434,9 +412,9 @@ function deleteHeadword(headwordBar, headwordId){
 	deleteValue('headword', headwordBar, headwordId)
 }
 
-//==============================================================================
+//------------------------------------------------------------------------------
 // pronunciations
-//==============================================================================
+//------------------------------------------------------------------------------
 
 function addPronunciation(nodeContent, parentNodeId){
 	var action = actionPath + '/headword_node.php'
@@ -457,47 +435,11 @@ function addPronunciation(nodeContent, parentNodeId){
 }
 
 function editPronunciation(pronunciationBar, parentNodeId){
-	editElement(
-		pronunciationBar,
-		'pronunciation',
-		'pronunciation_input',
-		updatePronunciation,
-		parentNodeId
-	)
+	editElement('pronunciation', pronunciationBar, updatePronunciation, parentNodeId)
 }
 
-function updatePronunciation(pronunciationBar, pronunciationId, pronunciationValue, doOnSuccess, doOnFailure){
-	var action = actionPath + '/pronunciation.php'
-	var parameters =
-		'id=' + encodeURIComponent(pronunciationId) +
-		'&a=update' +
-		'&t=' + encodeURIComponent(pronunciationValue)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var pronunciation = pronunciationBar.getElementsByClassName('pronunciation')[0]
-				
-				if(response.value == undefined){
-					pronunciation.textContent = pronunciationValue
-				} else {
-					pronunciation.textContent = response.value
-				}
-				
-				if(doOnSuccess){
-					doOnSuccess()
-				}
-			} else {
-				if(doOnFailure){
-					doOnFailure()
-				}
-			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
+function updatePronunciation(pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure){
+	updateValue('pronunciation', pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure)
 }
 
 function movePronunciationUp(pronunciationBar, pronunciationId){
@@ -512,9 +454,9 @@ function deletePronunciation(pronunciationBar, pronunciationId){
 	deleteValue('pronunciation', pronunciationBar, pronunciationId)
 }
 
-//==============================================================================
+//------------------------------------------------------------------------------
 // category labels
-//==============================================================================
+//------------------------------------------------------------------------------
 
 
 function addCategoryLabel(nodeContent, parentNodeId){
@@ -536,9 +478,8 @@ function addCategoryLabel(nodeContent, parentNodeId){
 
 function editCategoryLabel(categoryLabelBar, parentNodeId){
 	editElement(
-		categoryLabelBar,
 		'category_label',
-		'category_label_input',
+		categoryLabelBar,
 		updateCategoryLabel,
 		parentNodeId
 	)
@@ -577,31 +518,26 @@ function deleteCategoryLabel(categoryLabelBar, parentNodeId){
 	makeJsonRequest(actionPath + '/category_label.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=delete', {
 		success: function(response){
 			if(response.status == 'success'){
-				categoryLabelBar.delete()
+				categoryLabelBar.remove()
 				// there needs to show the button adding the label
 			}
 		}
 	})
 }
 
-//==============================================================================
+//------------------------------------------------------------------------------
 // forms
-//==============================================================================
+//------------------------------------------------------------------------------
 
 function addForm(nodeContent, nodeId){
 	makeJsonRequest(actionPath + '/add_form.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
-			/*
-			if(parseInt(response)){
-				formId = response
-				forms = sense_element.getElementsByClassName('forms')[0]
-				formBar = makeFormBar('...', formId)
+			if(response.status == 'success'){
+				formId = response.form_id
+				forms = nodeContent.getElementsByClassName('forms')[0]
+				formBar = makeFormBar('...', '...', formId)
 				forms.appendChild(formBar)
 				editForm(formBar, formId)
-			}
-			*/
-			if(response.status == 'success'){
-				location.reload()
 			}
 		}
 	})
@@ -711,9 +647,9 @@ function deleteForm(formBar, formId){
 	deleteValue('form', formBar, formId)
 }
 
-//==============================================================================
+//------------------------------------------------------------------------------
 // contexts
-//==============================================================================
+//------------------------------------------------------------------------------
 
 function addContext(nodeContent, parentNodeId){
 	var action = actionPath + '/sense.php'
@@ -734,9 +670,8 @@ function addContext(nodeContent, parentNodeId){
 
 function editContext(contextBar, parentNodeId){
 	editElement(
-		contextBar,
 		'context',
-		'context_input',
+		contextBar,
 		updateContext,
 		parentNodeId
 	)
@@ -779,7 +714,7 @@ function deleteContext(contextBar, parentNodeId){
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				contextBar.delete()
+				contextBar.remove()
 				// there needs to show the button adding the label
 			}
 		}
@@ -806,42 +741,11 @@ function addTranslation(nodeContent, nodeId){
 }
 
 function editTranslation(translationBar, translationId){
-	editElement(
-		translationBar,
-		'translation',
-		'translation_input',
-		updateTranslation,
-		translationId
-	)
+	editElement('translation', translationBar, updateTranslation, translationId)
 }
 
 function updateTranslation(translationBar, translationId, translationText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/translation.php'
-	var parameters =
-		'id=' + encodeURIComponent(translationId) +
-		'&a=update' +
-		'&t=' + encodeURIComponent(translationText)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var translation = translationBar.getElementsByClassName('translation')[0]
-				translation.textContent = translationText
-				
-				if(doOnSuccess){
-					doOnSuccess()
-				}
-			} else {
-				if(doOnFailure){
-					doOnFailure()
-				}
-			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
+	updateValue('translation', translationBar, translationId, translationText, doOnSuccess, doOnFailure)
 }
 
 function moveTranslationUp(translationBar, translationId){

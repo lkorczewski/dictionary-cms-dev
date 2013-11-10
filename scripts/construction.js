@@ -17,11 +17,16 @@ function makeButtons(buttonsArray){
 	return buttons
 }
 
+function makeBar(name){
+	var bar = document.createElement('div')
+	bar.setAttribute('class', 'bar ' + name + '_bar')
+	bar.onmouseover = function(){ showButtons(bar) }
+	bar.onmouseout = function(){ hideButtons(bar) }
+	return bar;
+}
+
 function makeValueBar(name, text, id){
-	var elementBar = document.createElement('div')
-	elementBar.setAttribute('class', 'bar ' + name + '_bar')
-	elementBar.onmouseover = function(){ showButtons(elementBar) }
-	elementBar.onmouseout = function(){ hideButtons(elementBar) }
+	var elementBar = makeBar(name)
 	
 	var element = document.createElement('div')
 	element.setAttribute('class', 'bar_element ' + name)
@@ -30,10 +35,10 @@ function makeValueBar(name, text, id){
 	elementBar.appendChild(element)
 	
 	var buttons = makeButtons({
-		'delete'  : function(){ deleteValue(name, elementBar, id) },
+		'edit'    : function(){ editValue(name, elementBar, id) },
 		'up'      : function(){ moveValueUp(name, elementBar, id) },
 		'down'    : function(){ moveValueDown(name, elementBar, id) },
-		'edit'    : function(){ editValue(name, elementBar, id) }
+		'delete'  : function(){ deleteValue(name, elementBar, id) }
 	})
 	
 	elementBar.appendChild(buttons)
@@ -42,10 +47,7 @@ function makeValueBar(name, text, id){
 }
 
 function makeCategoryLabelBar(text, parentNodeId){
-	var categoryLabelBar = document.createElement('div')
-	categoryLabelBar.setAttribute('class', 'bar category_label_bar')
-	categoryLabelBar.onmouseover = function(){ showButtons(categoryLabelBar) }
-	categoryLabelBar.onmouseout = function(){ hideButtons(categoryLabelBar) }
+	var categoryLabelBar = makeBar('category_label')
 
 	var categoryLabel = document.createElement('div')
 	categoryLabel.setAttribute('class', 'bar_element category_label')
@@ -54,8 +56,8 @@ function makeCategoryLabelBar(text, parentNodeId){
 	categoryLabelBar.appendChild(categoryLabel)
 	
 	var buttons = makeButtons({
-		'delete' : function(){ deleteCategoryLabel(categoryLabelBar, parentNodeId) },
-		'edit'   : function(){ editCategoryLabel(categoryLabelBar, parentNodeId) }
+		'edit'   : function(){ editCategoryLabel(categoryLabelBar, parentNodeId) },
+		'delete' : function(){ deleteCategoryLabel(categoryLabelBar, parentNodeId) }
 	})
 	categoryLabelBar.appendChild(buttons)
 	
@@ -63,10 +65,7 @@ function makeCategoryLabelBar(text, parentNodeId){
 }
 
 function makeContextBar(text, parentNodeId){
-	var contextBar = document.createElement('div')
-	contextBar.setAttribute('class', 'bar context_bar')
-	contextBar.onmouseover = function(){ showButtons(contextBar) }
-	contextBar.onmouseover = function(){ hideButtons(contextBar) }
+	var contextBar = makeBar('context')
 	
 	var context = document.createElement('div')
 	context.setAttribute('class', 'bar_element context')
@@ -75,66 +74,52 @@ function makeContextBar(text, parentNodeId){
 	contextBar.appendChild(context)
 	
 	var buttons = makeButtons({
-		'delete' : function(){ deleteContext(categoryLabelBar, parentNodeId) },
-		'edit'   : function(){ editContext(categoryLabelBar, parentNodeId) }
+		'edit'   : function(){ editContext(categoryLabelBar, parentNodeId) },
+		'delete' : function(){ deleteContext(categoryLabelBar, parentNodeId) }
+
 	})
 	contextBar.appendChild(buttons)
 	
 	return contextBar
 }
 
+function makeHeadwordBar(headwordText, headwordId){
+	return makeValueBar('headword', headwordText, headwordId)
+}
+
 function makePronunciationBar(pronunciationText, pronunciationId){
 	return makeValueBar('pronunciation', pronunciationText, pronunciationId)
+}
+
+function makeFormBar(formLabel, formText, formId){
+	var formBar = makeBar('form')
 	
-	/*
-	var pronunciationBar = document.createElement('div')
-	pronunciationBar.setAttribute('class', 'bar pronunciation_bar')
-	pronunciationBar.onmouseover = function(){ showButtons(pronunciationBar) }
-	pronunciationBar.onmouseout = function(){ hideButtons(pronunciationBar) }
+	var label = document.createElement('div')
+	label.setAttribute('class', 'bar_element form_label')
+	label.onclick = function(){ editForm(formBar, formId) }
+	label.textContent = formLabel
+	formBar.appendChild(label)
 	
-	var pronunciation = document.createElement('div')
-	pronunciation.setAttribute('class', 'bar_element pronunciation')
-	pronunciation.onclick = function(){ editPronunciation(pronunciationBar, pronunciationId) }
-	pronunciation.textContent = text
-	pronunciationBar.appendChild(pronunciation)
+	var space = document.createTextNode(' ')
+	formBar.appendChild(space)
+	
+	var form = document.createElement('div')
+	form.setAttribute('class', 'bar_element form')
+	form.onclick = function(){ editForm(formBar, formId) }
+	form.textContent = formText
+	formBar.appendChild(form)
 	
 	var buttons = makeButtons({
-		'delete'  : function(){ deletePronunciation(pronunciationBar, pronunciationId) },
-		'up'      : function(){ movePronunciationUp(pronunciationBar, pronunciationId) },
-		'down'    : function(){ movePronunciationDown(pronunciationBar, pronunciationId) },
-		'edit'    : function(){ editPronunciation(pronunciationBar, pronunciationId) }
+		'edit'   : function() { editForm(formBar, formId)},
+		'up'     : function() { moveFormUp(formBar, formId)},
+		'down'   : function() { moveFormDown(formBar, formId)},
+		'delete' : function() { deleteForm(formBar, formId)},
 	})
+	formBar.appendChild(buttons)
 	
-	pronunciationBar.appendChild(buttons)
-	
-	return pronunciationBar
-	*/
+	return formBar
 }
 
 function makeTranslationBar(translationText, translationId){
 	return makeValueBar('translation', translationText, translationId)
-	
-	/*
-	var translationBar = document.createElement('div')
-	translationBar.setAttribute('class', 'bar translation_bar')
-	translationBar.onmouseover = function(){ showButtons(translationBar) }
-	translationBar.onmouseout = function(){ hideButtons(translationBar) }
-	
-	var translation = document.createElement('div')
-	translation.setAttribute('class', 'bar_element translation')
-	translation.onclick = function(){ editTranslation(translationBar, translationId) }
-	translation.textContent = text
-	translationBar.appendChild(translation)
-	
-	var buttons = makeButtons({
-		'delete'  : function(){ deleteTranslation(translationBar, translationId) },
-		'up'      : function(){ moveTranslationUp(translationBar, translationId) },
-		'down'    : function(){ moveTranslationDown(translationBar, translationId) },
-		'edit'    : function(){ editTranslation(translationBar, translationId) }
-	})
-	
-	translationBar.appendChild(buttons)
-	
-	return translationBar
-	*/
 }
