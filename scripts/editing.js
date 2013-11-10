@@ -19,7 +19,6 @@ function hideButtons(element){
 function editElement(elementClass, elementBar, doOnChange, id){
 	
 	function cancelEditingElement(){
-		console.log('cancel caller begin: ' + caller + '/' + caller.type)
 		input.onblur = null // hack for Chrome
 		input.parentNode.removeChild(input)
 		element.style.display = 'inline-block'
@@ -337,7 +336,7 @@ function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
 	var action = actionPath + '/phrase.php'
 	var parameters =
 		'n=' + encodeURIComponent(nodeId) +
-		'a=update' +
+		'&a=update' +
 		'&t=' + encodeURIComponent(phraseText)
 	makeJsonRequest(action, parameters, {
 		success: function(response){

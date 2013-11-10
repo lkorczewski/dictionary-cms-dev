@@ -2,7 +2,7 @@
 
 //====================================================
 // Atomic operation
-// Adding sense
+// Adding phrase
 //====================================================
 
 require '_authorized_header.php';
@@ -15,11 +15,13 @@ $parent_node_id = Script::get_parameter('n');
 if($parent_node_id === false)
 	Script::fail('no parameter');
 
+$phrase = Script::get_parameter('t', '...');
+
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$node_id = $data->add_sense($parent_node_id);
+$node_id = $data->add_phrase($parent_node_id, $phrase);
 
 if($node_id === false){
 	Script::fail('query failure');

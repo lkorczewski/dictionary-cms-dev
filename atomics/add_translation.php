@@ -15,7 +15,7 @@ $sense_id = Script::get_parameter('id');
 if($sense_id === false)
 	Script::fail('no parameter');
 
-$text = Script::get_parameter('t');
+$text = Script::get_parameter('t', '...');
 
 //----------------------------------------------------
 // executing query
