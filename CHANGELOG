@@ -1,4 +1,12 @@
 ----------------------------------------
+ 0.13.2
+----------------------------------------
+ * major bugfix: JS error
+ * bugfix: impossible to add phrase
+ * bugfix: abandoned translation turnig into empty string
+ * bugfix: incorrect order of buttons in phrase
+
+----------------------------------------
  0.13.1
 ----------------------------------------
  * bugfix: adding form
