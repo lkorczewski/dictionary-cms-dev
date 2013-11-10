@@ -1,4 +1,11 @@
 ----------------------------------------
+ 0.13.1
+----------------------------------------
+ * bugfix: adding form
+ * bugfix: deleting senses and phrases
+ * code: some rearrangement and drying of JS and layouts
+
+----------------------------------------
  0.13.0
 ----------------------------------------
  * pronunciation support
