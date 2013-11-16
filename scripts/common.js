@@ -59,14 +59,14 @@ function makeJsonRequest(url, parameters, handler){
 	httpRequest.onreadystatechange = function(){
 		
 		done = false;
-		// console.log('readyState == ' + httpRequest.readyState)
-				
-		// do when response received
-		
 		if(httpRequest.readyState == 4){
 			if(httpRequest.status == 200){
 				if(done == false){
-					handler.success(JSON.parse(httpRequest.responseText))
+					response = JSON.parse(httpRequest.responseText)
+					if(response.status == 'failure' && response.message == 'no authorization'){
+						location.reload()
+					}
+					handler.success(response)
 					done = true
 				} else {
 					console.log('redundant call')
