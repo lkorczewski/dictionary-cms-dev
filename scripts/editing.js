@@ -246,11 +246,13 @@ function deleteEntry(nodeId){
 // senses
 //------------------------------------------------------------------------------
 
-function addSense(entryElement, nodeId){
+function addSense(parentElement, nodeId){
 	makeJsonRequest(actionPath + '/add_sense.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
 			if(response.status == 'success'){
-				location.reload()
+				var senses = parentElement.getElementsByClassName('senses')[0]
+				var senseContainer = makeSenseContainer(response.node_id, response.label)
+				senses.appendChild(senseContainer)
 			}
 		}
 	})

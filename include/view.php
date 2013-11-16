@@ -116,6 +116,12 @@ class View {
 				$this->get_translation('up') .
 				$this->get_translation('down') .
 				$this->get_translation('edit') .
+				$this->get_translation('add category label') .
+				$this->get_translation('add form') .
+				$this->get_translation('add context') .
+				$this->get_translation('add translation') .
+				$this->get_translation('add phrase') .
+				$this->get_translation('add sense') .
 			'}' . "\n" .
 			'</script>' . "\n" .
 			'</head>' . "\n" .

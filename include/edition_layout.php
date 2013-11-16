@@ -374,7 +374,7 @@ class Edition_Layout{
 		if(!$category_label){
 		
 			$this->output .=
-				'<div>' . "\n" .
+				'<div class="button_bar category_label_button_bar">' . "\n" .
 					'<button class="button add_category_label" onclick="addCategoryLabel(this.parentNode.parentNode, ' . 
 					$node->get_node_id() .
 					')">' .
@@ -401,11 +401,13 @@ class Edition_Layout{
 		
 		// new form
 		$this->output .=
-			'<div><button class="button add_form" onclick="addForm(this.parentNode.parentNode, ' .
-			$node->get_node_id() .
-			')">' .
-				$this->localization->get_text('add form') .
-			'</button></div>' . "\n";
+			'<div class="button_bar form_button_bar">' .
+				'<button class="button add_form" onclick="addForm(this.parentNode.parentNode, ' .
+				$node->get_node_id() .
+				')">' .
+					$this->localization->get_text('add form') .
+				'</button>' .
+			'</div>' . "\n";
 		
 	}
 	

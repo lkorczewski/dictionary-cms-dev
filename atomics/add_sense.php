@@ -29,6 +29,9 @@ if($node_id === false){
 // returning id of new node
 //----------------------------------------------------
 
-Script::succeed(array('node_id' => $node_id))
+Script::succeed(array(
+	'node_id' => $node_id,
+	'label' => '(x)',
+));
 
 ?>
