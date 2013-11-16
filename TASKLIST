@@ -1,11 +1,13 @@
 ------------------------------------------------------------------------
 T O   D O :
 ------------------------------------------------------------------------
+ * moving labels when deleting sense
+ * setting default user as part of setup process
+ * export of label assignment
  * dynamic edition
  * unification of JS codes
  * debugging mode in atomics (query runtime, total runtime)
- * closing notifications
- * creating entries from search panel
+ * notification closing
  * styling links
  * change of first headword should redirect
  * mode in session vs mode in links
@@ -14,6 +16,14 @@ T O   D O :
 ------------------------------------------------------------------------
 D O N E :
 ------------------------------------------------------------------------
+
+2013-11-14
+
+ * recognizing 'no authorization' message and reloading
+
+2013-11-?
+
+ * creating entries from search panel
 
 2013-11-02:
 
