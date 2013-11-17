@@ -133,12 +133,6 @@ class Edition_Layout{
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 					
-					'<button class="button delete" onclick="deleteSense(this.parentNode.parentNode.parentNode, ' .
-					$sense->get_node_id() .
-					')">' .
-						$this->localization->get_text('delete') .
-					'</button>' . "\n" .
-					
 					'<button class="button move_up" onclick="moveSenseUp(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
@@ -149,6 +143,12 @@ class Edition_Layout{
 					$sense->get_node_id() .
 					')">' .
 						$this->localization->get_text('down') .
+					'</button>' . "\n" .
+
+					'<button class="button delete" onclick="deleteSense(this.parentNode.parentNode.parentNode, ' .
+					$sense->get_node_id() .
+					')">' .
+						$this->localization->get_text('delete') .
 					'</button>' . "\n" .
 					
 				'</div>' . "\n" .
