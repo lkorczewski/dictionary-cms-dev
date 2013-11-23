@@ -1,4 +1,12 @@
 ----------------------------------------
+ 0.13.5
+----------------------------------------
+ * editor storage (MySQL table) included in storage setup and filled
+   with default editor
+ * output of editor actions using Script::succeed
+ * code: short array notation
+
+----------------------------------------
  0.13.4
 ----------------------------------------
  * corrected label mockup when adding sense
