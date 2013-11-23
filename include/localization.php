@@ -14,7 +14,7 @@ class Localization {
 		$this->path = '';
 		$this->locale = '';
 		$this->is_loades = false;
-		$this->texts = array();
+		$this->texts = [];
 		
 		if($locale) set_locale($locale);
 	}
@@ -38,7 +38,7 @@ class Localization {
 	// loading texts from file
 	//------------------------------------------------
 	function load_texts(){
-		$texts = array();
+		$texts = [];
 		include($this->path . '/' . $this->locale . '.php');
 		$this->texts = $texts;
 	}

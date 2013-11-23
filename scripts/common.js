@@ -125,7 +125,7 @@ function logEditorIn(login, password, doOnSuccess, doOnFailure){
 	makeJsonRequest('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
 		success: function(response){
 			switch(response.status){
-				case 'OK' :
+				case 'success' :
 					doOnSuccess(response.editor_name)
 					break
 				case 'failure' :
@@ -146,7 +146,7 @@ function logEditorOut(doOnSuccess, doOnFailure){
 	makeJsonRequest('atomics/log_editor_out.php', '', {
 		success: function(response){
 			switch(response.status){
-				case 'OK' :
+				case 'success' :
 					doOnSuccess()
 					break
 				case 'failure' :
@@ -262,21 +262,18 @@ function showEditorCredentialsInput(editorToolbarContent){
 		disableEditorCredentialsInput()
 		login = editorLoginInput.value
 		password = editorPasswordInput.value
-		make_request('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
-			success: function(responseText){
-				response = JSON.parse(responseText)
-				switch(response.status){
-					case 'OK' :
-						showEditor(response.editor_name)
-						location.reload()
-						break
-					case 'failure' :
-						showWarning(localization.getText('incorrect credentials'))
-						enableEditorCredentialsInput()
-						break
-				}
+		logEditorIn(
+			login,
+			password,
+			function(){
+				showEditor(response.editor_name)
+				location.reload()
+			},
+			function(){
+				showWarning(localization.getText('incorrect credentials'))
+				enableEditorCredentialsInput()
 			}
-		})
+		)
 	}
 	editorCredentialsForm.appendChild(editorLogInButton)
 	

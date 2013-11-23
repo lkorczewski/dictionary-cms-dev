@@ -300,7 +300,7 @@ class Edition_Layout{
 				')">' .
 					$headword->get() .
 				'</div>' . "\n" .
-				$this->get_four_buttons($headword, array('js_name' => 'Headword')) .				
+				$this->get_four_buttons($headword, ['js_name' => 'Headword']) .	
 			'</div>' . "\n";
 	}
 	
@@ -340,7 +340,7 @@ class Edition_Layout{
 				')">' .
 					$pronunciation->get() .
 				'</div>' . "\n" .
-				$this->get_four_buttons($pronunciation, array('js_name' => 'Pronunciation')) .
+				$this->get_four_buttons($pronunciation, ['js_name' => 'Pronunciation']) .
 				
 			'</div>' . "\n";
 	}
@@ -364,7 +364,7 @@ class Edition_Layout{
 					')">' .
 						$category_label->get() .
 					'</div>' . "\n" .
-					$this->get_two_buttons($node, array('js_name' => 'CategoryLabel')) .
+					$this->get_two_buttons($node, ['js_name' => 'CategoryLabel']) .
 				'</div>' . "\n";
 		}
 		
@@ -477,7 +477,7 @@ class Edition_Layout{
 					')">' .
 						$context->get() .
 					'</div>' .
-					$this->get_two_buttons($node, array('js_name' => 'Context')) .
+					$this->get_two_buttons($node, ['js_name' => 'Context']) .
 				'</div>' . "\n";
 		}
 		
@@ -536,7 +536,7 @@ class Edition_Layout{
 				')">' .
 					$translation->get() .
 				'</div>' . "\n" .
-				$this->get_four_buttons($translation, array('js_name' => 'Translation')) .
+				$this->get_four_buttons($translation, ['js_name' => 'Translation']) .
 			'</div>' . "\n";
 	}
 	

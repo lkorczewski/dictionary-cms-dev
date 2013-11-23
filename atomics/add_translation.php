@@ -31,6 +31,8 @@ if($translation_id === false){
 // returning id of new translation
 //----------------------------------------------------
 
-Script::succeed(array('translation_id' => $translation_id));
+Script::succeed([
+	'translation_id' => $translation_id
+]);
 
 ?>

@@ -30,9 +30,9 @@ if($node_id === false){
 // returning id of new node
 //----------------------------------------------------
 
-Script::succeed(array(
+Script::succeed([
 	'node_id' => $node_id,
 	'label' => $sense_label,
-));
+]);
 
 ?>

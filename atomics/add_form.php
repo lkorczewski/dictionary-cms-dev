@@ -33,6 +33,8 @@ if($form_id === false){
 // returning inserted form id
 //----------------------------------------------------
 
-echo Script::succeed(array('form_id' => $form_id));
+echo Script::succeed([
+	'form_id' => $form_id
+]);
 
 ?>

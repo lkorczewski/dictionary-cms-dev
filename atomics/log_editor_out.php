@@ -2,6 +2,9 @@
 
 require_once '../include/script.php';
 
+Script::set_root_path('..');
+$config = Script::load_config();
+
 Script::start_session();
 
 //----------------------------------------------------
@@ -14,11 +17,6 @@ unset($_SESSION['editor']);
 // returning confirmation
 //----------------------------------------------------
 
-$output =
-	'{' .
-	'"status":"OK"' .
-	'}';
-
-echo $output;
+Script::succeed();
 
 ?>

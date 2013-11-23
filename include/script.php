@@ -22,7 +22,7 @@ class Script {
 	static function load_config(){
 		
 		// loading config
-		$config = array();
+		$config = [];
 		require_once (self::$root_path ? self::$root_path . '/' : '') . 'config.php';
 		self::$config = $config;
 		

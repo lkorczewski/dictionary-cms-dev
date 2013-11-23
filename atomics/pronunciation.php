@@ -32,7 +32,7 @@ if($action == 'update'){
 // executing query
 //----------------------------------------------------
 
-$parameters = array();
+$parameters = [];
 
 switch($action){
 	

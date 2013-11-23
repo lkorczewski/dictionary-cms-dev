@@ -7,7 +7,7 @@ $config = Script::load_config();
 
 Script::start_session();
 
-require_once 'database/database.php';
+require_once '../include/data.php';
 
 $database = Script::connect_to_database();
 
@@ -16,48 +16,43 @@ $database = Script::connect_to_database();
 //----------------------------------------------------
 
 $login = Script::get_parameter('l');
-if($login === false) Script::fail('no parameter');
+if($login === false){
+	Script::fail('no parameter');
+}
 
 $password = Script::get_parameter('p');
-if($password === false) Script::fail('no parameter');
+if($password === false){
+	Script::fail('no parameter');
+}
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$hashed_password = sha1($password);
+$data = new \DCMS\Data($database);
 
-$query =
-	'SELECT *' .
-	' FROM editors' .
-	" WHERE login = '$login'" .
-	"  AND password = '$hashed_password'" .
-	';';
-$result = $database->query($query);
+$editor_result = $data->get_editor($login, $password);
 
-if($result === false) Script::fail('query failure');
+if($editor_result === false){
+	Script::fail('query failure');
+}
 
-if(count($result) == 0) Script::fail('wrong credentials');
-
-$editor = $result[0];
+if(count($editor_result) == 0){
+	Script::fail('wrong credentials');
+}
 
 //----------------------------------------------------
 // registering user
 //----------------------------------------------------
 
-$_SESSION['editor'] = $editor['login'];
+$_SESSION['editor'] = $editor_result['login'];
 
 //----------------------------------------------------
 // returning confirmation
 //----------------------------------------------------
 
-$output =
-	'{' .
-	'"status":"OK"' .
-	',' .
-	'"editor_name":"'.$editor['login'].'"' .
-	'}';
-
-echo $output;
+Script::succeed([
+	'editor_name' => $editor_result['login'],
+]);
 
 ?>

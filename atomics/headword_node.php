@@ -53,6 +53,6 @@ if($result === false){
 // returning result
 //----------------------------------------------------
 
-Script::succeed(array($result_name => $result));
+Script::succeed([$result_name => $result]);
 
 ?>

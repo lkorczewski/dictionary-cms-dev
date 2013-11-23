@@ -68,7 +68,7 @@ if($search_results == false){
 // data for view
 //----------------------------------------------------
 
-$data = array(
+$data = [
 	'config'          => $config,
 	'headword'        => $headword,
 	'search_mask'     => $search_mask,
@@ -76,7 +76,7 @@ $data = array(
 	'mode'            => $mode,
 	'editor'          => $editor,
 	'show_toolbar'    => $show_toolbar,
-);
+];
 
 if($headword){
 	$data['entries'] = $entries;
