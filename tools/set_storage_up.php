@@ -13,21 +13,35 @@ $config = Script::load_config();
 require_once 'database/database.php';
 require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
+require_once '../include/data.php';
 
-$database = Script::connect_to_database();
-$data = new \Dictionary\MySQL_Data($database);
+// unsuccessful connection should result in an error too
+
+$database         = Script::connect_to_database();
+$dictionary_data  = new \Dictionary\MySQL_Data($database);
+$dcms_data        = new \DCMS\Data($database);
 
 //====================================================
 // creating storage
 //====================================================
 
-$result = $data->create_storage($log);
+$result                = true;
+$database_error        = false;
+$storage_creation_log  = [];
+
+if($result === true){
+	$result = $dictionary_data->create_storage($storage_creation_log);
+}
+
+if($result === true){
+	$result = $dcms_data->create_storage($storage_creation_log);
+}
 
 //====================================================
 // displaying log
 //====================================================
 
-foreach($log as $log_entry){
+foreach($storage_creation_log as $log_entry){
 	$line =
 		$log_entry['action'] .
 		' : ' .
@@ -37,10 +51,13 @@ foreach($log as $log_entry){
 }
 
 if($result === false){
-	echo 'Error while creating storage.' . "\n";
+	$database_error = $database->get_last_error();
+	echo
+		'Error while creating storage: ' .
+		$database_error['message'] .
+		"\n";
 	exit;
 }
 
 echo 'Storage sucessfully set up.' . "\n";
 
-?>
