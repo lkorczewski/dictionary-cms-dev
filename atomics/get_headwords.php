@@ -13,7 +13,7 @@ $_SESSION['search_mask'] = $headword_mask;
 // data acquisition
 //----------------------------------------------------
 
-$headwords = $data->pull_headwords($headword_mask, $config['search_results_limit']);
+$headwords = $data->get_headwords($headword_mask, $config['search_results_limit']);
 $_SESSION['search_results'] = $headwords;
 
 //----------------------------------------------------

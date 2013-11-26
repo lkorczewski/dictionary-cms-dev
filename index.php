@@ -56,11 +56,11 @@ $dictionary = new \Dictionary\Dictionary($data);
 //----------------------------------------------------
 
 if($headword){
-	$entries = $dictionary->get_entries($headword);
+	$entries = $dictionary->get_entries_by_headword($headword);
 }
 
 if($search_results == false){
-	$search_results = $data->pull_headwords($search_mask, $config['search_results_limit']);
+	$search_results = $dictionary->get_headwords($search_mask, $config['search_results_limit']);
 	$_SESSION['search_results'] = $search_results;
 }
 
