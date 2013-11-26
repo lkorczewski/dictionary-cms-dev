@@ -27,4 +27,8 @@ $dictionary = new Dictionary\Dictionary($data);
 $layout = new Dictionary\XML_Layout();
 $layout->parse_dictionary($dictionary, 'php://stdout');
 
+if($db_error = $database->get_last_error()){
+	fwrite(STDERR, $db_error['message'] . "\n" . print_r($db_error, true));
+}
+
 ?>
