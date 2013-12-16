@@ -14,4 +14,3 @@ require_once 'dictionary/mysql_data.php';
 $database = Script::connect_to_database();
 $data = new \Dictionary\MySQL_Data($database);
 
-?>

@@ -58,4 +58,3 @@ if($rows_affected === 0){
 
 Script::succeed();
 
-?>

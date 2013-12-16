@@ -37,4 +37,3 @@ $texts['add form'] = 'add form';
 $texts['add context'] = 'add context';
 $texts['add translation'] = 'add translation';
 
-?>

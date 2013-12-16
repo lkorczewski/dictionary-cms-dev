@@ -41,4 +41,3 @@ $config['locale'] = 'en';
 $config['title'] = 'Demo dictionary';
 $config['search_results_limit'] = 25;
 
-?>

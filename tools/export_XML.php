@@ -31,4 +31,3 @@ if($db_error = $database->get_last_error()){
 	fwrite(STDERR, $db_error['message'] . "\n" . print_r($db_error, true));
 }
 
-?>

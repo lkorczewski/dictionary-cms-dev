@@ -27,4 +27,3 @@ $XML_file = $argv[1];
 $importer = new Dictionary\XML_Importer($data);
 $importer->parse($XML_file);
 
-?>

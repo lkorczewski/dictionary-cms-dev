@@ -55,4 +55,3 @@ Script::succeed([
 	'editor_name' => $editor_result['login'],
 ]);
 
-?>

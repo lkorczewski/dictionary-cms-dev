@@ -35,4 +35,3 @@ Script::succeed([
 	'translation_id' => $translation_id
 ]);
 
-?>

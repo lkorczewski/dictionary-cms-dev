@@ -19,4 +19,3 @@ unset($_SESSION['editor']);
 
 Script::succeed();
 
-?>

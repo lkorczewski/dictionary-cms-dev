@@ -35,4 +35,3 @@ Script::succeed([
 	'node_id' => $node_id
 ])
 
-?>

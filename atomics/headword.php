@@ -64,4 +64,3 @@ if($affected_rows === 0){
 
 Script::succeed();
 
-?>

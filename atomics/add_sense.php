@@ -35,4 +35,3 @@ Script::succeed([
 	'label' => $sense_label,
 ]);
 
-?>

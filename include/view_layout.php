@@ -357,4 +357,3 @@ class View_Layout{
 	}
 }
 
-?>

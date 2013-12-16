@@ -124,6 +124,10 @@ class Script {
 		exit($output);
 	}
 	
+	//--------------------------------------------------------------------
+	// returnint success
+	//--------------------------------------------------------------------
+	
 	static function succeed($results = false){
 		$output = '';
 		
@@ -143,4 +147,3 @@ class Script {
 	
 }
 
-?>
