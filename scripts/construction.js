@@ -246,10 +246,10 @@ function makeFormBar(formLabel, formText, formId){
 	formBar.appendChild(form)
 	
 	var buttons = makeButtons({
-		'edit'   : function() { editForm(formBar, formId)},
-		'up'     : function() { moveFormUp(formBar, formId)},
-		'down'   : function() { moveFormDown(formBar, formId)},
-		'delete' : function() { deleteForm(formBar, formId)},
+		'edit'   : function() { editForm(formBar, formId) },
+		'up'     : function() { moveFormUp(formBar, formId) },
+		'down'   : function() { moveFormDown(formBar, formId) },
+		'delete' : function() { deleteForm(formBar, formId) },
 	})
 	formBar.appendChild(buttons)
 	
