@@ -99,7 +99,8 @@ class Script {
 			$database_config['database'] = self::$config['db_database'];
 		}
 		// TODO: check if eager connecting may be skipped
-		$database = (new Database($database_config))->connect();
+		$database = new Database($database_config);
+		$database->connect();
 
 		return $database;
 	}
