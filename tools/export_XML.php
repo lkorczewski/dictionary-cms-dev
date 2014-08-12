@@ -5,9 +5,9 @@
 // initialization
 //====================================================
 
-require_once '../include/script.php';
+require_once __DIR__ . '/../include/script.php';
 
-Script::set_root_path('..');
+Script::set_root_path(__DIR__ . '/..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
