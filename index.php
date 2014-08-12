@@ -90,4 +90,3 @@ if($headword == ''){
 	$view->show_entries();
 }
 
-?>

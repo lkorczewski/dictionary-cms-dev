@@ -22,4 +22,3 @@ $_SESSION['search_results'] = $headwords;
 
 echo JSON_encode($headwords, JSON_UNESCAPED_UNICODE);
 
-?>

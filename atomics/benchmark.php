@@ -71,4 +71,3 @@ foreach($running_times as $element){
 	echo "{$element['label']}: {$element['runtime']}\n";
 }
 
-?>

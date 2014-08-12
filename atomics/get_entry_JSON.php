@@ -44,4 +44,3 @@ $JSON_entry = JSON_encode($tabular_entry);
 
 echo $JSON_entry;
 
-?>

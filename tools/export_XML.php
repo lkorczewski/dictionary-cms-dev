@@ -27,4 +27,3 @@ $dictionary = new Dictionary\Dictionary($data);
 $layout = new Dictionary\XML_Layout();
 $layout->parse_dictionary($dictionary, 'php://stdout');
 
-?>

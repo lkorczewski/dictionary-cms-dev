@@ -55,4 +55,3 @@ if($result === false){
 
 Script::succeed([$result_name => $result]);
 
-?>

@@ -37,4 +37,3 @@ echo Script::succeed([
 	'form_id' => $form_id
 ]);
 
-?>
