@@ -30,4 +30,3 @@ if($success === false){
 
 Script::succeed();
 
-?>
