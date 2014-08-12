@@ -2,6 +2,8 @@
 
 //namespace DCMS;
 
+use Database\Database;
+
 class Script {
 	private static $config = '';
 	private static $root_path;
@@ -79,16 +81,26 @@ class Script {
 	
 	static function connect_to_database(){
 		require_once 'database/database.php';
-		
-		$database = new Database();
-		if(isset(self::$config['db_host'])) $database->set_host(self::$config['db_host']);
-		if(isset(self::$config['db_port'])) $database->set_port(self::$config['db_port']);
-		if(isset(self::$config['db_user'])) $database->set_user(self::$config['db_user'],
-			isset(self::$config['db_password'])?self::$config['db_password']:''
-		);
-		if(isset(self::$config['db_database'])) $database->set_database(self::$config['db_database']);
-		$database->connect();
-		
+
+		$database_config = [];
+		if(isset(self::$config['db_host'])){
+			$database_config['host'] = self::$config['db_host'];
+		}
+		if(isset(self::$config['db_port'])){
+			$database_config['port'] = self::$config['db_port'];
+		}
+		if(isset(self::$config['db_user'])){
+			$database_config['user'] = self::$config['db_user'];
+			if(isset(self::$config['db_password'])){
+				$database_config['password'] = self::$config['db_password'];
+			}
+		}
+		if(isset(self::$config['db_database'])){
+			$database_config['database'] = self::$config['db_database'];
+		}
+		// TODO: check if eager connecting may be skipped
+		$database = (new Database($database_config))->connect();
+
 		return $database;
 	}
 	
@@ -143,4 +155,3 @@ class Script {
 	
 }
 
-?>
