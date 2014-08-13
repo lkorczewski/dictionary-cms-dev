@@ -1,0 +1,2744 @@
+<Dictionary>
+ <Metadata>
+  <Sense depth="1">
+   <OrderLabel system="arabic-numbers"/>
+  </Sense>
+  <Sense depth="2">
+   <OrderLabel system="lowercase-latin-letters"/>
+  </Sense>
+ </Metadata>
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "3"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "11"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#7 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "3"
+      private $value =>
+      string(11) "_sense_test"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#8 (14) {
+      private $id =>
+      string(1) "9"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "12"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(2) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#13 (14) {
+      private $id =>
+      string(2) "12"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "15"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(2) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#8 (14) {
+  private $id =>
+  string(1) "9"
+  private $label =>
+  string(1) "1"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "12"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#9 (14) {
+      private $id =>
+      string(2) "10"
+      private $label =>
+      string(1) "a"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "13"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#11 (14) {
+      private $id =>
+      string(2) "11"
+      private $label =>
+      string(1) "b"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "14"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#9 (14) {
+  private $id =>
+  string(2) "10"
+  private $label =>
+  string(1) "a"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "13"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#10 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "8"
+      private $value =>
+      string(9) "sense_1_a"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#9 (14) {
+  private $id =>
+  string(2) "10"
+  private $label =>
+  string(1) "a"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "13"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#10 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "8"
+      private $value =>
+      string(9) "sense_1_a"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "3"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "11"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#7 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "3"
+      private $value =>
+      string(11) "_sense_test"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#8 (14) {
+      private $id =>
+      string(1) "9"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "12"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(2) {
+        ...
+      }
+      private $sense_iterator =>
+      int(1)
+    }
+    [1] =>
+    class Dictionary\Sense#13 (14) {
+      private $id =>
+      string(2) "12"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "15"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(2) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(1)
+}
+class Dictionary\Sense#13 (14) {
+  private $id =>
+  string(2) "12"
+  private $label =>
+  string(1) "2"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "15"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#14 (14) {
+      private $id =>
+      string(2) "13"
+      private $label =>
+      string(1) "a"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "16"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#16 (14) {
+      private $id =>
+      string(2) "14"
+      private $label =>
+      string(1) "b"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "17"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#14 (14) {
+  private $id =>
+  string(2) "13"
+  private $label =>
+  string(1) "a"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "16"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#15 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(2) "10"
+      private $value =>
+      string(9) "sense_2_a"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#14 (14) {
+  private $id =>
+  string(2) "13"
+  private $label =>
+  string(1) "a"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "16"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#15 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(2) "10"
+      private $value =>
+      string(9) "sense_2_a"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "3"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "11"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#7 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "3"
+      private $value =>
+      string(11) "_sense_test"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#8 (14) {
+      private $id =>
+      string(1) "9"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "12"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(2) {
+        ...
+      }
+      private $sense_iterator =>
+      int(1)
+    }
+    [1] =>
+    class Dictionary\Sense#13 (14) {
+      private $id =>
+      string(2) "12"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "15"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(2) {
+        ...
+      }
+      private $sense_iterator =>
+      int(1)
+    }
+  }
+  private $sense_iterator =>
+  int(2)
+}
+ <Entry>
+  <H>_sense_test</H>
+  <Sense>
+   <L>1</L>
+   <Sense>
+    <L>a</L>
+    <T>sense_1_a</T>
+   </Sense>
+  </Sense>
+  <Sense>
+   <L>2</L>
+   <Sense>
+    <L>a</L>
+    <T>sense_2_a</T>
+   </Sense>
+  </Sense>
+ </Entry>
+class Dictionary\Entry#18 (17) {
+  private $id =>
+  string(1) "1"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "1"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#20 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "2"
+    private $label =>
+    string(16) "nomen masculinum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#19 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "1"
+      private $value =>
+      string(15) "ὀμφαλός"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#21 (14) {
+      private $id =>
+      string(1) "1"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "2"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#23 (14) {
+      private $id =>
+      string(1) "2"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "3"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      class Dictionary\Context#24 (3) {
+        ...
+      }
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(3) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#21 (14) {
+  private $id =>
+  string(1) "1"
+  private $label =>
+  string(1) "1"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "2"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#22 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "1"
+      private $value =>
+      string(6) "pępek"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#18 (17) {
+  private $id =>
+  string(1) "1"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "1"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#20 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "2"
+    private $label =>
+    string(16) "nomen masculinum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#19 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "1"
+      private $value =>
+      string(15) "ὀμφαλός"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#21 (14) {
+      private $id =>
+      string(1) "1"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "2"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#23 (14) {
+      private $id =>
+      string(1) "2"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "3"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      class Dictionary\Context#24 (3) {
+        ...
+      }
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(3) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(1)
+}
+class Dictionary\Sense#23 (14) {
+  private $id =>
+  string(1) "2"
+  private $label =>
+  string(1) "2"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "3"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  class Dictionary\Context#24 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "1"
+    private $context =>
+    string(9) "metaphore"
+  }
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(3) {
+    [0] =>
+    class Dictionary\Sense#25 (14) {
+      private $id =>
+      string(1) "3"
+      private $label =>
+      string(1) "a"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "4"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#27 (14) {
+      private $id =>
+      string(1) "4"
+      private $label =>
+      string(1) "b"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "5"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [2] =>
+    class Dictionary\Sense#29 (14) {
+      private $id =>
+      string(1) "5"
+      private $label =>
+      string(1) "c"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "6"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#25 (14) {
+  private $id =>
+  string(1) "3"
+  private $label =>
+  string(1) "a"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "4"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#26 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "2"
+      private $value =>
+      string(4) "umbo"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#25 (14) {
+  private $id =>
+  string(1) "3"
+  private $label =>
+  string(1) "a"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "4"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#26 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "2"
+      private $value =>
+      string(4) "umbo"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#18 (17) {
+  private $id =>
+  string(1) "1"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "1"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#20 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "2"
+    private $label =>
+    string(16) "nomen masculinum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#19 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "1"
+      private $value =>
+      string(15) "ὀμφαλός"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(2) {
+    [0] =>
+    class Dictionary\Sense#21 (14) {
+      private $id =>
+      string(1) "1"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "2"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#23 (14) {
+      private $id =>
+      string(1) "2"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "3"
+      private $translations =>
+      array(0) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      class Dictionary\Context#24 (3) {
+        ...
+      }
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(3) {
+        ...
+      }
+      private $sense_iterator =>
+      int(1)
+    }
+  }
+  private $sense_iterator =>
+  int(2)
+}
+ <Entry>
+  <H>ὀμφαλός</H>
+  <CL>nomen masculinum</CL>
+  <Sense>
+   <L>1</L>
+   <T>pępek</T>
+  </Sense>
+  <Sense>
+   <L>2</L>
+   <I>metaphore</I>
+   <Sense>
+    <L>a</L>
+    <T>umbo</T>
+   </Sense>
+  </Sense>
+ </Entry>
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "2"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "7"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#16 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "4"
+    private $label =>
+    string(15) "nomen femininum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#13 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "2"
+      private $value =>
+      string(10) "πόλις"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(3) {
+    [0] =>
+    class Dictionary\Sense#17 (14) {
+      private $id =>
+      string(1) "6"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "8"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#15 (14) {
+      private $id =>
+      string(1) "7"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "9"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [2] =>
+    class Dictionary\Sense#11 (14) {
+      private $id =>
+      string(1) "8"
+      private $label =>
+      string(1) "3"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "10"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Sense#17 (14) {
+  private $id =>
+  string(1) "6"
+  private $label =>
+  string(1) "1"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "8"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#14 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "5"
+      private $value =>
+      string(6) "miasto"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "2"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "7"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#16 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "4"
+    private $label =>
+    string(15) "nomen femininum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#13 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "2"
+      private $value =>
+      string(10) "πόλις"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(3) {
+    [0] =>
+    class Dictionary\Sense#17 (14) {
+      private $id =>
+      string(1) "6"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "8"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#15 (14) {
+      private $id =>
+      string(1) "7"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "9"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [2] =>
+    class Dictionary\Sense#11 (14) {
+      private $id =>
+      string(1) "8"
+      private $label =>
+      string(1) "3"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "10"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(1)
+}
+class Dictionary\Sense#15 (14) {
+  private $id =>
+  string(1) "7"
+  private $label =>
+  string(1) "2"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "9"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#8 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "6"
+      private $value =>
+      string(29) "państwo (zależne od miasta)"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "2"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "7"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#16 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "4"
+    private $label =>
+    string(15) "nomen femininum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#13 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "2"
+      private $value =>
+      string(10) "πόλις"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(3) {
+    [0] =>
+    class Dictionary\Sense#17 (14) {
+      private $id =>
+      string(1) "6"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "8"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#15 (14) {
+      private $id =>
+      string(1) "7"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "9"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [2] =>
+    class Dictionary\Sense#11 (14) {
+      private $id =>
+      string(1) "8"
+      private $label =>
+      string(1) "3"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "10"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(0)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(2)
+}
+class Dictionary\Sense#11 (14) {
+  private $id =>
+  string(1) "8"
+  private $label =>
+  string(1) "3"
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(2) "10"
+  private $translations =>
+  array(1) {
+    [0] =>
+    class Dictionary\Translation#12 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "7"
+      private $value =>
+      string(27) "obywatele (państwa-miasta)"
+    }
+  }
+  private $translation_iterator =>
+  int(1)
+  private $category_label =>
+  bool(false)
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $context =>
+  NULL
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(0) {
+  }
+  private $sense_iterator =>
+  int(0)
+}
+class Dictionary\Entry#6 (17) {
+  private $id =>
+  string(1) "2"
+  private $comment =>
+  NULL
+  protected $dictionary =>
+  class Dictionary\Dictionary#4 (1) {
+    private $data =>
+    class Dictionary\MySQL_Data#3 (2) {
+      private $database =>
+      class Database\Database#1 (8) {
+        ...
+      }
+      private $sense_depth =>
+      int(0)
+    }
+  }
+  private $node_id =>
+  string(1) "7"
+  private $translations =>
+  array(0) {
+  }
+  private $translation_iterator =>
+  int(0)
+  private $category_label =>
+  class Dictionary\Category_Label#16 (3) {
+    private $dictionary =>
+    class Dictionary\Dictionary#4 (1) {
+      private $data =>
+      class Dictionary\MySQL_Data#3 (2) {
+        ...
+      }
+    }
+    private $id =>
+    string(1) "4"
+    private $label =>
+    string(15) "nomen femininum"
+  }
+  private $forms =>
+  array(0) {
+  }
+  private $form_iterator =>
+  int(0)
+  private $headwords =>
+  array(1) {
+    [0] =>
+    class Dictionary\Headword#13 (3) {
+      private $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $id =>
+      string(1) "2"
+      private $value =>
+      string(10) "πόλις"
+    }
+  }
+  private $headword_iterator =>
+  int(1)
+  private $pronunciations =>
+  array(0) {
+  }
+  private $pronunciation_iterator =>
+  int(0)
+  private $phrases =>
+  array(0) {
+  }
+  private $phrase_iterator =>
+  int(0)
+  private $senses =>
+  array(3) {
+    [0] =>
+    class Dictionary\Sense#17 (14) {
+      private $id =>
+      string(1) "6"
+      private $label =>
+      string(1) "1"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "8"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [1] =>
+    class Dictionary\Sense#15 (14) {
+      private $id =>
+      string(1) "7"
+      private $label =>
+      string(1) "2"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(1) "9"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+    [2] =>
+    class Dictionary\Sense#11 (14) {
+      private $id =>
+      string(1) "8"
+      private $label =>
+      string(1) "3"
+      protected $dictionary =>
+      class Dictionary\Dictionary#4 (1) {
+        ...
+      }
+      private $node_id =>
+      string(2) "10"
+      private $translations =>
+      array(1) {
+        ...
+      }
+      private $translation_iterator =>
+      int(1)
+      private $category_label =>
+      bool(false)
+      private $forms =>
+      array(0) {
+        ...
+      }
+      private $form_iterator =>
+      int(0)
+      private $context =>
+      NULL
+      private $phrases =>
+      array(0) {
+        ...
+      }
+      private $phrase_iterator =>
+      int(0)
+      private $senses =>
+      array(0) {
+        ...
+      }
+      private $sense_iterator =>
+      int(0)
+    }
+  }
+  private $sense_iterator =>
+  int(3)
+}
+ <Entry>
+  <H>πόλις</H>
+  <CL>nomen femininum</CL>
+  <Sense>
+   <L>1</L>
+   <T>miasto</T>
+  </Sense>
+  <Sense>
+   <L>2</L>
+   <T>państwo (zależne od miasta)</T>
+  </Sense>
+  <Sense>
+   <L>3</L>
+   <T>obywatele (państwa-miasta)</T>
+  </Sense>
+ </Entry>
+</Dictionary>

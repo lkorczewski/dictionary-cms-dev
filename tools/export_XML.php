@@ -20,6 +20,8 @@ $database = Script::connect_to_database();
 $data = new Dictionary\MySQL_Data($database);
 $dictionary = new Dictionary\Dictionary($data);
 
+$entries = $dictionary->get_entries_by_headword('_sense_test');
+
 //====================================================
 // parsing dictionary
 //====================================================
@@ -28,6 +30,6 @@ $layout = new Dictionary\XML_Layout();
 $layout->parse_dictionary($dictionary, 'php://stdout');
 
 if($db_error = $database->get_last_error()){
-	fwrite(STDERR, $db_error['message'] . "\n" . print_r($db_error, true));
+	fwrite(STDERR, $db_error['message'] . "\n");
 }
 

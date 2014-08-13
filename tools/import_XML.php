@@ -28,6 +28,6 @@ $importer = new Dictionary\XML_Importer($data);
 $importer->parse($XML_file);
 
 if($error = $database->get_last_error()){
-	echo $error['message'] . "\n";
+	fwrite(STDERR, $error['message'] . "\n");
 }
 
