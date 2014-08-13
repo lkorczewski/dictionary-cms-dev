@@ -1,9 +1,13 @@
 ------------------------------------------------------------------------
-T O   D O :
+ I N   P R O G R E S S
+------------------------------------------------------------------------
+ * export of label assignment
+   - complete reassignment when loading over old data?
+
+------------------------------------------------------------------------
+ T O   D O :
 ------------------------------------------------------------------------
  * moving labels when deleting sense
- * setting default user as part of setup process
- * export of label assignment
  * dynamic edition
  * unification of JS codes
  * debugging mode in atomics (query runtime, total runtime)
@@ -16,6 +20,10 @@ T O   D O :
 ------------------------------------------------------------------------
 D O N E :
 ------------------------------------------------------------------------
+
+2014-08-13 (collective update)
+
+ * setting default user as part of setup process
 
 2013-11-15
 
