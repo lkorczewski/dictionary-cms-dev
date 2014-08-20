@@ -15,6 +15,7 @@ class Script {
 	
 	static function set_root_path($root_path){
 		self::$root_path = $root_path;
+		self::add_include_path($root_path);
 	}
 	
 	//--------------------------------------------------------------------
@@ -42,17 +43,17 @@ class Script {
 		// TO DO: absolute paths
 		
 		if(isset($config['include_path'])){
-			set_include_path(
-				get_include_path() .
-				PATH_SEPARATOR .
-				(self::$root_path ? self::$root_path . '/' : '') .
-				$config['include_path']
-			);
+			$include_path = (self::$root_path ? self::$root_path . '/' : '') . $config['include_path'];
+			self::add_include_path($include_path);
 		}
 		
 		return $config;
 	}
-
+	
+	static function add_include_path($path){
+		set_include_path(get_include_path() . PATH_SEPARATOR . realpath($path));
+	}
+	
 	//--------------------------------------------------------------------
 	// start session
 	//--------------------------------------------------------------------

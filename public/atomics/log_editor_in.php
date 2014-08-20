@@ -1,13 +1,13 @@
 <?php
 
-require_once '../include/script.php';
+require_once __DIR__ . '/../../include/script.php';
 
-Script::set_root_path('..');
+Script::set_root_path(__DIR__ . '/../..');
 $config = Script::load_config();
 
 Script::start_session();
 
-require_once '../include/data.php';
+require_once 'include/data.php';
 
 $database = Script::connect_to_database();
 
