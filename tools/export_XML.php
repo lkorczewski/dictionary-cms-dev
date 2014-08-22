@@ -20,8 +20,6 @@ $database = Script::connect_to_database();
 $data = new Dictionary\MySQL_Data($database);
 $dictionary = new Dictionary\Dictionary($data);
 
-$entries = $dictionary->get_entries_by_headword('_sense_test');
-
 //====================================================
 // parsing dictionary
 //====================================================
