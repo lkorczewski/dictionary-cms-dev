@@ -142,7 +142,7 @@ class Script {
 	// returnint success
 	//--------------------------------------------------------------------
 	
-	static function succeed($results = false){
+	static function succeed(array $results = null){
 		$output = '';
 		
 		$output .= '{';

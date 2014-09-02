@@ -6,6 +6,10 @@ require_once 'include/localization.php';
 require_once 'include/edition_layout.php';
 require_once 'include/view_layout.php';
 
+require_once 'views/search.php';
+
+use DCMS\Views\Search_View;
+
 class View {
 	private $data;
 	private $localization;
@@ -16,7 +20,7 @@ class View {
 	
 	public function __construct($data){
 		$this->data = $data;
-		$this->localization = new \Localization();
+		$this->localization = new Localization();
 		$this->localization->set_path($this->data['config']['locale_path']);
 		$this->localization->set_locale($this->data['config']['locale']);
 	}
@@ -25,7 +29,7 @@ class View {
 	// displaying layout with static page
 	//------------------------------------------------------------------------
 	
-	public function show_home_page(){
+	function show_home_page(){
 		$content = '';
 		
 		$content .=
@@ -41,7 +45,7 @@ class View {
 	// displaying layout with entries
 	//------------------------------------------------------------------------
 	
-	public function show_entries(){
+	function show_entries(){
 		
 		if($this->data['entries']){
 			$content = $this->get_entries();
@@ -102,30 +106,42 @@ class View {
 			'<script type="text/javascript" src="scripts/editing.js"></script>' . "\n" .
 			'<script>' . "\n" .
 			'localization.texts = {' . "\n" .
-				//$this->get_translation('no results found') .
-				$this->get_translation('entry not found') .
-				$this->get_translation('create a new one?') .
-				$this->get_translation('create') .
-				$this->get_translation('login') .
-				$this->get_translation('password') .
-				$this->get_translation('log in') .
-				$this->get_translation('cancel') .
-				$this->get_translation('incorrect credentials') .
-				$this->get_translation('log out') .
-				$this->get_translation('delete') .
-				$this->get_translation('up') .
-				$this->get_translation('down') .
-				$this->get_translation('edit') .
-				$this->get_translation('add category label') .
-				$this->get_translation('add form') .
-				$this->get_translation('add context') .
-				$this->get_translation('add translation') .
-				$this->get_translation('add phrase') .
-				$this->get_translation('add sense') .
+				$this->get_translations([
+					//'no results found',
+					'entry not found',
+					'create a new one?',
+					'create',
+					'login',
+					'password',
+					'log in',
+					'cancel',
+					'incorrect credentials',
+					'log out',
+					'delete',
+					'up',
+					'down',
+					'edit',
+					'add category label',
+					'add form',
+					'add context',
+					'add translation',
+					'add phrase',
+					'add sense',
+				]) .
 			'}' . "\n" .
 			'</script>' . "\n" .
 			'</head>' . "\n" .
 			'<body>' . "\n";
+		return $output;
+	}
+	
+	private function get_translations(array $labels){
+		$output = '';
+		
+		foreach($labels as $label){
+			$output .= $this->get_translation($label);
+		}
+		
 		return $output;
 	}
 	
@@ -161,8 +177,8 @@ class View {
 		}
 		
 		$output .=
-			'</div>' . "\n" .  // editor_toolbar
-			'</div>' . "\n";   // toolbar
+			'</div>' . "\n" .  // .editor_toolbar
+			'</div>' . "\n";   // .toolbar
 		
 		return $output;
 	}
@@ -205,7 +221,7 @@ class View {
 		}
 		
 		$output .=
-			'</div>' . "\n";
+			'</div>' . "\n";  // .edition_toolbar
 		
 		return $output;
 	}
@@ -215,94 +231,7 @@ class View {
 	//------------------------------------------------------------------------
 	
 	private function get_search_panel(){
-		$output = '';
-		
-		$output .=
-			'<div id="search_panel">' . "\n" .
-			$this->get_search_bar() .
-			'<div id="search_results_container">' . "\n";
-				
-		if(count($this->data['search_results']) == 0){
-			$output .= $this->get_search_results_not_found();
-		} else {
-			$output .= $this->get_search_results();
-		}
-				
-		$output .=
-			'</div>' . "\n" . // search_results_container
-			'</div>' . "\n"; // search panel
-		
-		return $output;
-	}
-	
-	//------------------------------------------------------------------------
-	
-	private function get_search_bar(){
-		$output = '';
-		
-		$output .=
-			'<form id="search_form" onsubmit="event.preventDefault(); searchHeadwordsLike(document.getElementById(\'search_mask_input\').value)">' . "\n" .
-				'<span id="search_mask_input_wrapper">' .
-					'<input id="search_mask_input" type="text" value="' . $this->data['search_mask'] . '"></input>' .
-				'</span>' . "\n" .
-				'<button id="search_button" type="submit" class="button search">' .
-					$this->localization->get_text('search') .
-				'</button>' . "\n" .
-			'</form>' . "\n";
-		
-		return $output;
-	}
-	
-	//------------------------------------------------------------------------
-	
-	private function get_search_results_not_found(){
-		$output = '';
-		
-		$output .=
-			'<div class="search_message">' . "\n";
-		
-		if($this->data['mode'] == 'edition'){
-			$output .=
-				'<div>' .
-					str_replace('{{1}}', '<b>' . $this->data['search_mask'] . '</b>' , $this->localization->get_text('entry not found')) .
-					/*$this->localization->get_text('no results found') .*/
-					$this->localization->get_text('create a new one?') .
-				'</div>' . "\n" .
-				'<div>' .
-					'<button class="button create" onclick="addEntry(document.getElementById(\'search_mask_input\').value)">' .
-						$this->localization->get_text('create') .
-					'</button>' .
-				'</div>' . "\n";
-		} else {
-			$output .=
-				str_replace('{{1}}', '<b>' . $this->data['search_mask'] . '</b>' , $this->localization->get_text('entry not found'));
-		}
-		
-		$output .=
-			'</div>' . "\n"; // search message
-		
-		return $output;
-	}
-	
-	//------------------------------------------------------------------------
-	
-	private function get_search_results(){
-		$output = '';
-		
-		$mode_parameter = '';
-		if($this->data['mode'] == 'edition')
-			$mode_parameter = '&m=edition';
-		
-		foreach($this->data['search_results'] as $search_result){
-			$output .=
-				'<div class="search_result">' .
-					'<a href="' . '?h=' . $search_result . $mode_parameter . '">' .
-						$search_result .
-					'</a>' .
-				'</div>' . "\n";
-		}		
-		
-		return $output;
+		return (new Search_View($this->data, $this->localization))->render(); 
 	}
 	
 	//------------------------------------------------------------------------
@@ -378,4 +307,3 @@ class View {
 		return $output;
 	}
 }
-

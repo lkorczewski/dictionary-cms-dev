@@ -1,22 +1,19 @@
 <?php
 
+namespace DCMS;
+
 class Localization {
 	
-	private $path;
-	private $locale;
-	private $is_loaded;
-	private $texts;
+	private $path       = '';
+	private $locale     = '';
+	private $is_loaded  = false;
+	private $texts      = [];
 	
 	//------------------------------------------------
-	// contructor
+	// constructor
 	//------------------------------------------------
-	function __construct($locale = NULL){
-		$this->path = '';
-		$this->locale = '';
-		$this->is_loades = false;
-		$this->texts = [];
-		
-		if($locale) set_locale($locale);
+	function __construct($locale = null){
+		if($locale) $this->set_locale($locale);
 	}
 	
 	//------------------------------------------------
@@ -49,6 +46,7 @@ class Localization {
 	function get_text($label){
 		if(!$this->is_loaded){
 			$this->load_texts();
+			$this->is_loaded = true;
 		}
 		
 		if(!isset($this->texts[$label]) || !$this->texts[$label]){
