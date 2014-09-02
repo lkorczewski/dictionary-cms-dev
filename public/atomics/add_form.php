@@ -23,7 +23,7 @@ $form = Script::get_parameter('h', '...');
 // executing query
 //----------------------------------------------------
 
-$form_id = $data->add_form($parent_node_id, $label, $form);
+$form_id = $data->access('form')->add($parent_node_id, $label, $form);
 
 if($form_id === false){
 	Script::fail('query failure');
@@ -33,7 +33,7 @@ if($form_id === false){
 // returning inserted form id
 //----------------------------------------------------
 
-echo Script::succeed([
+Script::succeed([
 	'form_id' => $form_id
 ]);
 

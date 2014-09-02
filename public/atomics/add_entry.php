@@ -21,10 +21,10 @@ if($headword === false)
 // returning entry_id, which is probably wrong
 // what should it return?
 
-$entry_id = $data->add_entry($headword);
+$entry_id = $data->access('entry')->add($headword);
 
 if($entry_id === false){
-	Scritp::fail('query failure');
+	Script::fail('query failure');
 }
 
 // returning OK

@@ -40,19 +40,19 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update':
-		$affected_rows = $data->update_form($form_id, $label, $text);
+		$affected_rows = $data->access('form')->update($form_id, $label, $text);
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->move_form_up($form_id);
+		$affected_rows = $data->access('form')->move_up($form_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->move_form_down($form_id);
+		$affected_rows = $data->access('form')->move_down($form_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_form($form_id);
+		$affected_rows = $data->access('form')->delete($form_id);
 		break;
 	
 }

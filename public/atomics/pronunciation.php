@@ -46,20 +46,24 @@ switch($action){
 		// feedback
 		$parameters['value'] = $text;
 		
-		$affected_rows = $data->update_pronunciation($pronunciation_id, $text);
+		$affected_rows = $data->access('pronunciation')->update($pronunciation_id, $text);
 		
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->move_pronunciation_up($pronunciation_id);
+		$affected_rows = $data->access('pronunciation')->move_up($pronunciation_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->move_pronunciation_down($pronunciation_id);
+		$affected_rows = $data->access('pronunciation')->move_down($pronunciation_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_pronunciation($pronunciation_id);
+		$affected_rows = $data->access('pronunciation')->delete($pronunciation_id);
+		break;
+	
+	default:
+		Script::fail('unrecognized action');
 		break;
 	
 }

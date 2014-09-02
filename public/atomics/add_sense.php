@@ -19,8 +19,8 @@ if($parent_node_id === false)
 // executing query
 //----------------------------------------------------
 
-$node_id = $data->add_sense($parent_node_id);
-$sense_label = $data->get_sense_label($node_id);
+$node_id = $data->access('sense')->add($parent_node_id);
+$sense_label = $data->access('sense')->get_label($node_id);
 
 if($node_id === false){
 	Script::fail('query failure');
@@ -31,7 +31,7 @@ if($node_id === false){
 //----------------------------------------------------
 
 Script::succeed([
-	'node_id' => $node_id,
-	'label' => $sense_label,
+	'node_id'  => $node_id,
+	'label'    => $sense_label,
 ]);
 

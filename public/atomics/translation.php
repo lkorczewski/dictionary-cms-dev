@@ -35,19 +35,23 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update':
-		$affected_rows = $data->update_translation($translation_id, $text);
+		$affected_rows = $data->access('translation')->update($translation_id, $text);
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->move_translation_up($translation_id);
+		$affected_rows = $data->access('translation')->move_up($translation_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->move_translation_down($translation_id);
+		$affected_rows = $data->access('translation')->move_down($translation_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_translation($translation_id);
+		$affected_rows = $data->access('translation')->delete($translation_id);
+		break;
+	
+	default:
+		Script::fail('unrecognized action');
 		break;
 	
 }
@@ -69,4 +73,3 @@ if($affected_rows === 0){
 //----------------------------------------------------
 
 Script::succeed();
-

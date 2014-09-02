@@ -29,15 +29,15 @@ $text = Script::get_parameter('t', '...');
 
 switch($action){
 	case 'add_headword':
-		$result = $data->add_headword($node_id, $text);
+		$result = $data->access('headword')->add($node_id, $text);
 		$result_name = 'headword_id';
 		break;
 	case 'add_pronunciation':
-		$result = $data->add_pronunciation($node_id, $text);
+		$result = $data->access('pronunciation')->add($node_id, $text);
 		$result_name = 'pronunciation_id';
 		break;
 	case 'add_category_label':
-		$result = $data->set_category_label($node_id, $text);
+		$result = $data->access('category_label')->set($node_id, $text);
 		$result_name = 'category_label_id';
 		break;
 	default:

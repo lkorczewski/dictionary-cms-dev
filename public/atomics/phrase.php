@@ -33,19 +33,23 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update' :
-		$affected_rows = $data->update_phrase($node_id, $text);
+		$affected_rows = $data->access('phrase')->update($node_id, $text);
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->move_phrase_up($node_id);
+		$affected_rows = $data->access('phrase')->move_up($node_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->move_phrase_down($node_id);
+		$affected_rows = $data->access('phrase')->move_down($node_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->delete_phrase($node_id);
+		$affected_rows = $data->access('phrase')->delete($node_id);
+		break;
+	
+	default:
+		Script::fail('unrecognized action');
 		break;
 	
 }
