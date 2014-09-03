@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/../bootstrap.php';
+
 require_once __DIR__ . '/../include/script.php';
 
 Script::set_root_path(__DIR__ . '/..');
@@ -7,9 +9,9 @@ $config = Script::load_config();
 
 Script::start_session();
 
-require_once 'database/database.php';
-require_once 'dictionary/mysql_data.php';
-require_once 'dictionary/dictionary.php';
+//require_once 'database/database.php';
+//require_once 'dictionary/mysql_data.php';
+//require_once 'dictionary/dictionary.php';
 
 require_once 'include/view.php';
 
@@ -39,9 +41,9 @@ if(isset($_SESSION['edition_mode']) && $_SESSION['edition_mode'] === true){
 // content construction
 //====================================================
 
-$database = Script::connect_to_database();
-$data = new \Dictionary\MySQL_Data($database);
-$dictionary = new \Dictionary\Dictionary($data);
+//$database = Script::connect_to_database();
+//$data = new \Dictionary\MySQL_Data($database);
+//$dictionary = new \Dictionary\Dictionary($data);
 
 //====================================================
 
@@ -51,12 +53,12 @@ $dictionary = new \Dictionary\Dictionary($data);
 
 require_once __DIR__ . '/../controllers/entry.php';
 use DCMS\Controllers\Entry_Controller;
-$entry_controller = new Entry_Controller($dictionary);
+$entry_controller = new Entry_Controller($services->get('dictionary'));
 $entry_data = $entry_controller->execute();
 
 require_once __DIR__ . '/../controllers/search.php';
 use DCMS\Controllers\Search_Controller;
-$search_controller = new Search_Controller($dictionary, $config);
+$search_controller = new Search_Controller($services->get('dictionary'), $services->get('config'));
 $search_data = $search_controller->execute();
 
 //----------------------------------------------------
@@ -64,7 +66,7 @@ $search_data = $search_controller->execute();
 //----------------------------------------------------
 
 $data = [
-	'config'        => $config,
+	'config'        => $services->get('config'),
 	'mode'          => $mode,
 	'editor'        => $editor,
 	'show_toolbar'  => $show_toolbar,
@@ -83,3 +85,4 @@ if($data['headword'] == ''){
 } else {
 	$view->show_entries();
 }
+

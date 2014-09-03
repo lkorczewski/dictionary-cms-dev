@@ -20,9 +20,10 @@ class View {
 	
 	public function __construct($data){
 		$this->data = $data;
-		$this->localization = new Localization();
-		$this->localization->set_path($this->data['config']['locale_path']);
-		$this->localization->set_locale($this->data['config']['locale']);
+		$this->localization = new Localization(
+			$this->data['config']->get('locale_path'),
+			$this->data['config']->get('locale')
+		);
 	}
 	
 	//------------------------------------------------------------------------
@@ -97,7 +98,7 @@ class View {
 			'<!DOCTYPE html>' . "\n" .
 			'<html>' . "\n" .
 			'<head>' . "\n" .
-			'<title>' . $this->data['config']['title'] . '</title>' . "\n" .
+			'<title>' . $this->data['config']->get('title') . '</title>' . "\n" .
 			'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
 			'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
 			'<script type="text/javascript" src="scripts/DOM_extension.js"></script>' . "\n" .
@@ -191,7 +192,7 @@ class View {
 		$output =
 			'<div class="title">' .
 				'<h1>' .
-					$this->data['config']['title'] .
+					$this->data['config']->get('title') .
 				'</h1>' .
 			'</div>';
 		
@@ -307,3 +308,4 @@ class View {
 		return $output;
 	}
 }
+
