@@ -27,6 +27,26 @@ require_once 'dictionary/traits/has_translations.php';
 
 require_once 'include/localization.php';
 
+use Dictionary\Entry;
+use Dictionary\Sense;
+use Dictionary\Phrase;
+use Dictionary\Form;
+use Dictionary\Headword;
+use Dictionary\Pronunciation;
+use Dictionary\Translation;
+
+use Dictionary\Node;
+use Dictionary\Value;
+
+use Dictionary\Node_With_Senses;
+use Dictionary\Node_With_Phrases;
+use Dictionary\Node_With_Headwords;
+use Dictionary\Node_With_Pronunciations;
+use Dictionary\Node_With_Category_Label;
+use Dictionary\Node_With_Forms;
+use Dictionary\Node_With_Context;
+use Dictionary\Node_With_Translations;
+
 class Edition_Layout{
 	
 	private $output;
@@ -37,7 +57,7 @@ class Edition_Layout{
 	// constructor
 	//--------------------------------------------------------------------
 	
-	function __construct($localization){
+	function __construct(Localization $localization){
 		$this->output = '';
 		$this->depth = 0;
 		$this->localization = $localization;
@@ -47,7 +67,7 @@ class Edition_Layout{
 	// public parser
 	//--------------------------------------------------------------------
 
-	function parse(\Dictionary\Entry $entry){
+	function parse(Entry $entry){
 		
 		$this->output = '';
 		$this->parse_entry($entry);
@@ -59,48 +79,34 @@ class Edition_Layout{
 	// entry parser
 	//--------------------------------------------------------------------
 
-	private function parse_entry(\Dictionary\Entry $entry){
+	private function parse_entry(Entry $entry){
 		$this->output .= '<div class="entry_container">' . "\n";
 		
-		// headwords
 		$this->parse_headwords($entry);
 		
 		$this->output .= '<div class="content entry_content">' . "\n";
-
-		// pronunciations
+		
 		$this->parse_pronunciations($entry);
-		
-		// category label
 		$this->parse_category_label($entry);
-		
-		// forms
 		$this->parse_forms($entry);
-		
-		// translations
 		$this->parse_translations($entry);
-		
-		// phrases
 		$this->parse_phrases($entry);
-		
-		// senses
 		$this->parse_senses($entry);
 		
-		// closing entry content
-		$this->output .= '</div>' . "\n";
+		$this->output .= '</div>' . "\n"; // .content.entry_content
 		
-		// closing entry container
-		$this->output .= '</div>' . "\n";
+		$this->output .= '</div>' . "\n"; // .entry_container
 	}
 	
 	//--------------------------------------------------------------------
 	// sense nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_senses(/*Node*/ $node){
+	private function parse_senses(Node_With_Senses $node){
 		
 		// senses
 		$this->output .= '<div class="senses">' . "\n";
-		while($sense = $node->get_sense()){
+		foreach($node->get_senses() as $sense){
 			$this->parse_sense($sense);
 		}
 		$this->output .= '</div>' . "\n";
@@ -121,7 +127,7 @@ class Edition_Layout{
 	// sense parser
 	//--------------------------------------------------------------------
 	
-	private function parse_sense(\Dictionary\Sense $sense){
+	private function parse_sense(Sense $sense){
 		
 		$this->output .= '<div class="sense_container">' . "\n";
 		
@@ -144,7 +150,7 @@ class Edition_Layout{
 					')">' .
 						$this->localization->get_text('down') .
 					'</button>' . "\n" .
-
+					
 					'<button class="button delete" onclick="deleteSense(this.parentNode.parentNode.parentNode, ' .
 					$sense->get_node_id() .
 					')">' .
@@ -156,40 +162,27 @@ class Edition_Layout{
 		
 		$this->output .= '<div class="content sense_content">' . "\n";
 		
-		// category label
 		$this->parse_category_label($sense);
-		
-		// forms
 		$this->parse_forms($sense);
-		
-		// context
 		$this->parse_context($sense);
-
-		// translations
 		$this->parse_translations($sense);
-		
-		// phrases
 		$this->parse_phrases($sense);
-		
-		// subsenses
 		$this->parse_senses($sense);
-
-		// closing sense content
-		$this->output .= '</div>' . "\n";
 		
-		// closing sense container
-		$this->output .= '</div>' . "\n";
+		$this->output .= '</div>' . "\n"; // .content.sense_content
+		
+		$this->output .= '</div>' . "\n"; // .sense_container
 	}
 	
 	//--------------------------------------------------------------------
 	// phrase nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrases(\Dictionary\Node_With_Phrases $node){
+	private function parse_phrases(Node_With_Phrases $node){
 		
 		// phrases
 		$this->output .= '<div class="phrases">' . "\n";
-		while($phrase = $node->get_phrase()){
+		foreach($node->get_phrases() as $phrase){
 			$this->parse_phrase($phrase);
 		}
 		$this->output .= '</div>' . "\n";
@@ -210,7 +203,7 @@ class Edition_Layout{
 	// phrase parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrase(\Dictionary\Phrase $phrase){
+	private function parse_phrase(Phrase $phrase){
 		
 		$this->output .= '<div class="phrase_container">' . "\n";
 		
@@ -223,7 +216,7 @@ class Edition_Layout{
 					$phrase->get() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
-
+					
 					'<button class="button edit" onclick="editPhrase(this.parentNode.parentNode, ' .
 					$phrase->get_node_id() .
 					')">' .
@@ -253,14 +246,11 @@ class Edition_Layout{
 		
 		$this->output .= '<div class="content phrase_content">' . "\n";
 		
-		// translations
 		$this->parse_translations($phrase);
 		
-		// closing phrase content
-		$this->output .= '</div>' . "\n";
+		$this->output .= '</div>' . "\n"; // .content.phrase_content
 		
-		// closing phrase container
-		$this->output .= '</div>' . "\n";
+		$this->output .= '</div>' . "\n"; // .phrase_container
 		
 	}
 	
@@ -268,10 +258,10 @@ class Edition_Layout{
 	// headword nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headwords(\Dictionary\Node_With_Headwords $node){
+	private function parse_headwords(Node_With_Headwords $node){
 		
 		$this->output .= '<div class="headwords">' . "\n";
-		while($headword = $node->get_headword()){
+		foreach($node->get_headwords() as $headword){
 			$this->parse_headword($headword);
 		}
 		$this->output .= '</div>' . "\n";
@@ -292,7 +282,7 @@ class Edition_Layout{
 	// headword parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headword(\Dictionary\Headword $headword){
+	private function parse_headword(Headword $headword){
 		$this->output .=
 			'<div class="bar headword_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element headword" onclick="editHeadword(this.parentNode, ' .
@@ -308,10 +298,10 @@ class Edition_Layout{
 	// pronunciation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_pronunciations(\Dictionary\Node_With_Pronunciations $node){
+	private function parse_pronunciations(Node_With_Pronunciations $node){
 		
 		$this->output .= '<div class="pronunciations">' . "\n";
-		while($pronunciation = $node->get_pronunciation()){
+		foreach($node->get_pronunciations() as $pronunciation){
 			$this->parse_pronunciation($pronunciation);
 		}
 		$this->output .= '</div>' . "\n";
@@ -332,7 +322,7 @@ class Edition_Layout{
 	// pronunciation parser
 	//--------------------------------------------------------------------
 	
-	private function parse_pronunciation(\Dictionary\Pronunciation $pronunciation){
+	private function parse_pronunciation(Pronunciation $pronunciation){
 		$this->output .=
 			'<div class="bar pronunciation_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element pronunciation" onclick="editPronunciation(this.parentNode, ' .
@@ -349,7 +339,7 @@ class Edition_Layout{
 	// category label parser
 	//--------------------------------------------------------------------
 	
-	private function parse_category_label(\Dictionary\Node_With_Category_Label $node){
+	private function parse_category_label(Node_With_Category_Label $node){
 		
 		$category_label = $node->get_category_label();
 		
@@ -372,7 +362,6 @@ class Edition_Layout{
 			'</div>' . "\n";
 		
 		if(!$category_label){
-		
 			$this->output .=
 				'<div class="button_bar category_label_button_bar">' . "\n" .
 					'<button class="button add_category_label" onclick="addCategoryLabel(this.parentNode.parentNode, ' . 
@@ -381,20 +370,19 @@ class Edition_Layout{
 						$this->localization->get_text('add category label') .
 					'</button>' . "\n" .
 				'</div>' . "\n";
-			
 		}
 		
 	}
-
+	
 	//--------------------------------------------------------------------
 	// form nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_forms(\Dictionary\Headword_Node $node){
+	private function parse_forms(Node_With_Forms $node){
 		
 		// forms
 		$this->output .= '<div class="forms">' . "\n";
-		while($form = $node->get_form()){
+		foreach($node->get_forms() as $form){
 			$this->parse_form($form);
 		}
 		$this->output .= '</div>' . "\n";
@@ -415,7 +403,7 @@ class Edition_Layout{
 	// form parser
 	//--------------------------------------------------------------------
 	
-	private function parse_form(\Dictionary\Form $form){
+	private function parse_form(Form $form){
 		$this->output .=
 			'<div class="bar form_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element form_label" onclick="editForm(this.parentNode, ' .
@@ -447,7 +435,7 @@ class Edition_Layout{
 					')">' .
 						$this->localization->get_text('down') .
 					'</button>' . "\n" .
-
+					
 					'<button class="button delete" onclick="deleteForm(this.parentNode.parentNode, ' .
 					$form->get_id() .
 					')">' .
@@ -462,7 +450,7 @@ class Edition_Layout{
 	// context parser
 	//--------------------------------------------------------------------
 	
-	private function parse_context(\Dictionary\Node_With_Context $node){
+	private function parse_context(Node_With_Context $node){
 		
 		$context = $node->get_context();
 		
@@ -498,16 +486,16 @@ class Edition_Layout{
 		}
 		
 	}
-
+	
 	//--------------------------------------------------------------------
 	// translation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translations(\Dictionary\Node_With_Translations $node){
-	
+	private function parse_translations(Node_With_Translations $node){
+		
 		// translations
 		$this->output .= '<div class="translations">' . "\n";
-		while($translation = $node->get_translation()){
+		foreach($node->get_translations() as $translation){
 			$this->parse_translation($translation);
 		}
 		$this->output .= '</div>' . "\n";
@@ -528,7 +516,7 @@ class Edition_Layout{
 	// translation parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translation(\Dictionary\Translation $translation){
+	private function parse_translation(Translation $translation){
 		$this->output .=
 			'<div class="bar translation_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element translation" onclick="editTranslation(this.parentNode, ' .
@@ -544,7 +532,7 @@ class Edition_Layout{
 	// two buttons
 	//--------------------------------------------------------------------
 	
-	private function get_two_buttons(\Dictionary\Node $parent_node, $parameters){
+	private function get_two_buttons(Node $parent_node, $parameters){
 		
 		$output =
 			'<div class="buttons">' . "\n" .
@@ -570,7 +558,7 @@ class Edition_Layout{
 	// four buttons
 	//--------------------------------------------------------------------
 	
-	private function get_four_buttons(\Dictionary\Value $value, $parameters){
+	private function get_four_buttons(Value $value, $parameters){
 		
 		$output =
 			'<div class="buttons">' . "\n" .
@@ -604,4 +592,3 @@ class Edition_Layout{
 		return $output;
 	}
 }
-
