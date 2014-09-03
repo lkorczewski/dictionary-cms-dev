@@ -42,3 +42,4 @@ if($drop_table_result === false){
 }
 
 exit('Success!' . "\n");
+
