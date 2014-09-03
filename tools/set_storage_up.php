@@ -5,15 +5,15 @@
 // initialization
 //====================================================
 
-require_once '../include/script.php';
+require_once __DIR__ . '/../include/script.php';
 
-Script::set_root_path('..');
+Script::set_root_path(__DIR__ . '/..');
 $config = Script::load_config();
 
 require_once 'database/database.php';
 require_once 'dictionary/mysql_data.php';
 require_once 'dictionary/dictionary.php';
-require_once '../include/data.php';
+require_once 'include/data.php';
 
 // unsuccessful connection should result in an error too
 
@@ -59,5 +59,5 @@ if($result === false){
 	exit;
 }
 
-echo 'Storage sucessfully set up.' . "\n";
+echo 'Storage successfully set up.' . "\n";
 

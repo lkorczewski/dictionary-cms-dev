@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?php
 
+use Dictionary\XML_Layout;
+
 //====================================================
 // initialization
 //====================================================
@@ -8,23 +10,20 @@
 require_once __DIR__ . '/../include/script.php';
 
 Script::set_root_path(__DIR__ . '/..');
-$config = Script::load_config();
+Script::load_config();
 
-require_once 'database/database.php';
-require_once 'dictionary/mysql_data.php';
-require_once 'dictionary/dictionary.php';
 require_once 'dictionary/layouts/XML_layout.php';
 
-$database = Script::connect_to_database();
-
-$data = new Dictionary\MySQL_Data($database);
-$dictionary = new Dictionary\Dictionary($data);
+require 'bootstrap.php';
 
 //====================================================
 // parsing dictionary
 //====================================================
 
-$layout = new Dictionary\XML_Layout();
+$database    = $services->get('database');
+$dictionary  = $services->get('dictionary');
+
+$layout = new XML_Layout();
 $layout->parse_dictionary($dictionary, 'php://stdout');
 
 if($db_error = $database->get_last_error()){
