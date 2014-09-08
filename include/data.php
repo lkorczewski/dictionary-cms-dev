@@ -2,6 +2,8 @@
 
 namespace DCMS;
 
+use \Database\Database;
+
 require_once 'database/database.php';
 
 class Data {
@@ -12,7 +14,7 @@ class Data {
 	// constructor
 	//------------------------------------------------------------------------
 	
-	function __construct($database){
+	function __construct(Database $database){
 		$this->database = $database;
 	}
 	
