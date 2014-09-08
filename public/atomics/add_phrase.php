@@ -21,7 +21,7 @@ $phrase = Script::get_parameter('t', '...');
 // executing query
 //----------------------------------------------------
 
-$node_id = $data->access('phrase')->add($parent_node_id, $phrase);
+$node_id = $services->get('data')->access('phrase')->add($parent_node_id, $phrase);
 
 if($node_id === false){
 	Script::fail('query failure');

@@ -33,19 +33,19 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update' :
-		$affected_rows = $data->access('phrase')->update($node_id, $text);
+		$affected_rows = $services->get('data')->access('phrase')->update($node_id, $text);
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->access('phrase')->move_up($node_id);
+		$affected_rows = $services->get('data')->access('phrase')->move_up($node_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->access('phrase')->move_down($node_id);
+		$affected_rows = $services->get('data')->access('phrase')->move_down($node_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->access('phrase')->delete($node_id);
+		$affected_rows = $services->get('data')->access('phrase')->delete($node_id);
 		break;
 	
 	default:

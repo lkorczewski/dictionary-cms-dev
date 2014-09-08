@@ -7,14 +7,14 @@ use Dictionary\XML_Importer;
 // initialization
 //====================================================
 
+require __DIR__ . '/../bootstrap.php';
+
 require_once __DIR__ . '/../include/script.php';
 
 Script::set_root_path(__DIR__ . '/..');
 Script::load_config();
 
 require_once 'dictionary/import/XML_importer.php';
-
-require 'bootstrap.php';
 
 //====================================================
 // parsing

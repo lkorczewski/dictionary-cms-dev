@@ -34,10 +34,10 @@ if($action == 'set'){
 
 switch($action){
 	case 'set':
-		$rows_affected = $data->access('context')->set($parent_node_id, $text);
+		$rows_affected = $services->get('data')->access('context')->set($parent_node_id, $text);
 		break;
 	case 'delete':
-		$rows_affected = $data->access('context')->delete($parent_node_id);
+		$rows_affected = $services->get('data')->access('context')->delete($parent_node_id);
 		break;
 	default:
 		Script::fail('unrecognized action');
@@ -57,3 +57,4 @@ if($rows_affected === 0){
 //----------------------------------------------------
 
 Script::succeed();
+

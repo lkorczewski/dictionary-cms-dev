@@ -35,19 +35,19 @@ if($action == 'add_context'){
 switch($action){
 	
 	case 'move_up':
-		$affected_rows = $data->access('sense')->move_up($node_id);
+		$affected_rows = $services->get('data')->access('sense')->move_up($node_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->access('sense')->move_down($node_id);
+		$affected_rows = $services->get('data')->access('sense')->move_down($node_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->access('sense')->delete($node_id);
+		$affected_rows = $services->get('data')->access('sense')->delete($node_id);
 		break;
 	
 	case 'add_context':
-		$affected_rows = $data->access('sense')->set_context($node_id, $text);
+		$affected_rows = $services->get('data')->access('sense')->set_context($node_id, $text);
 		break;
 	
 	default:
@@ -73,3 +73,4 @@ if($affected_rows === 0){
 //  maybe the result should be number of affected rows?
 
 Script::succeed();
+

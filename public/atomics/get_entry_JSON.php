@@ -7,27 +7,22 @@
 
 require '_authorized_header.php';
 
-require_once 'dictionary/dictionary.php';
-require_once 'dictionary/entry.php';
 require_once 'dictionary/layouts/table_layout.php';
 
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$headword = Script::get_parameter('h');
-if($headword === false)
+$node_id = Script::get_parameter('n');
+if($node_id === false){
 	Script::fail('no parameter');
+}
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$database = Script::connect_to_database();
-$data = new MySQL_Data($database);
-
-$dictionary = new Dictionary($data);
-$entry = $dictionary->get_entry($headword);
+$entry = $services->get('dictionary')->get_entry_by_id($headword);
 
 if($entry === null){
 	Script::fail('not found');

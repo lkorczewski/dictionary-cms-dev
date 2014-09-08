@@ -35,19 +35,19 @@ if($action == 'update'){
 switch($action){
 	
 	case 'update':
-		$affected_rows = $data->access('headword')->update($headword_id, $text);
+		$affected_rows = $services->get('data')->access('headword')->update($headword_id, $text);
 		break;
 	
 	case 'move_up':
-		$affected_rows = $data->access('headword')->move_up($headword_id);
+		$affected_rows = $services->get('data')->access('headword')->move_up($headword_id);
 		break;
 	
 	case 'move_down':
-		$affected_rows = $data->access('headword')->move_down($headword_id);
+		$affected_rows = $services->get('data')->access('headword')->move_down($headword_id);
 		break;
 	
 	case 'delete':
-		$affected_rows = $data->access('headword')->delete($headword_id);
+		$affected_rows = $services->get('data')->access('headword')->delete($headword_id);
 		break;
 	
 	default:

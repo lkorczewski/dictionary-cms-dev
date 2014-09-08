@@ -12,13 +12,15 @@ require '_authorized_header.php';
 //----------------------------------------------------
 
 $node_id = Script::get_parameter('n');
-if($node_id === false) Script::fail('no parameter');
+if($node_id === false){
+	Script::fail('no parameter');
+}
 
 //----------------------------------------------------
 // executing query
 //----------------------------------------------------
 
-$success = $data->delete_entry($node_id);
+$success = $services->get('data')->delete_entry($node_id);
 
 if($success === false){
 	Script::fail('query failure');

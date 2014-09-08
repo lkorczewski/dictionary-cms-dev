@@ -7,14 +7,14 @@ use Dictionary\XML_Layout;
 // initialization
 //====================================================
 
+require 'bootstrap.php';
+
 require_once __DIR__ . '/../include/script.php';
 
 Script::set_root_path(__DIR__ . '/..');
 Script::load_config();
 
 require_once 'dictionary/layouts/XML_layout.php';
-
-require 'bootstrap.php';
 
 //====================================================
 // parsing dictionary

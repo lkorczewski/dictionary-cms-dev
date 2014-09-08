@@ -1,15 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../include/script.php';
-
-Script::set_root_path(__DIR__ . '/../..');
-$config = Script::load_config();
-
-Script::start_session();
+require_once __DIR__ . '/_public_header.php';
 
 require_once 'include/data.php';
-
-$database = Script::connect_to_database();
 
 //----------------------------------------------------
 // setting parameters
@@ -29,9 +22,7 @@ if($password === false){
 // executing query
 //----------------------------------------------------
 
-$data = new \DCMS\Data($database);
-
-$editor_result = $data->get_editor($login, $password);
+$editor_result = $services->get('dcms_data')->get_editor($login, $password);
 
 if($editor_result === false){
 	Script::fail('query failure');

@@ -21,7 +21,7 @@ $text = Script::get_parameter('t', '...');
 // executing query
 //----------------------------------------------------
 
-$translation_id = $data->access('translation')->add($sense_id, $text);
+$translation_id = $services->get('data')->access('translation')->add($sense_id, $text);
 
 if($translation_id === false){
 	Script::fail('query failure');

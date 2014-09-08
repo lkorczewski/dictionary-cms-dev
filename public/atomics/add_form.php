@@ -23,7 +23,7 @@ $form = Script::get_parameter('h', '...');
 // executing query
 //----------------------------------------------------
 
-$form_id = $data->access('form')->add($parent_node_id, $label, $form);
+$form_id = $services->get('data')->access('form')->add($parent_node_id, $label, $form);
 
 if($form_id === false){
 	Script::fail('query failure');

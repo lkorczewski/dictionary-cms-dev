@@ -45,5 +45,10 @@ return new Service_Container([
 		return new Dictionary($services->get('data'));
 	},
 	
+	'dcms_data' => function(Service_Container $services){
+		require_once __DIR__ . '/include/data.php';
+		return new \DCMS\Data($services->get('database'));
+	},
+	
 ]);
 

@@ -1,11 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../include/script.php';
-
-Script::set_root_path(__DIR__ . '/../..');
-$config = Script::load_config();
-
-Script::start_session();
+require_once __DIR__ . '/_public_header.php';
 
 //----------------------------------------------------
 // unregistering user
