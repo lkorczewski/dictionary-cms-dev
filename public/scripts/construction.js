@@ -246,10 +246,10 @@ function makeFormBar(formLabel, formText, formId){
 	formBar.appendChild(form)
 	
 	var buttons = makeButtons({
-		'edit'   : function() { editForm(formBar, formId)},
-		'up'     : function() { moveFormUp(formBar, formId)},
-		'down'   : function() { moveFormDown(formBar, formId)},
-		'delete' : function() { deleteForm(formBar, formId)},
+		'edit'   : function() { editForm(formBar, formId) },
+		'up'     : function() { moveFormUp(formBar, formId) },
+		'down'   : function() { moveFormDown(formBar, formId) },
+		'delete' : function() { deleteForm(formBar, formId) },
 	})
 	formBar.appendChild(buttons)
 	
@@ -267,7 +267,7 @@ function makeContextBar(text, parentNodeId){
 	
 	var buttons = makeButtons({
 		'edit'   : function(){ editContext(categoryLabelBar, parentNodeId) },
-		'delete' : function(){ deleteContext(categoryLabelBar, parentNodeId) }
+		'delete' : function(){ deleteContext(categoryLabelBar, parentNodeId) },
 
 	})
 	contextBar.appendChild(buttons)

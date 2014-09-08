@@ -89,7 +89,7 @@ function updateValue(valueName, valueBar, valueId, newText, doOnSuccess, doOnFai
 function moveNodeUp(name, element, nodeId){
 	var action = actionPath + '/' + name + '.php'
 	var parameters =
-		'n=' + encodeURIComponent(id) +
+		'n=' + encodeURIComponent(nodeId) +
 		'&a=move_up'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
@@ -104,7 +104,7 @@ function moveNodeUp(name, element, nodeId){
 function moveNodeDown(name, element, nodeId){
 	var action = actionPath + '/' + name + '.php'
 	var parameters =
-		'n=' + encodeURIComponent(id) +
+		'n=' + encodeURIComponent(nodeId) +
 		'&a=move_down'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
@@ -405,7 +405,7 @@ function moveHeadwordUp(headwordBar, headwordId){
 	moveValueUp('headword', headwordBar, headwordId)
 }
 
-function moveHeadowrdDown(headwordBar, headwordId){
+function moveHeadwordDown(headwordBar, headwordId){
 	moveValueDown('headword', headwordBar, headwordId)
 }
 
@@ -716,7 +716,7 @@ function deleteContext(contextBar, parentNodeId){
 		success: function(response){
 			if(response.status == 'success'){
 				contextBar.remove()
-				// there needs to show the button adding the label
+				// there needs to show up the button adding the label
 			}
 		}
 	})	
