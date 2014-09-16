@@ -26,7 +26,7 @@ class Script {
 		
 		// loading config
 		$config = [];
-		require_once (self::$root_path ? self::$root_path . '/' : '') . 'config.php';
+		require (self::$root_path ? self::$root_path . '/' : '') . 'config.php';
 		self::$config = $config;
 		
 		// implementing configuration
