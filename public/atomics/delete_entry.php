@@ -7,13 +7,22 @@
 
 require '_authorized_header.php';
 
+use \DCMS\Request;
+use \DCMS\JSON_Response;
+
+/** @var Request $request */
+$request = $services->get('request');
+
+/** @var JSON_Response $json_response */
+$json_response = $services->get('json_response');
+
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$node_id = Script::get_parameter('n');
+$node_id = $request->get_parameter('n');
 if($node_id === false){
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 //----------------------------------------------------
@@ -23,12 +32,12 @@ if($node_id === false){
 $success = $services->get('data')->delete_entry($node_id);
 
 if($success === false){
-	Script::fail('query failure');
+	$json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 }
 
 //----------------------------------------------------
 // returning OK
 //----------------------------------------------------
 
-Script::succeed();
+$json_response->succeed();
 

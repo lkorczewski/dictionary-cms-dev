@@ -1,15 +1,21 @@
 <?php
 
 use Core\Service_Container;
+use Config\Config;
 use Database\Database;
 use Dictionary\MySQL_Data;
 use Dictionary\Dictionary;
+
+use DCMS\Request;
+use DCMS\Session;
+use DCMS\Data as DCMS_Data;
+use DCMS\JSON_Response;
 
 return new Service_Container([
 	
 	'config' => function(){
 			require __DIR__ . '/config.php';
-			return new \Config\Config($config);
+			return new Config($config);
 		},
 	
 	'database' => function(Service_Container $services){
@@ -47,8 +53,37 @@ return new Service_Container([
 	
 	'dcms_data' => function(Service_Container $services){
 		require_once __DIR__ . '/include/data.php';
-		return new \DCMS\Data($services->get('database'));
+		return new DCMS_Data($services->get('database'));
 	},
 	
+	'request' => function(Service_Container $services){
+		require_once __DIR__ . '/include/request.php';
+		return new Request($services->get('config'));
+	},
+	
+	'session' => function(Service_Container $services){
+		
+		/** @var \Config\Config_Interface $config */
+		$config = $services->get('config');
+		
+		$parameters = [];
+		if($config->has('session_name')){
+			$parameters['name'] = $config->get('session_name');
+		}
+		if($config->has('session_domain')){
+			$parameters['domain'] = $config->get('session_domain');
+		}
+		if($config->has('session_path')){
+			$parameters['path'] = $config->get('session_path');
+		}
+		
+		require_once __DIR__ . '/include/session.php';
+		return new Session($parameters);
+	},
+	
+	'json_response' => function(){
+		require_once __DIR__ . '/include/json_response.php';
+		return new JSON_Response();
+	},
 ]);
 

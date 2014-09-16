@@ -7,13 +7,22 @@
 
 require '_authorized_header.php';
 
+use \DCMS\Request;
+use \DCMS\JSON_Response;
+
+/** @var Request $request */
+$request = $services->get('request');
+
+/** @var JSON_Response $json_response */
+$json_response = $services->get('json_response');
+
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$headword = Script::get_parameter('h');
+$headword = $request->get_parameter('h');
 if($headword === false)
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
 //----------------------------------------------------
 // executing query
@@ -24,10 +33,12 @@ if($headword === false)
 $entry_id = $services->get('data')->access('entry')->add($headword);
 
 if($entry_id === false){
-	Script::fail('query failure');
+	$json_response->fail('query failure');
 }
 
+//----------------------------------------------------
 // returning OK
+//----------------------------------------------------
 
-Script::succeed();
+$json_response->succeed();
 

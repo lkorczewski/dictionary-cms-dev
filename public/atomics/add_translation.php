@@ -7,15 +7,24 @@
 
 require '_authorized_header.php';
 
+use \DCMS\Request;
+use \DCMS\JSON_Response;
+
+/** @var Request $request */
+$request = $services->get('request');
+
+/** @var JSON_Response $json_response */
+$json_response = $services->get('json_response');
+
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$sense_id = Script::get_parameter('id');
+$sense_id = $request->get_parameter('id');
 if($sense_id === false)
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
-$text = Script::get_parameter('t', '...');
+$text = $request->get_parameter('t', '...');
 
 //----------------------------------------------------
 // executing query
@@ -24,14 +33,14 @@ $text = Script::get_parameter('t', '...');
 $translation_id = $services->get('data')->access('translation')->add($sense_id, $text);
 
 if($translation_id === false){
-	Script::fail('query failure');
+	$json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 }
 
 //----------------------------------------------------
 // returning id of new translation
 //----------------------------------------------------
 
-Script::succeed([
+$json_response->succeed([
 	'translation_id' => $translation_id
 ]);
 

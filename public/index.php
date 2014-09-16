@@ -7,8 +7,6 @@ require_once __DIR__ . '/../include/script.php';
 Script::set_root_path(__DIR__ . '/..');
 Script::load_config();
 
-Script::start_session();
-
 require_once 'include/view.php';
 
 //====================================================
@@ -19,17 +17,17 @@ require_once 'include/view.php';
 // if mode = READ_ONLY, then the log-in toolbar is not shown
 
 $show_toolbar = true;
-if(isset($config['hide_toolbar']) && $config['hide_toolbar'] === true){
+if($services->get('config')->get('hide_toolbar') === true){
 	$show_toolbar = false;
 }
 
-$editor = isset($_SESSION['editor']) ? $_SESSION['editor'] : ''; // do wyrzucenia
+$editor = $services->get('session')->get('editor', ''); // do wyrzucenia
 
 $mode = 'view';
 if(isset($_GET['m']) && $_GET['m'] == 'edition'){
 	$mode = 'edition';
 }
-if(isset($_SESSION['edition_mode']) && $_SESSION['edition_mode'] === true){
+if($services->get('config')->get('edition_mode') === true){
 	$mode = 'edition';
 }
 

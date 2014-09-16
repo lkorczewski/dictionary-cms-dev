@@ -2,14 +2,15 @@
 
 require_once __DIR__ . '/_public_header.php';
 
-$data    = $services->get('data');
-$config  = $services->get('config');
+$data     = $services->get('data');
+$config   = $services->get('config');
+$request  = $services->get('request');
 
 //----------------------------------------------------
 // parameters
 //----------------------------------------------------
 
-$headword_mask = Script::get_parameter('h');
+$headword_mask = $request->get_parameter('h');
 $_SESSION['search_mask'] = $headword_mask;
 
 //----------------------------------------------------

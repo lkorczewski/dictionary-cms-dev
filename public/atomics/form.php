@@ -7,28 +7,37 @@
 
 require '_authorized_header.php';
 
+use \DCMS\Request;
+use \DCMS\JSON_Response;
+
+/** @var Request $request */
+$request = $services->get('request');
+
+/** @var JSON_Response $json_response */
+$json_response = $services->get('json_response');
+
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$form_id = Script::get_parameter('id');
+$form_id = $request->get_parameter('id');
 if($form_id === false)
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
-$action = Script::get_parameter('a');
+$action = $request->get_parameter('a');
 if($action === false)
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
 if($action == 'update'){
 	
-	$label = Script::get_parameter('l');
+	$label = $request->get_parameter('l');
 	if($label === false){
-		Script::fail('no parameter');
+		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 	
-	$text = Script::get_parameter('t');
+	$text = $request->get_parameter('t');
 	if($text === false){
-		Script::fail('no parameter');
+		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 	
 }
@@ -55,17 +64,22 @@ switch($action){
 		$affected_rows = $services->get('data')->access('form')->delete($form_id);
 		break;
 	
+	default:
+		$json_response->fail(JSON_Response::MESSAGE_UNRECOGNIZED_ACTION);
+		break;
 }
 
 if($affected_rows === false){
-	Scritp::fail('query failure');
+	$json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 }
 
 if($affected_rows === 0){
-	Script::fail('nothing affected');
+	$json_response->fail(JSON_Response::MESSAGE_NOTHING_AFFECTED);
 }
 
+//----------------------------------------------------
 // returning OK
+//----------------------------------------------------
 
-Script::succeed();
+$json_response->succeed();
 

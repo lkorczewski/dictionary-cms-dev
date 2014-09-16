@@ -7,24 +7,33 @@
 
 require '_authorized_header.php';
 
+use \DCMS\JSON_Response;
+use \DCMS\Request;
+
+/** @var Request $request */
+$request = $services->get('request');
+
+/** @var JSON_Response $json_response */
+$json_response = $services->get('json_response');
+
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$node_id = Script::get_parameter('n');
+$node_id = $request->get_parameter('n');
 if($node_id === false){
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
-$action = Script::get_parameter('a');
+$action = $request->get_parameter('a');
 if($action === false){
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 if($action == 'add_context'){
-	$text = Script::get_parameter('t', '...');
+	$text = $request->get_parameter('t', '...');
 	if($text === false){
-		Script::fail('no parameter');
+		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 }
 
@@ -51,7 +60,7 @@ switch($action){
 		break;
 	
 	default:
-		Script::fail('unrecognized action');
+		$json_response->fail(JSON_Response::MESSAGE_UNRECOGNIZED_ACTION);
 		break;
 	
 }
@@ -61,16 +70,16 @@ switch($action){
 //----------------------------------------------------
 
 if($affected_rows === false){
-	Script::fail('query failure');
+	$json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 }
 
 if($affected_rows === 0){
-	Script::fail('nothing affected');
+	$json_response->fail(JSON_Response::MESSAGE_NOTHING_AFFECTED);
 }
 
 // returning result
 // NOTICE! set_context returns true that becames 1
 //  maybe the result should be number of affected rows?
 
-Script::succeed();
+$json_response->succeed();
 

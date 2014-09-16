@@ -7,24 +7,33 @@
 
 require '_authorized_header.php';
 
+use \DCMS\Request;
+use \DCMS\JSON_Response;
+
+/** @var Request $request */
+$request = $services->get('request');
+
+/** @var JSON_Response $json_response */
+$json_response = $services->get('json_response');
+
 //----------------------------------------------------
 // setting parameters
 //----------------------------------------------------
 
-$parent_node_id = Script::get_parameter('n');
+$parent_node_id = $request->get_parameter('n');
 if($parent_node_id === false){
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
-$action = Script::get_parameter('a');
+$action = $request->get_parameter('a');
 if($action === false){
-	Script::fail('no parameter');
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 if($action == 'set'){
-	$text = Script::get_parameter('t');
+	$text = $request->get_parameter('t');
 	if($text === false){
-		Script::fail('no parameter');
+		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 }
 
@@ -40,20 +49,20 @@ switch($action){
 		$rows_affected = $services->get('data')->access('category_label')->delete($parent_node_id);
 		break;
 	default:
-		Script::fail('unrecognized action');
+		$json_response->fail(JSON_Response::MESSAGE_UNRECOGNIZED_ACTION);
 		break;
 }
 
 if($rows_affected === false){
-	Script::fail('query failure');
+	$json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 }
 
 if($rows_affected === 0){
-	Script::fail('nothing affected');
+	$json_response->fail(JSON_Response::MESSAGE_NOTHING_AFFECTED);
 }
 
 //----------------------------------------------------
 // returning OK
 //----------------------------------------------------
 
-Script::succeed();
+$json_response->succeed();
