@@ -532,7 +532,7 @@ class Edition_Layout{
 	// two buttons
 	//--------------------------------------------------------------------
 	
-	private function get_two_buttons(Node $parent_node, $parameters){
+	private function get_two_buttons(Node $parent_node, array $parameters){
 		
 		$output =
 			'<div class="buttons">' . "\n" .
@@ -553,41 +553,53 @@ class Edition_Layout{
 		
 		return $output;
 	}
-
+	
 	//--------------------------------------------------------------------
 	// four buttons
 	//--------------------------------------------------------------------
 	
-	private function get_four_buttons(Value $value, $parameters){
+	private function get_four_buttons(Value $value, array $parameters){
 		
 		$output =
 			'<div class="buttons">' . "\n" .
 				
-				'<button class="button edit" onclick="edit' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
-				$value->get_id() .
-				')">' .
-					$this->localization->get_text('edit') .
-				'</button>' . "\n" .
+				$this->get_button($value, [
+					'class'     => 'edit',
+					'function'  => 'edit' . $parameters['js_name'],
+					'label'     => 'edit',
+				]) .
 				
-				'<button class="button move_up" onclick="move' . $parameters['js_name']. 'Up(this.parentNode.parentNode, ' .
-				$value->get_id() .
-				')">' .
-					$this->localization->get_text('up') .
-				'</button>' . "\n" .
+				$this->get_button($value, [
+					'class'     => 'move_up',
+					'function'  => 'move' . $parameters['js_name'] . 'Up',
+					'label'     => 'up',
+				]) .
 				
-				'<button class="button move_down" onclick="move' . $parameters['js_name']. 'Down(this.parentNode.parentNode, ' .
-				$value->get_id() .
-				')">' .
-					$this->localization->get_text('down') .
-				'</buton>' . "\n" .
+				$this->get_button($value, [
+					'class'     => 'move_down',
+					'function'  => 'move' . $parameters['js_name'] . 'Down',
+					'label'     => 'down',
+				]) .
 				
-				'<button class="button delete" onclick="delete' . $parameters['js_name']. '(this.parentNode.parentNode, ' .
-				$value->get_id() .
-				')">' .
-					$this->localization->get_text('delete') .
-				'</button>' . "\n" .
+				$this->get_button($value, [
+					'class'     => 'delete',
+					'function'  => 'delete' . $parameters['js_name'],
+					'label'     => 'delete',
+				]) .
 				
 			'</div>' . "\n";
+		
+		return $output;
+	}
+	
+	private function get_button(Value $value, array $parameters){
+		$output = 
+			'<button' .
+				' class="button ' . $parameters['class'] . '"' .
+				' onclick="' . $parameters['function']. '(this.parentNode.parentNode, ' . $value->get_id() . ')"' .
+			'>' .
+				$this->localization->get_text($parameters['label']) .
+			'</button>' . "\n";
 		
 		return $output;
 	}
