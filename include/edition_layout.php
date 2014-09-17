@@ -112,14 +112,11 @@ class Edition_Layout{
 		$this->output .= '</div>' . "\n";
 		
 		// new sense
-		$this->output .=
-			'<div class="button_bar sense_button_bar">' .
-				'<button class="button add_sense" onclick="addSense(this.parentNode.parentNode, ' .
-				$node->get_node_id() .
-				')">' .
-					$this->localization->get_text('add sense') .
-				'</button>' .
-			'</div>' . "\n";
+		$this->output .= $this->make_button_bar($node, [
+			'class_name'  => 'sense',
+			'js_name'     => 'Sense',
+			'label'       => 'add sense',
+		]);
 		
 	}
 	
@@ -139,23 +136,23 @@ class Edition_Layout{
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 					
-					'<button class="button move_up" onclick="moveSenseUp(this.parentNode.parentNode.parentNode, ' .
-					$sense->get_node_id() .
-					')">' .
-						$this->localization->get_text('up') .
-					'</button>' . "\n" .
+					$this->make_node_button($sense, [
+						'class'     => 'move_up', 
+						'function'  => 'moveSenseUp',
+						'label'     => 'up',
+					]).
 					
-					'<button class="button move_down" onclick="moveSenseDown(this.parentNode.parentNode.parentNode, ' .
-					$sense->get_node_id() .
-					')">' .
-						$this->localization->get_text('down') .
-					'</button>' . "\n" .
+					$this->make_node_button($sense, [
+						'class'     => 'move_down',
+						'function'  => 'moveSenseDown',
+						'label'     => 'down',
+					]).
 					
-					'<button class="button delete" onclick="deleteSense(this.parentNode.parentNode.parentNode, ' .
-					$sense->get_node_id() .
-					')">' .
-						$this->localization->get_text('delete') .
-					'</button>' . "\n" .
+					$this->make_node_button($sense, [
+						'class'     => 'delete',
+						'function'  => 'deleteSense',
+						'label'     => 'delete',
+					]).
 					
 				'</div>' . "\n" .
 			'</div>' . "\n";
@@ -188,14 +185,11 @@ class Edition_Layout{
 		$this->output .= '</div>' . "\n";
 		
 		// new phrase
-		$this->output .=
-			'<div class="button_bar phrase_button_bar">' .
-				'<button class="button add_phrase" onclick="addPhrase(this.parentNode.parentNode, ' .
-					$node->get_node_id() .
-				')">' .
-					$this->localization->get_text('add phrase') .
-				'</button>' .
-			'</div>' . "\n";
+		$this->output .= $this->make_button_bar($node, [
+			'class_name'  => 'phrase',
+			'js_name'     => 'Phrase',
+			'label'       => 'add phrase',
+		]);
 		
 	}
 	
@@ -211,35 +205,35 @@ class Edition_Layout{
 		$this->output .=
 			'<div class="bar phrase_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
 				'<div class="bar_element phrase" onclick="editPhrase(this.parentNode, ' .
-				$phrase->get_node_id() .
+					$phrase->get_node_id() .
 				')">' .
 					$phrase->get() .
 				'</div>' . "\n" .
 				'<div class="buttons">' . "\n" .
 					
 					'<button class="button edit" onclick="editPhrase(this.parentNode.parentNode, ' .
-					$phrase->get_node_id() .
+						$phrase->get_node_id() .
 					')">' .
 						$this->localization->get_text('edit') .
 					'</buton>' . "\n" .
 					
-					'<button class="button move_up" onclick="movePhraseUp(this.parentNode.parentNode.parentNode, ' .
-					$phrase->get_node_id() .
-					')">' .
-						$this->localization->get_text('up') .
-					'</button>' . "\n" .
+					$this->make_node_button($phrase, [
+						'class'     => 'move_up',
+						'function'  => 'movePhraseUp',
+						'label'     => 'up',
+					]).
 					
-					'<button class="button move_down" onclick="movePhraseDown(this.parentNode.parentNode.parentNode, ' .
-					$phrase->get_node_id() .
-					')">' .
-						$this->localization->get_text('down') .
-					'</button>' . "\n" .
+					$this->make_node_button($phrase, [
+						'class'     => 'move_down',
+						'function'  => 'movePhraseDown',
+						'label'     => 'down',
+					]).
 					
-					'<button class="button delete" onclick="deletePhrase(this.parentNode.parentNode.parentNode, ' .
-					$phrase->get_node_id() .
-					')">' .
-						$this->localization->get_text('delete') .
-					'</button>' . "\n" .
+					$this->make_node_button($phrase, [
+						'class'     => 'delete',
+						'function'  => 'deletePhrase',
+						'label'     => 'delete',
+					]).
 					
 				'</div>' . "\n" .
 			'</div>' . "\n";
@@ -266,15 +260,12 @@ class Edition_Layout{
 		}
 		$this->output .= '</div>' . "\n";
 		
-		// new phrase
-		$this->output .=
-			'<div class="button_bar headword_button_bar">' .
-				'<button class="button add_phrase" onclick="addHeadword(this.parentNode.parentNode, ' .
-				$node->get_node_id() .
-				')">' .
-					$this->localization->get_text('add headword') .
-				'</button>' .
-			'</div>' . "\n";
+		// new headword
+		$this->output .= $this->make_button_bar($node, [
+			'class_name'  => 'headword',
+			'js_name'     => 'Headword',
+			'label'       => 'add headword',
+		]);
 		
 	}
 	
@@ -306,18 +297,14 @@ class Edition_Layout{
 		}
 		$this->output .= '</div>' . "\n";
 		
-		// new phrase
-		$this->output .=
-			'<div class="button_bar pronunciation_button_bar">' .
-				'<button class="button add_phrase" onclick="addPronunciation(this.parentNode.parentNode, ' .
-				$node->get_node_id() .
-				')">' .
-					$this->localization->get_text('add pronunciation') .
-				'</button>' .
-			'</div>' . "\n";
-		
+		// new pronunciation
+		$this->output .= $this->make_button_bar($node, [
+			'class_name'  => 'pronunciation',
+			'js_name'     => 'Pronunciation',
+			'label'       => 'add pronunciation',
+		]);
 	}
-
+	
 	//--------------------------------------------------------------------
 	// pronunciation parser
 	//--------------------------------------------------------------------
@@ -362,14 +349,11 @@ class Edition_Layout{
 			'</div>' . "\n";
 		
 		if(!$category_label){
-			$this->output .=
-				'<div class="button_bar category_label_button_bar">' . "\n" .
-					'<button class="button add_category_label" onclick="addCategoryLabel(this.parentNode.parentNode, ' . 
-					$node->get_node_id() .
-					')">' .
-						$this->localization->get_text('add category label') .
-					'</button>' . "\n" .
-				'</div>' . "\n";
+			$this->output .= $this->make_button_bar($node, [
+				'class_name'  => 'category_label',
+				'js_name'     => 'CategoryLabel',
+				'label'       => 'add category label',
+			]);
 		}
 		
 	}
@@ -388,14 +372,11 @@ class Edition_Layout{
 		$this->output .= '</div>' . "\n";
 		
 		// new form
-		$this->output .=
-			'<div class="button_bar form_button_bar">' .
-				'<button class="button add_form" onclick="addForm(this.parentNode.parentNode, ' .
-				$node->get_node_id() .
-				')">' .
-					$this->localization->get_text('add form') .
-				'</button>' .
-			'</div>' . "\n";
+		$this->output .= $this->make_button_bar($node, [
+			'class_name'  => 'form',
+			'js_name'     => 'Form',
+			'label'       => 'add form',
+		]);
 		
 	}
 	
@@ -474,14 +455,11 @@ class Edition_Layout{
 		
 		if(!$context){
 			
-			$this->output .=
-				'<div class="button_bar context_button_bar">' . "\n" .
-					'<button class="button add_context" onclick="addContext(this.parentNode.parentNode, ' . 
-					$node->get_node_id() .
-					')">' .
-						$this->localization->get_text('add context') .
-					'</button>' . "\n" .
-				'</div>' . "\n";
+			$this->output .= $this->make_button_bar($node, [
+				'class_name'  => 'context',
+				'js_name'     => 'Context',
+				'label'       => 'add context',
+			]);
 			
 		}
 		
@@ -501,14 +479,11 @@ class Edition_Layout{
 		$this->output .= '</div>' . "\n";
 		
 		// new translation
-		$this->output .=
-			'<div class="button_bar translation_button_bar">' . "\n" .
-				'<button class="button add_translation" onclick="addTranslation(this.parentNode.parentNode, ' .
-				$node->get_node_id() .
-				')">' .
-					$this->localization->get_text('add translation') .
-				'</button>' . "\n" .
-			'</div>' . "\n";
+		$this->output .= $this->make_button_bar($node, [
+			'class_name'  => 'translation',
+			'js_name'     => 'Translation',
+			'label'       => 'add translation',
+		]);
 		
 	}
 	
@@ -563,25 +538,25 @@ class Edition_Layout{
 		$output =
 			'<div class="buttons">' . "\n" .
 				
-				$this->get_button($value, [
+				$this->make_value_button($value, [
 					'class'     => 'edit',
 					'function'  => 'edit' . $parameters['js_name'],
 					'label'     => 'edit',
 				]) .
 				
-				$this->get_button($value, [
+				$this->make_value_button($value, [
 					'class'     => 'move_up',
 					'function'  => 'move' . $parameters['js_name'] . 'Up',
 					'label'     => 'up',
 				]) .
 				
-				$this->get_button($value, [
+				$this->make_value_button($value, [
 					'class'     => 'move_down',
 					'function'  => 'move' . $parameters['js_name'] . 'Down',
 					'label'     => 'down',
 				]) .
 				
-				$this->get_button($value, [
+				$this->make_value_button($value, [
 					'class'     => 'delete',
 					'function'  => 'delete' . $parameters['js_name'],
 					'label'     => 'delete',
@@ -592,7 +567,11 @@ class Edition_Layout{
 		return $output;
 	}
 	
-	private function get_button(Value $value, array $parameters){
+	//--------------------------------------------------------------------
+	// buttons
+	//--------------------------------------------------------------------
+	
+	private function make_value_button(Value $value, array $parameters){
 		$output = 
 			'<button' .
 				' class="button ' . $parameters['class'] . '"' .
@@ -600,6 +579,36 @@ class Edition_Layout{
 			'>' .
 				$this->localization->get_text($parameters['label']) .
 			'</button>' . "\n";
+		
+		return $output;
+	}
+	
+	private function make_node_button(Node $node, array $parameters){
+		$output =
+			'<button' .
+				' class="button ' . $parameters['class'] . '"' .
+				' onclick="' . $parameters['function']. '(this.parentNode.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
+			'>' .
+				$this->localization->get_text($parameters['label']) .
+			'</button>' . "\n";
+		
+		return $output;
+	}
+	
+	//--------------------------------------------------------------------
+	// generic button bar
+	//--------------------------------------------------------------------
+	
+	private function make_button_bar(Node $node, array $parameters){
+		$output =
+			'<div class="button_bar ' . $parameters['class_name'] . '_button_bar">' .
+				'<button'.
+					' class="button add_' . $parameters['class_name'] . '"' .
+					' onclick="add' . $parameters['js_name'] . '(this.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
+				'>' .
+					$this->localization->get_text($parameters['label']) .
+				'</button>' .
+			'</div>' . "\n";
 		
 		return $output;
 	}
