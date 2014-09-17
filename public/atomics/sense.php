@@ -56,7 +56,7 @@ switch($action){
 		break;
 	
 	case 'add_context':
-		$affected_rows = $services->get('data')->access('sense')->set_context($node_id, $text);
+		$affected_rows = $services->get('data')->access('context')->set($node_id, $text);
 		break;
 	
 	default:
