@@ -106,7 +106,7 @@ class View_Layout{
 		
 		// senses
 		$this->output .= '<div class="senses">' . "\n";
-		while($sense = $node->get_sense()){
+		foreach($node->get_senses() as $sense){
 			$this->parse_sense($sense);
 		}
 		$this->output .= '</div>' . "\n";
@@ -151,7 +151,7 @@ class View_Layout{
 	private function parse_phrases(Node_With_Phrases $node){
 		
 		$this->output .= '<div class="phrases">' . "\n";
-		while($phrase = $node->get_phrase()){
+		foreach($node->get_phrases() as $phrase){
 			$this->parse_phrase($phrase);
 		}
 		$this->output .= '</div>' . "\n";
@@ -192,7 +192,7 @@ class View_Layout{
 	private function parse_headwords(Node_With_Headwords $node){
 		
 		$this->output .= '<div class="headwords">' . "\n";
-		while($headword = $node->get_headword()){
+		foreach($node->get_headwords() as $headword){
 			$this->parse_headword($headword);
 		}
 		$this->output .= '</div>' . "\n";
@@ -204,7 +204,7 @@ class View_Layout{
 	//--------------------------------------------------------------------
 	
 	private function parse_headword(Headword $headword){
-		$this->parse_value('headword', $headword);
+		$this->parse_value($headword);
 	}
 
 	//--------------------------------------------------------------------
@@ -214,7 +214,7 @@ class View_Layout{
 	private function parse_pronunciations(Node_With_Pronunciations $node){
 		
 		$this->output .= '<div class="pronunciations">' . "\n";
-		while($pronunciation = $node->get_pronunciation()){
+		foreach($node->get_pronunciations() as $pronunciation){
 			$this->parse_pronunciation($pronunciation);
 		}
 		$this->output .= '</div>' . "\n";
@@ -226,13 +226,7 @@ class View_Layout{
 	//--------------------------------------------------------------------
 	
 	private function parse_pronunciation(Pronunciation $pronunciation){
-		$this->output .=
-			'<div class="bar pronunciation_bar">' . "\n" .
-				'<div class="bar_element pronunciation">' .
-					'/' . $pronunciation->get() . '/' .
-				'</div>' . "\n" .
-			'</div>' . "\n"
-		;
+		$this->parse_value($pronunciation);
 	}
 	
 	//--------------------------------------------------------------------
@@ -242,12 +236,7 @@ class View_Layout{
 	private function parse_category_label(Node_With_Category_Label $node){
 		
 		if($category_label = $node->get_category_label()){
-			$this->output .=
-				'<div class="bar category_label_bar">' . "\n" .
-					'<div class="bar_element category_label">' .
-						$category_label->get() .
-					'</div>' . "\n" .
-				'</div>' . "\n";
+			$this->parse_value($category_label);
 		}
 		
 	}
@@ -260,7 +249,7 @@ class View_Layout{
 		
 		// forms
 		$this->output .= '<div class="forms">' . "\n";
-		while($form = $node->get_form()){
+		foreach($node->get_forms() as $form){
 			$this->parse_form($form);
 		}
 		$this->output .= '</div>' . "\n";
@@ -274,12 +263,15 @@ class View_Layout{
 	private function parse_form(Form $form){
 		$this->output .=
 			'<div class="bar form_bar">' . "\n" .
+				
 				'<div class="bar_element form_label">' .
 					$form->get_label() .
 				'</div>' . "\n" .
+				
 				'<div class="bar_element form">' .
 					$form->get_form() .
 				'</div>' . "\n" .
+				
 			'</div>' . "\n"
 			;
 	}
@@ -296,12 +288,7 @@ class View_Layout{
 			'<div class="contexts">' . "\n";
 		
 		if($context){
-			$this->output .=
-				'<div class="bar context_bar">' .
-					'<div class="bar_element context">' .
-						$context->get() .
-					'</div>' .
-				'</div>' . "\n";
+			$this->parse_value($context);
 		}
 		
 		$this->output .=
@@ -316,7 +303,7 @@ class View_Layout{
 	private function parse_translations(Node_With_Translations $node){
 	
 		$this->output .= '<div class="translations">' . "\n";
-		while($translation = $node->get_translation()){
+		foreach($node->get_translations() as $translation){
 			$this->parse_translation($translation);
 		}
 		$this->output .= '</div>' . "\n";
@@ -328,21 +315,37 @@ class View_Layout{
 	//--------------------------------------------------------------------
 	
 	private function parse_translation(Translation $translation){
-		$this->parse_value('translation', $translation);
+		$this->parse_value($translation);
+	}
+	
+	//--------------------------------------------------------------------
+	// value parser
+	//--------------------------------------------------------------------
+	// for potential use, halted because of ugliness 
+	
+	private function parse_elements($node, $name){
+		
+		$this->output .= '<div class="' . $name . '">' . "\n";
+		foreach($node->{'get_'.$name}() as $element){
+			$this->{'parse_'.$name}($element);
+		}
+		$this->output .= '</div>' . "\n";
+		
 	}
 	
 	//--------------------------------------------------------------------
 	// value parser
 	//--------------------------------------------------------------------
 	
-	private function parse_value($name, Value $value){
+	private function parse_value(Value $value){
 		$this->output .=
-			'<div class="bar ' . $name .  '_bar">' . "\n" .
-				'<div class="bar_element ' . $name . '">' .
+			'<div class="bar ' . $value->get_snakized_name() .  '_bar">' . "\n" .
+				'<div class="bar_element ' . $value->get_snakized_name() . '">' .
 					$value->get() .
 				'</div>' . "\n" .
 			'</div>' . "\n"
 		;
 	}
+	
 }
 
