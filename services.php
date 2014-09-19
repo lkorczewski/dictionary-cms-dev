@@ -85,5 +85,6 @@ return new Service_Container([
 		require_once __DIR__ . '/include/json_response.php';
 		return new JSON_Response();
 	},
+	
 ]);
 
