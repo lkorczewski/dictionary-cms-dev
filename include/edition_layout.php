@@ -117,7 +117,11 @@ class Edition_Layout {
 		$this->output .= '</div>' . "\n";
 		
 		// new sense
-		$this->output .= $this->make_button_bar($node, 'add sense');
+		$this->output .= $this->make_button_bar($node, [
+			'css_name'  => 'sense',
+			'js_name'   => 'Sense',
+			'label'     => 'add sense',
+		]);
 		
 	}
 	
@@ -173,7 +177,11 @@ class Edition_Layout {
 		$this->output .= '</div>' . "\n";
 		
 		// new phrase
-		$this->output .= $this->make_button_bar($node, 'add phrase');
+		$this->output .= $this->make_button_bar($node, [
+			'css_name'  => 'phrase',
+			'js_name'   => 'Phrase',
+			'label'     => 'add phrase',
+		]);
 		
 	}
 	
@@ -230,7 +238,11 @@ class Edition_Layout {
 		$this->output .= '</div>' . "\n";
 		
 		// new headword
-		$this->output .= $this->make_button_bar($node, 'add headword');
+		$this->output .= $this->make_button_bar($node, [
+			'css_name'  => 'headword',
+			'js_name'   => 'Headword',
+			'label'     => 'add headword',
+		]);
 		
 	}
 	
@@ -239,7 +251,7 @@ class Edition_Layout {
 	//--------------------------------------------------------------------
 	
 	private function parse_headword(Headword $headword){
-		$this->output .= $this->make_value_bar($headword, $this->make_four_buttons($headword));
+		$this->output .= $this->make_value_bar($headword);
 	}
 	
 	//--------------------------------------------------------------------
@@ -255,7 +267,11 @@ class Edition_Layout {
 		$this->output .= '</div>' . "\n";
 		
 		// new pronunciation
-		$this->output .= $this->make_button_bar($node, 'add pronunciation');
+		$this->output .= $this->make_button_bar($node, [
+			'css_name'  => 'pronunciation',
+			'js_name'   => 'Pronunciation',
+			'label'     => 'add pronunciation',
+		]);
 	}
 	
 	//--------------------------------------------------------------------
@@ -263,7 +279,7 @@ class Edition_Layout {
 	//--------------------------------------------------------------------
 	
 	private function parse_pronunciation(Pronunciation $pronunciation){
-		$this->output .= $this->make_value_bar($pronunciation, $this->make_four_buttons($pronunciation));
+		$this->output .= $this->make_value_bar($pronunciation);
 	}
 	
 	//--------------------------------------------------------------------
@@ -289,7 +305,11 @@ class Edition_Layout {
 			'</div>' . "\n";
 		
 		if(!$category_label){
-			$this->output .= $this->make_button_bar($node, 'add category label');
+			$this->output .= $this->make_button_bar($node, [
+				'css_name'  => 'category_label',
+				'js_name'   => 'CategoryLabel',
+				'label'     => 'add category label',
+			]);
 		}
 		
 	}
@@ -308,7 +328,11 @@ class Edition_Layout {
 		$this->output .= '</div>' . "\n";
 		
 		// new form
-		$this->output .= $this->make_button_bar($node, 'add form');
+		$this->output .= $this->make_button_bar($node, [
+			'css_name'  => 'form',
+			'js_name'   => 'Form',
+			'label'     => 'add form',
+		]);
 		
 	}
 	
@@ -381,7 +405,11 @@ class Edition_Layout {
 			'</div>' . "\n";
 		
 		if(!$context){
-			$this->output .= $this->make_button_bar($node, 'add context');
+			$this->output .= $this->make_button_bar($node, [
+				'css_name'  => 'context',
+				'js_name'   => 'Context',
+				'label'     => 'add context',
+			]);
 		}
 		
 	}
@@ -400,7 +428,11 @@ class Edition_Layout {
 		$this->output .= '</div>' . "\n";
 		
 		// new translation
-		$this->output .= $this->make_button_bar($node, 'add translation');
+		$this->output .= $this->make_button_bar($node, [
+			'css_name'  => 'translation',
+			'js_name'   => 'Translation',
+			'label'     => 'add translation',
+		]);
 		
 	}
 	
@@ -409,14 +441,19 @@ class Edition_Layout {
 	//--------------------------------------------------------------------
 	
 	private function parse_translation(Translation $translation){
-		$this->output .= $this->make_value_bar($translation, $this->make_four_buttons($translation));
+		$this->output .= $this->make_value_bar($translation);
 	}
 	
 	//--------------------------------------------------------------------
 	// generic value bar
 	//--------------------------------------------------------------------
 	
-	private function make_value_bar(Value $value, $buttons){
+	private function make_value_bar(Value $value, $buttons = null){
+
+		if($buttons === null){
+			$buttons = $this->make_four_buttons($value);
+		}
+
 		$output =
 			'<div' .
 				' class="bar ' . $value->get_snakized_name() . '_bar"' .
@@ -456,15 +493,17 @@ class Edition_Layout {
 		$output =
 			'<div class="buttons">' . "\n" .
 				
-				'<button class="button edit" onclick="edit' . $parent_node->get_camelized_name(). '(this.parentNode.parentNode, ' .
-				$parent_node->get_node_id() .
-				')">' .
+				'<button'.
+					' class="button edit"' .
+					' onclick="edit' . $parent_node->get_camelized_name(). '(this.parentNode.parentNode, ' . $parent_node->get_node_id() . ')"' .
+				'>' .
 					$this->localization->get_text('edit') .
 				'</button>' . "\n" .
 				
-				'<button class="button delete" onclick="delete' . $parent_node->get_camelized_name(). '(this.parentNode.parentNode, ' .
-				$parent_node->get_node_id() .
-				')">' .
+				'<button' .
+					' class="button delete"' .
+					' onclick="delete' . $parent_node->get_camelized_name(). '(this.parentNode.parentNode, ' . $parent_node->get_node_id() . ')"' .
+				'>' .
 					$this->localization->get_text('delete') .
 				'</button>' . "\n" .
 				
@@ -592,15 +631,15 @@ class Edition_Layout {
 	// generic button bar
 	//--------------------------------------------------------------------
 	
-	private function make_button_bar(Node $node, $label){
+	private function make_button_bar(Node $node, array $parameters){
 		$output =
-			'<div class="button_bar ' . $node->get_snakized_name() . '_button_bar">' .
+			'<div class="button_bar ' . $parameters['css_name'] . '_button_bar">' .
 			
 			'<button'.
-				' class="button add_' . $node->get_snakized_name() . '"' .
-				' onclick="add' . $node->get_camelized_name() . '(this.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
+				' class="button add_' . $parameters['css_name'] . '"' .
+				' onclick="add' . $parameters['js_name'] . '(this.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
 			'>' .
-				$this->localization->get_text($label) .
+				$this->localization->get_text($parameters['label']) .
 			'</button>' .
 			
 			'</div>' . "\n";
