@@ -140,7 +140,7 @@ class Edition_Layout {
 				'<div class="bar_element sense_label">' .
 					$sense->get_label() .
 				'</div>' . "\n" .
-			
+
 				'<div class="buttons">' . "\n" .
 					$this->make_move_node_up_button($sense).
 					$this->make_move_node_down_button($sense).
@@ -294,11 +294,7 @@ class Edition_Layout {
 			'<div class="category_labels">' . "\n";
 		
 		if($category_label){
-			$this->output .=
-				'<div class="bar category_label_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' . "\n" .
-					$this->make_bar_element($category_label).
-					$this->make_two_buttons($node) .
-				'</div>' . "\n";
+			$this->output .= $this->make_value_bar($category_label, $this->make_two_buttons($node));
 		}
 		
 		$this->output .=
@@ -394,11 +390,7 @@ class Edition_Layout {
 			'<div class="contexts">' . "\n";
 		
 		if($context){
-			$this->output .=
-				'<div class="bar context_bar" onmouseover="showButtons(this)" onmouseout="hideButtons(this)">' .
-					$this->make_bar_element($context).
-					$this->make_two_buttons($node) .
-				'</div>' . "\n";
+			$this->output .= $this->make_value_bar($context, $this->make_two_buttons($node));
 		}
 		
 		$this->output .=
