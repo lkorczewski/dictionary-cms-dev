@@ -266,8 +266,8 @@ function makeContextBar(text, parentNodeId){
 	contextBar.appendChild(context)
 	
 	var buttons = makeButtons({
-		'edit'   : function(){ editContext(categoryLabelBar, parentNodeId) },
-		'delete' : function(){ deleteContext(categoryLabelBar, parentNodeId) },
+		'edit'   : function(){ editContext(contextBar, parentNodeId) },
+		'delete' : function(){ deleteContext(contextBar, parentNodeId) },
 
 	})
 	contextBar.appendChild(buttons)
@@ -278,3 +278,4 @@ function makeContextBar(text, parentNodeId){
 function makeTranslationBar(translationText, translationId){
 	return makeValueBar('translation', translationText, translationId)
 }
+

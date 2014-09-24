@@ -60,7 +60,7 @@ function updateValue(valueName, valueBar, valueId, newText, doOnSuccess, doOnFai
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				valueElement = valueBar.getElementsByClassName(valueName)[0]
+				var valueElement = valueBar.getElementsByClassName(valueName)[0]
 				
 				if(response.value == undefined){
 					valueElement.textContent = newText
@@ -203,8 +203,8 @@ function editEntryHeadword(headwordBar, nodeId){
 }
 
 function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doOnFailure){
-	action = actionPath + '/update_entry.php'
-	parameter =
+	var action = actionPath + '/update_entry.php'
+	var parameter =
 		'n=' + encodeURIComponent(nodeId) +
 		'&h=' + encodeURIComponent(headwordText)
 	makeJsonRequest(action, parameters, {
@@ -271,9 +271,9 @@ function moveSenseUp(senseElement, nodeId){
 				senseElement.moveUp()
 				
 				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-				previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				var previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				
-				bufferedSenseLabel = senseLabelElement.textContent;
+				var bufferedSenseLabel = senseLabelElement.textContent;
 				senseLabelElement.textContent = previousSenseLabelElement.textContent;
 				previousSenseLabelElement.textContent = bufferedSenseLabel;
 			}
@@ -343,7 +343,7 @@ function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				phrase = phraseBar.getElementsByClassName('phrase')[0]
+				var phrase = phraseBar.getElementsByClassName('phrase')[0]
 				phrase.textContent = phraseText
 				
 				if(doOnSuccess){
@@ -495,7 +495,7 @@ function updateCategoryLabel(categoryLabelBar, parentNodeId, categoryLabelText, 
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				categoryLabel = categoryLabelBar.getElementsByClassName('category_label')[0]
+				var categoryLabel = categoryLabelBar.getElementsByClassName('category_label')[0]
 				categoryLabel.textContent = categoryLabelText
 				
 				if(doOnSuccess){
@@ -534,9 +534,9 @@ function addForm(nodeContent, nodeId){
 	makeJsonRequest(actionPath + '/add_form.php', 'n=' + encodeURIComponent(nodeId), {
 		success: function(response){
 			if(response.status == 'success'){
-				formId = response.form_id
-				forms = nodeContent.getElementsByClassName('forms')[0]
-				formBar = makeFormBar('...', '...', formId)
+				var formId = response.form_id
+				var forms = nodeContent.getElementsByClassName('forms')[0]
+				var formBar = makeFormBar('...', '...', formId)
 				forms.appendChild(formBar)
 				editForm(formBar, formId)
 			}
@@ -687,7 +687,7 @@ function updateContext(contextBar, parentNodeId, contextText, doOnSuccess, doOnF
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
-				context = contextBar.getElementsByClassName('context')[0]
+				var context = contextBar.getElementsByClassName('context')[0]
 				context.textContent = contextText
 				
 				if(doOnSuccess){
@@ -760,3 +760,4 @@ function moveTranslationDown(translationBar, translationId){
 function deleteTranslation(translationBar, translationId){
 	deleteValue('translation', translationBar, translationId)
 }
+
