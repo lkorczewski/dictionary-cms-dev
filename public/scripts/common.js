@@ -19,10 +19,10 @@ localization.get_text = localization.getText
 //==========================================================
 
 function makeRequest(url, parameters, handler){
-	httpRequest = new XMLHttpRequest()
+	var httpRequest = new XMLHttpRequest()
 	httpRequest.onreadystatechange = function(){
 		
-		done = false;
+		var done = false;
 		// console.log('readyState == ' + httpRequest.readyState)
 				
 		// do when response received
@@ -55,14 +55,14 @@ make_request = makeRequest
 //==========================================================
 
 function makeJsonRequest(url, parameters, handler){
-	httpRequest = new XMLHttpRequest()
+	var httpRequest = new XMLHttpRequest()
 	httpRequest.onreadystatechange = function(){
 		
-		done = false;
+		var done = false;
 		if(httpRequest.readyState == 4){
 			if(httpRequest.status == 200){
 				if(done == false){
-					response = JSON.parse(httpRequest.responseText)
+					var response = JSON.parse(httpRequest.responseText)
 					if(response.status == 'failure' && response.message == 'no authorization'){
 						location.reload()
 					}
@@ -260,8 +260,8 @@ function showEditorCredentialsInput(editorToolbarContent){
 	editorLogInButton.onclick = function(event){
 		event.preventDefault()
 		disableEditorCredentialsInput()
-		login = editorLoginInput.value
-		password = editorPasswordInput.value
+		var login     = editorLoginInput.value
+		var password  = editorPasswordInput.value
 		logEditorIn(
 			login,
 			password,
@@ -340,21 +340,21 @@ function showEditor(editorName){
 function searchHeadwordsLike(headwordMask){
 	makeJsonRequest('atomics/get_headwords.php', 'h=' + headwordMask, {
 		success: function(response){
-			headwords = response
-			searchResultsContainer = document.getElementById('search_results_container')
+			var headwords = response
+			var searchResultsContainer = document.getElementById('search_results_container')
 			searchResultsContainer.innerHTML = ''; // to be replaced
-			isEditionMode = false
+			var isEditionMode = false
 			if(window.location.search.indexOf('m=edition') >= 0){
 				isEditionMode = true
 			}
 			if(headwords.length){
-				for(index in headwords){
+				for(var index in headwords){
 					var searchResult = document.createElement('div')
 					searchResult.className = 'search_result'
 					
 					var searchResultAnchor = document.createElement('a')
 					searchResultAnchor.textContent = headwords[index]
-					link =
+					var link =
 						'?h=' +
 						headwords[index] +
 						(isEditionMode ? '&m=edition' : '')
@@ -370,7 +370,7 @@ function searchHeadwordsLike(headwordMask){
 					/* TODO: invent some name for div1 */
 					var div1 = document.createElement('div')
 					div1.innerHTML = // so that <b/> works
-						localization.getText('entry not found').replace('{{1}}', '<b>' + headwordMask + '</b>')
+						localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
 						+ localization.getText('create a new one?')
 					searchMessage.appendChild(div1)
 					
@@ -384,7 +384,7 @@ function searchHeadwordsLike(headwordMask){
 					buttonBar.appendChild(createButton)
 					searchMessage.appendChild(buttonBar)
 				} else {
-					searchMessage.innerHTML = localization.getText('entry not found').replace('{{1}}', '<b>' + headwordMask + '</b>')
+					searchMessage.innerHTML = localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
 				}
 				
 				searchResultsContainer.appendChild(searchMessage)
@@ -392,3 +392,4 @@ function searchHeadwordsLike(headwordMask){
 		}
 	})
 }
+

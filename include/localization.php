@@ -69,14 +69,31 @@ class Localization {
 	//------------------------------------------------
 	// getting localized text
 	//------------------------------------------------
-	function get_text($label){
+	function get_text($label, array $parameters = null){
 		$this->lazyload_texts();
 		
 		if(!$this->has_text($label)){
 			return '[[NO TRANSLATION]]';
 		}
 		
+		if($parameters){
+			return $this->replace_parameters($this->texts[$label], $parameters);
+		}
+		
 		return $this->texts[$label];
+	}
+	
+	//------------------------------------------------
+	// replacing parameters in text
+	//------------------------------------------------
+	private function replace_parameters($text, $parameters){
+		$callback = function($match) use($parameters) {
+			return isset($parameters[$match[1]])
+				? $parameters[$match[1]]
+				: $match[0];
+		};
+		
+		return preg_replace_callback('/{{(\w+)}}/', $callback, $text);
 	}
 	
 }

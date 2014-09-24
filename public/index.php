@@ -41,12 +41,17 @@ if($services->get('config')->get('edition_mode') === true){
 
 require_once __DIR__ . '/../controllers/entry.php';
 use DCMS\Controllers\Entry_Controller;
-$entry_controller = new Entry_Controller($services->get('dictionary'));
+$entry_controller = new Entry_Controller(
+	$services->get('dictionary')
+);
 $entry_data = $entry_controller->execute();
 
 require_once __DIR__ . '/../controllers/search.php';
 use DCMS\Controllers\Search_Controller;
-$search_controller = new Search_Controller($services->get('dictionary'), $services->get('config'));
+$search_controller = new Search_Controller(
+	$services->get('dictionary'),
+	$services->get('config')
+);
 $search_data = $search_controller->execute();
 
 //----------------------------------------------------
@@ -54,7 +59,6 @@ $search_data = $search_controller->execute();
 //----------------------------------------------------
 
 $data = [
-	'config'        => $services->get('config'),
 	'mode'          => $mode,
 	'editor'        => $editor,
 	'show_toolbar'  => $show_toolbar,
@@ -66,7 +70,7 @@ $data = [
 // view
 //----------------------------------------------------
 
-$view = new \DCMS\View($data);
+$view = new \DCMS\View($services, $data);
 
 if($data['headword'] == ''){
 	$view->show_home_page();

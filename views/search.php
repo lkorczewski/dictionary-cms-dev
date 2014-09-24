@@ -29,7 +29,7 @@ class Search_View {
 		
 		$output .=
 			'<div id="search_panel">' . "\n" .
-			$this->get_search_bar() .
+				$this->get_search_bar() .
 			'<div id="search_results_container">' . "\n";
 		
 		if(count($this->data['search_results']) == 0){
@@ -51,13 +51,20 @@ class Search_View {
 		$output = '';
 		
 		$output .=
-			'<form id="search_form" onsubmit="event.preventDefault(); searchHeadwordsLike(document.getElementById(\'search_mask_input\').value)">' . "\n" .
-			'<span id="search_mask_input_wrapper">' .
-			'<input id="search_mask_input" type="text" value="' . $this->data['search_mask'] . '"></input>' .
-			'</span>' . "\n" .
-			'<button id="search_button" type="submit" class="button search">' .
-			$this->localization->get_text('search') .
-			'</button>' . "\n" .
+			'<form id="search_form"' .
+				' onsubmit="' .
+					'event.preventDefault(); '.
+					'searchHeadwordsLike(document.getElementById(\'search_mask_input\').value)' .
+				'"' .
+			'>' . "\n" .
+				'<span id="search_mask_input_wrapper">' .
+					'<input id="search_mask_input" type="text"' .
+						' value="' . $this->data['search_mask'] . '"' .
+					'></input>' .
+				'</span>' . "\n" .
+				'<button id="search_button" type="submit" class="button search">' .
+					$this->localization->get_text('search') .
+				'</button>' . "\n" .
 			'</form>' . "\n";
 		
 		return $output;
@@ -74,18 +81,23 @@ class Search_View {
 		if($this->data['mode'] == 'edition'){
 			$output .=
 				'<div>' .
-				str_replace('{{1}}', '<b>' . $this->data['search_mask'] . '</b>' , $this->localization->get_text('entry not found')) .
-				/*$this->localization->get_text('no results found') .*/
-				$this->localization->get_text('create a new one?') .
+					$this->localization->get_text('entry not found', [
+						'headword' => '<b>' . $this->data['search_mask'] . '</b>'
+					]) .
+					$this->localization->get_text('create a new one?') .
 				'</div>' . "\n" .
 				'<div>' .
-				'<button class="button create" onclick="addEntry(document.getElementById(\'search_mask_input\').value)">' .
-				$this->localization->get_text('create') .
-				'</button>' .
+					'<button class="button create"' .
+						' onclick="addEntry(document.getElementById(\'search_mask_input\').value)"' .
+					'>' .
+						$this->localization->get_text('create') .
+					'</button>' .
 				'</div>' . "\n";
 		} else {
 			$output .=
-				str_replace('{{1}}', '<b>' . $this->data['search_mask'] . '</b>' , $this->localization->get_text('entry not found'));
+				$this->localization->get_text('entry not found', [
+					'headword' => '<b>' . $this->data['search_mask'] . '</b>'
+				]);
 		}
 		
 		$output .=
@@ -100,15 +112,16 @@ class Search_View {
 		$output = '';
 		
 		$mode_parameter = '';
-		if($this->data['mode'] == 'edition')
+		if($this->data['mode'] == 'edition'){
 			$mode_parameter = '&m=edition';
+		}
 		
 		foreach($this->data['search_results'] as $search_result){
 			$output .=
 				'<div class="search_result">' .
-				'<a href="' . '?h=' . $search_result . $mode_parameter . '">' .
-				$search_result .
-				'</a>' .
+					'<a href="' . '?h=' . $search_result . $mode_parameter . '">' .
+						$search_result .
+					'</a>' .
 				'</div>' . "\n";
 		}
 		
@@ -116,3 +129,4 @@ class Search_View {
 	}
 	
 }
+

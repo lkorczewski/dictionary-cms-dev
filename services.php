@@ -80,7 +80,15 @@ return new Service_Container([
 		require_once __DIR__ . '/include/session.php';
 		return new Session($parameters);
 	},
-	
+
+	'localization' => function(Service_Container $services){
+		require_once __DIR__ . '/include/localization.php';
+		return new DCMS\Localization(
+			$services->get('config')->get('locale_path'),
+			$services->get('config')->get('locale')
+		);
+	},
+
 	'json_response' => function(){
 		require_once __DIR__ . '/include/json_response.php';
 		return new JSON_Response();

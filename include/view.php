@@ -8,22 +8,28 @@ require_once 'include/view_layout.php';
 
 require_once 'views/search.php';
 
+use Core\Service_Container;
 use DCMS\Views\Search_View;
 
 class View {
-	private $data;
+	
+	/** @var Service_Container $services */
+	private $services;
+	
+	/** @var Localization $localization */
 	private $localization;
-
+	
+	private $data;
+	
 	//------------------------------------------------------------------------
 	// constructor
 	//------------------------------------------------------------------------
 	
-	public function __construct($data){
-		$this->data = $data;
-		$this->localization = new Localization(
-			$this->data['config']->get('locale_path'),
-			$this->data['config']->get('locale')
-		);
+	public function __construct(Service_Container $services, array $data){
+		$this->services  = $services;
+		$this->data      = $data;
+		
+		$this->localization = $this->services->get('localization');
 	}
 	
 	//------------------------------------------------------------------------
@@ -98,7 +104,7 @@ class View {
 			'<!DOCTYPE html>' . "\n" .
 			'<html>' . "\n" .
 			'<head>' . "\n" .
-			'<title>' . $this->data['config']->get('title') . '</title>' . "\n" .
+			'<title>' . $this->services->get('config')->get('title') . '</title>' . "\n" .
 			'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
 			'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
 			'<script type="text/javascript" src="scripts/DOM_extension.js"></script>' . "\n" .
@@ -192,7 +198,7 @@ class View {
 		$output =
 			'<div class="title">' .
 				'<h1>' .
-					$this->data['config']->get('title') .
+					$this->services->get('config')->get('title') .
 				'</h1>' .
 			'</div>';
 		
@@ -278,7 +284,9 @@ class View {
 		if($this->data['mode'] == 'edition'){
 			$output .=
 				'<div>' .
-					str_replace('{{1}}', '<b>' . $this->data['headword'] . '</b>', $this->localization->get_text('entry not found')) .
+					$this->localization->get_text('entry not found', [
+						'headword' => '<b>' . $this->data['headword'] . '</b>'
+					]) .
 					$this->localization->get_text('create a new one?') .
 				'</div>' . "\n" .
 				'<button onclick="addEntry(\'' . $this->data['headword'] . '\')">' .
@@ -287,7 +295,9 @@ class View {
 		} else {
 			$output .=
 				'<div>' .
-					str_replace('{{1}}', $this->data['headword'], $this->localization->get_text('entry not found')) .
+					$this->localization->get_text('entry not found', [
+						'headword' => '<b>' . $this->data['headword'] . '</b>'
+					]) .
 				'</div>' . "\n";
 		}
 		

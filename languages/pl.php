@@ -5,7 +5,7 @@ $texts['search'] = 'szukaj';
 //$texts['no results found'] = 'Nie znaleziono szukanego hasła.';
 
 // missing entry
-$texts['entry not found'] = 'Hasło {{1}} nie zostało znalezione.';
+$texts['entry not found'] = 'Hasło {{headword}} nie zostało znalezione.';
 $texts['create a new one?'] = ' Czy utworzyć nowy wpis?';
 $texts['create'] = 'utwórz';
 
