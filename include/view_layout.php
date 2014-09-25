@@ -26,18 +26,19 @@ require_once 'dictionary/traits/has_translations.php';
 
 require_once 'include/localization.php';
 
+require_once 'include/layouts/HTML_layout.php';
+
 use Dictionary\Element;
-use Dictionary\Entry;
+use Dictionary\Value;
 use Dictionary\Node;
-use Dictionary\Node_Interface;
+
+use Dictionary\Entry;
 use Dictionary\Sense;
 use Dictionary\Phrase;
 use Dictionary\Form;
 use Dictionary\Headword;
 use Dictionary\Pronunciation;
 use Dictionary\Translation;
-
-use Dictionary\Value;
 
 use Dictionary\Node_With_Senses;
 use Dictionary\Node_With_Phrases;
@@ -48,39 +49,15 @@ use Dictionary\Node_With_Forms;
 use Dictionary\Node_With_Context;
 use Dictionary\Node_With_Translations;
 
-class View_Layout{
+class View_Layout extends HTML_Layout {
 	
-	private $output;
-	private $depth;
-	private $localization;
-	
-	//--------------------------------------------------------------------
-	// constructor
-	//--------------------------------------------------------------------
-	
-	function __construct($localization){
-		$this->output = '';
-		$this->depth = 0;
-		$this->localization = $localization;
-	}
-	
-	//--------------------------------------------------------------------
-	// public parser
-	//--------------------------------------------------------------------
-	
-	function parse(Entry $entry){
-		
-		$this->output = '';
-		$this->parse_entry($entry);
-		
-		return $this->output;
-	}
+	protected $depth   = 0;
 	
 	//--------------------------------------------------------------------
 	// entry parser
 	//--------------------------------------------------------------------
 	
-	private function parse_entry(Entry $entry){
+	protected function parse_entry(Entry $entry){
 		
 		$this->make_container($entry, function() use($entry){
 			$this->parse_headwords($entry);
@@ -100,7 +77,7 @@ class View_Layout{
 	// sense nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_senses(Node_With_Senses $node){
+	protected function parse_senses(Node_With_Senses $node){
 		$this->parse_collection($node, 'senses');
 	}
 	
@@ -108,7 +85,7 @@ class View_Layout{
 	// sense parser
 	//--------------------------------------------------------------------
 	
-	private function parse_sense(Sense $sense){
+	protected function parse_sense(Sense $sense){
 		
 		$this->make_container($sense, function() use($sense){
 			
@@ -132,7 +109,7 @@ class View_Layout{
 	// phrase nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrases(Node_With_Phrases $node){
+	protected function parse_phrases(Node_With_Phrases $node){
 		$this->parse_collection($node, 'phrases');
 	}
 	
@@ -140,7 +117,7 @@ class View_Layout{
 	// phrase parser
 	//--------------------------------------------------------------------
 	
-	private function parse_phrase(Phrase $phrase){
+	protected function parse_phrase(Phrase $phrase){
 		
 		$this->make_container($phrase, function() use($phrase){
 			
@@ -160,7 +137,7 @@ class View_Layout{
 	// headword nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headwords(Node_With_Headwords $node){
+	protected function parse_headwords(Node_With_Headwords $node){
 		$this->parse_collection($node, 'headwords');
 	}
 	
@@ -168,15 +145,15 @@ class View_Layout{
 	// headword parser
 	//--------------------------------------------------------------------
 	
-	private function parse_headword(Headword $headword){
+	protected function parse_headword(Headword $headword){
 		$this->parse_value($headword);
 	}
-
+	
 	//--------------------------------------------------------------------
 	// pronunciation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_pronunciations(Node_With_Pronunciations $node){
+	protected function parse_pronunciations(Node_With_Pronunciations $node){
 		$this->parse_collection($node, 'pronunciations');
 	}
 	
@@ -184,7 +161,7 @@ class View_Layout{
 	// pronunciation parser
 	//--------------------------------------------------------------------
 	
-	private function parse_pronunciation(Pronunciation $pronunciation){
+	protected function parse_pronunciation(Pronunciation $pronunciation){
 		$this->parse_value($pronunciation);
 	}
 	
@@ -192,7 +169,7 @@ class View_Layout{
 	// category label parser
 	//--------------------------------------------------------------------
 	
-	private function parse_category_label(Node_With_Category_Label $node){
+	protected function parse_category_label(Node_With_Category_Label $node){
 		
 		if($category_label = $node->get_category_label()){
 			$this->parse_value($category_label);
@@ -204,7 +181,7 @@ class View_Layout{
 	// form nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_forms(Node_With_Forms $node){
+	protected function parse_forms(Node_With_Forms $node){
 		$this->parse_collection($node, 'forms');
 	}
 	
@@ -212,7 +189,7 @@ class View_Layout{
 	// form parser
 	//--------------------------------------------------------------------
 	
-	private function parse_form(Form $form){
+	protected function parse_form(Form $form){
 		$this->make_bar($form, function() use($form){
 			
 			$this->make_bar_element($form, function() use($form){
@@ -230,7 +207,7 @@ class View_Layout{
 	// context parser
 	//--------------------------------------------------------------------
 	
-	private function parse_context(Node_With_Context $node){
+	protected function parse_context(Node_With_Context $node){
 		$this->parse_single_value($node, 'context');
 	}
 	
@@ -238,7 +215,7 @@ class View_Layout{
 	// translation nest parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translations(Node_With_Translations $node){
+	protected function parse_translations(Node_With_Translations $node){
 		$this->parse_collection($node, 'translations');
 	}
 	
@@ -246,7 +223,7 @@ class View_Layout{
 	// translation parser
 	//--------------------------------------------------------------------
 	
-	private function parse_translation(Translation $translation){
+	protected function parse_translation(Translation $translation){
 		$this->parse_value($translation);
 	}
 	
@@ -255,51 +232,10 @@ class View_Layout{
 	//====================================================================
 	
 	//--------------------------------------------------------------------
-	// collection parser
-	//--------------------------------------------------------------------
-	// ugly
-	
-	private function parse_collection(Node_Interface $node, $name){
-		
-		// todo: better singular/plural handling
-		$collection_name  = $name;
-		$element_name     = rtrim($name, 's');
-		
-		$this->output .= '<div class="' . $collection_name . '">' . "\n";
-		
-		foreach($node->{'get_'.$collection_name}() as $element){
-			$this->{'parse_'.$element_name}($element);
-		}
-		
-		$this->output .= '</div>' . "\n";
-		
-	}
-	
-	//--------------------------------------------------------------------
-	// single value parser
-	//--------------------------------------------------------------------
-	// ugly
-	
-	private function parse_single_value(Node_Interface $node, $name){
-		
-		// todo: better singular/plural handling
-		$plural_name    = $name . 's';
-		$singular_name  = $name;
-		
-		$this->output .= '<div class="' . $plural_name . '">' . "\n";
-		
-		if($value = $node->{'get_' . $singular_name}()){
-			$this->parse_value($value);
-		}
-		
-		$this->output .= '</div>' . "\n";
-	}
-	
-	//--------------------------------------------------------------------
 	// value parser
 	//--------------------------------------------------------------------
 	
-	private function parse_value(Value $value){
+	protected function parse_value(Value $value){
 		$this->make_simple_bar($value, function() use($value) {
 			$this->output .= $value->get();
 		});
@@ -313,7 +249,7 @@ class View_Layout{
 	// container
 	//--------------------------------------------------------------------
 	
-	private function make_container(Node $node, callable $content_function){
+	protected function make_container(Node $node, callable $content_function){
 		$this->output .= '<div class="container ' . $node->get_snakized_name() . '_container">' . "\n";
 		$content_function();
 		$this->output .= '</div>' . "\n";
@@ -323,7 +259,7 @@ class View_Layout{
 	// content
 	//--------------------------------------------------------------------
 	
-	private function make_content(Node $node, callable $content_function){
+	protected function make_content(Node $node, callable $content_function){
 		$this->output .= '<div class="content ' . $node->get_snakized_name() . '_content">' . "\n";
 		$content_function();
 		$this->output .= '</div>' . "\n";
@@ -333,7 +269,7 @@ class View_Layout{
 	// simple bar
 	//--------------------------------------------------------------------
 	
-	private function make_simple_bar(Element $element, callable $content_function, $class_name = null){
+	protected function make_simple_bar(Element $element, callable $content_function, $class_name = null){
 		$this->make_bar($element, function() use($element, $content_function, $class_name) {
 			$this->make_bar_element($element, $content_function, $class_name);
 		}, $class_name);
@@ -343,7 +279,7 @@ class View_Layout{
 	// bar
 	//--------------------------------------------------------------------
 	
-	private function make_bar(Element $element, callable $content_function, $class_name = null){
+	protected function make_bar(Element $element, callable $content_function, $class_name = null){
 		if(!$class_name){
 			$class_name = $element->get_snakized_name();
 		}
@@ -357,7 +293,7 @@ class View_Layout{
 	// bar element
 	//--------------------------------------------------------------------
 	
-	private function make_bar_element(Element $element, callable $content_function, $class_name = null){
+	protected function make_bar_element(Element $element, callable $content_function, $class_name = null){
 		if(!$class_name){
 			$class_name = $element->get_snakized_name();
 		}
