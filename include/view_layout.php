@@ -112,9 +112,9 @@ class View_Layout{
 		
 		$this->make_container($sense, function() use($sense){
 			
-			$this->make_bar($sense, function() use($sense) {
-				return $sense->get_label();
-			});
+			$this->make_simple_bar($sense, function() use($sense) {
+				$this->output .= $sense->get_label();
+			}, 'sense_label');
 			
 			$this->make_content($sense, function() use($sense){ 
 				$this->parse_category_label($sense);
@@ -145,7 +145,7 @@ class View_Layout{
 		$this->make_container($phrase, function() use($phrase){
 			
 			$this->make_bar($phrase, function() use($phrase) {
-				return $phrase->get();
+				$this->output .= $phrase->get();
 			});
 			
 			$this->make_content($phrase, function() use($phrase){
@@ -215,16 +215,14 @@ class View_Layout{
 	private function parse_form(Form $form){
 		$this->make_bar($form, function() use($form){
 			
-			$this->output .=
-				'<div class="bar_element form_label">' .
-					$form->get_label() .
-				'</div>' . "\n" .
-				
-				$this->make_bar_element($form, function() use($form){
-					return $form->get_form();
-				}) .
-				
-			'</div>' . "\n";
+			$this->make_bar_element($form, function() use($form){
+				$this->output .= $form->get_form();
+			}, 'form_label');
+			
+			$this->make_bar_element($form, function() use($form){
+				$this->output .= $form->get_form();
+			});
+			
 		});
 	}
 	
@@ -251,6 +249,10 @@ class View_Layout{
 	private function parse_translation(Translation $translation){
 		$this->parse_value($translation);
 	}
+	
+	//====================================================================
+	// generic parsers
+	//====================================================================
 	
 	//--------------------------------------------------------------------
 	// collection parser
@@ -298,12 +300,18 @@ class View_Layout{
 	//--------------------------------------------------------------------
 	
 	private function parse_value(Value $value){
-		$this->make_bar($value, function() use($value) {
-			return $value->get();
+		$this->make_simple_bar($value, function() use($value) {
+			$this->output .= $value->get();
 		});
 	}
 	
 	//====================================================================
+	// HTML templates
+	//====================================================================
+	
+	//--------------------------------------------------------------------
+	// container
+	//--------------------------------------------------------------------
 	
 	private function make_container(Node $node, callable $content_function){
 		$this->output .= '<div class="container ' . $node->get_snakized_name() . '_container">' . "\n";
@@ -311,26 +319,52 @@ class View_Layout{
 		$this->output .= '</div>' . "\n";
 	}
 	
+	//--------------------------------------------------------------------
+	// content
+	//--------------------------------------------------------------------
+	
 	private function make_content(Node $node, callable $content_function){
 		$this->output .= '<div class="content ' . $node->get_snakized_name() . '_content">' . "\n";
 		$content_function();
 		$this->output .= '</div>' . "\n";
 	}
 	
-	private function make_bar(Element $element, callable $content_function){
-		$this->output .=
-			'<div class="bar ' . $element->get_snakized_name() .  '_bar">' . "\n" .
-				$this->make_bar_element($element, $content_function) .
-			'</div>' . "\n";
+	//--------------------------------------------------------------------
+	// simple bar
+	//--------------------------------------------------------------------
+	
+	private function make_simple_bar(Element $element, callable $content_function, $class_name = null){
+		$this->make_bar($element, function() use($element, $content_function, $class_name) {
+			$this->make_bar_element($element, $content_function, $class_name);
+		}, $class_name);
 	}
 	
-	private function make_bar_element(Element $element, callable $content_function){
-		$output =
-			'<div class="bar_element ' . $element->get_snakized_name() . '">' .
-				$content_function() .
-			'</div>' . "\n";
+	//--------------------------------------------------------------------
+	// bar
+	//--------------------------------------------------------------------
+	
+	private function make_bar(Element $element, callable $content_function, $class_name = null){
+		if(!$class_name){
+			$class_name = $element->get_snakized_name();
+		}
 		
-		return $output;
+		$this->output .= '<div class="bar ' . $class_name .  '_bar">' . "\n";
+		$content_function();
+		$this->output .= '</div>' . "\n";
+	}
+	
+	//--------------------------------------------------------------------
+	// bar element
+	//--------------------------------------------------------------------
+	
+	private function make_bar_element(Element $element, callable $content_function, $class_name = null){
+		if(!$class_name){
+			$class_name = $element->get_snakized_name();
+		}
+		
+		$this->output .= '<div class="bar_element ' . $class_name . '">';
+		$content_function();
+		$this->output .= '</div>' . "\n";
 	}
 	
 }
