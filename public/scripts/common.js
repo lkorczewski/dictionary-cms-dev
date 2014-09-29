@@ -265,8 +265,8 @@ function showEditorCredentialsInput(editorToolbarContent){
 		logEditorIn(
 			login,
 			password,
-			function(){
-				showEditor(response.editor_name)
+			function(editorName){
+				showEditor(editorName)
 				location.reload()
 			},
 			function(){
