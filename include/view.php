@@ -3,8 +3,8 @@
 namespace DCMS;
 
 require_once 'include/localization.php';
-require_once 'include/edition_layout.php';
-require_once 'include/view_layout.php';
+require_once 'include/layouts/edition_layout.php';
+require_once 'include/layouts/view_layout.php';
 
 require_once 'views/search.php';
 

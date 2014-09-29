@@ -66,8 +66,8 @@ abstract class HTML_Layout {
 		
 		$this->output .= '<div class="' . $plural_name . '">' . "\n";
 		
-		if($value = $node->{'get_' . $singular_name}()){
-			$this->parse_value($value);
+		if($value = $node->{'get_'.$singular_name}()){
+			$this->{'parse_'.$singular_name}($value);
 		}
 		
 		$this->output .= '</div>' . "\n";

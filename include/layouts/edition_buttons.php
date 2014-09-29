@@ -159,7 +159,7 @@ trait Edition_Buttons {
 	// generic button bar
 	//--------------------------------------------------------------------
 	
-	private function make_button_bar(Node $node, array $parameters){
+	private function make_button_bar(Node_Interface $node, array $parameters){
 		$output =
 			'<div class="button_bar ' . $parameters['css_name'] . '_button_bar">' .
 			
