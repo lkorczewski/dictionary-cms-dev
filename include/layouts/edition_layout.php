@@ -305,7 +305,7 @@ class Edition_Layout extends HTML_Layout {
 		
 		$this->make_bar($form, function() use($form) {
 			
-			// should be rewritten on JS level
+			// todo: should be rewritten on JS level
 			$this->output .=
 				'<div class="bar_element form_label" onclick="editForm(this.parentNode, ' .
 				$form->get_id() .
