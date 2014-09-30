@@ -13,7 +13,10 @@ class Session {
 			session_name($parameters['name']);
 		}
 		
-		if(isset($parameters['lifetime']) || isset($parameters['path']) || isset($parameters['domain'])){
+		if(isset($parameters['lifetime'])
+			|| isset($parameters['path'])
+			|| isset($parameters['domain'])
+		){
 			$lifetime  = isset($parameters['lifetime'])  ? $parameters['lifetime']  : 0;
 			$path      = isset($parameters['path'])      ? $parameters['path']      : '/';
 			$domain    = isset($parameters['domain'])    ? $parameters['domain']    : '';
