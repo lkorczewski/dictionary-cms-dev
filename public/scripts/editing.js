@@ -16,11 +16,11 @@ function hideButtons(element){
 
 /* common actions */
 
-function editElement(elementClass, elementBar, doOnChange, id){
+function editValue(elementClass, elementBar, doOnChange, id){
 	
-	function cancelEditingElement(){
+	function cancelEditingValue(){
 		input.onblur = null // hack for Chrome
-		input.parentNode.removeChild(input)
+		input.remove()
 		element.style.display = 'inline-block'
 	}
 	
@@ -34,16 +34,16 @@ function editElement(elementClass, elementBar, doOnChange, id){
 		if(event.keyCode == 13){
 			if(input.value != element.textContent){
 				input.disabled = true
-				doOnChange(elementBar, id, input.value, cancelEditingElement, cancelEditingElement)
+				doOnChange(elementBar, id, input.value, cancelEditingValue, cancelEditingValue)
 			} else {
-				cancelEditingElement()
+				cancelEditingValue()
 			}
 		}
 		if(event.keyCode == 27){
-			cancelEditingElement()
+			cancelEditingValue()
 		}
 	}
-	input.onblur = cancelEditingElement
+	input.onblur = cancelEditingValue
 	
 	element.style.display = 'none';
 	elementBar.insertBefore(input, element.nextElementSibling) /* not working in IE<9 */
@@ -194,7 +194,7 @@ function addEntry(headword){
 }
 
 function editEntryHeadword(headwordBar, nodeId){
-	editElement(
+	editValue(
 		'headword',
 		headwordBar,
 		updateEntryHeadword,
@@ -326,7 +326,7 @@ function addPhrase(parentElement, nodeId){
 }
 
 function editPhrase(phraseBar, nodeId){
-	editElement(
+	editValue(
 		'phrase',
 		phraseBar,
 		updatePhrase,
@@ -394,7 +394,7 @@ function addHeadword(parentElement, parentNodeId){
 }
 
 function editHeadword(headwordBar, parentNodeId){
-	editElement('headword', headwordBar, updateHeadword, parentNodeId)
+	editValue('headword', headwordBar, updateHeadword, parentNodeId)
 }
 
 function updateHeadword(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
@@ -436,7 +436,7 @@ function addPronunciation(nodeContent, parentNodeId){
 }
 
 function editPronunciation(pronunciationBar, parentNodeId){
-	editElement('pronunciation', pronunciationBar, updatePronunciation, parentNodeId)
+	editValue('pronunciation', pronunciationBar, updatePronunciation, parentNodeId)
 }
 
 function updatePronunciation(pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure){
@@ -478,7 +478,7 @@ function addCategoryLabel(nodeContent, parentNodeId){
 }
 
 function editCategoryLabel(categoryLabelBar, parentNodeId){
-	editElement(
+	editValue(
 		'category_label',
 		categoryLabelBar,
 		updateCategoryLabel,
@@ -670,7 +670,7 @@ function addContext(nodeContent, parentNodeId){
 }
 
 function editContext(contextBar, parentNodeId){
-	editElement(
+	editValue(
 		'context',
 		contextBar,
 		updateContext,
@@ -742,7 +742,7 @@ function addTranslation(nodeContent, nodeId){
 }
 
 function editTranslation(translationBar, translationId){
-	editElement('translation', translationBar, updateTranslation, translationId)
+	editValue('translation', translationBar, updateTranslation, translationId)
 }
 
 function updateTranslation(translationBar, translationId, translationText, doOnSuccess, doOnFailure){

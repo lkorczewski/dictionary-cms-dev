@@ -11,7 +11,7 @@ $config['debug'] = true;
 //----------------------------------------------------------------------------
 // if two instances of dictionary are hosted under the same domain,
 // they have to have different values in session_name or session_path,
-// otherwise they share session data, what is usually an unwanted behavior
+// otherwise they would share session data, what is usually an unwanted behavior
 //----------------------------------------------------------------------------
 $config['session_name']    = 'session_id';
 //$config['session_domain']  = '';
