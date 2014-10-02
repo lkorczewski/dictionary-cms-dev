@@ -2,6 +2,8 @@
 
 //namespace DCMS;
 
+use Database\Database;
+
 class Script {
 	private static $config = '';
 	private static $root_path;
@@ -13,6 +15,7 @@ class Script {
 	
 	static function set_root_path($root_path){
 		self::$root_path = $root_path;
+		self::add_include_path($root_path);
 	}
 	
 	//--------------------------------------------------------------------
@@ -23,34 +26,34 @@ class Script {
 		
 		// loading config
 		$config = [];
-		require_once (self::$root_path ? self::$root_path . '/' : '') . 'config.php';
+		require (self::$root_path ? self::$root_path . '/' : '') . 'config.php';
 		self::$config = $config;
 		
-		// implementig configuration
+		// implementing configuration
 		
 		// debug
 		
 		if(isset($config['debug']) && $config['debug'] == true){
 			self::$debug_enabled = true;
-			ini_set('display_errors',1);
-			ini_set('error_reporting', E_ALL);
+			ini_set('display_errors',   1);
+			ini_set('error_reporting',  E_ALL);
 		}
 		
 		// include path
 		// TO DO: absolute paths
 		
 		if(isset($config['include_path'])){
-			set_include_path(
-				get_include_path() .
-				PATH_SEPARATOR .
-				(self::$root_path ? self::$root_path . '/' : '') .
-				$config['include_path']
-			);
+			$include_path = (self::$root_path ? self::$root_path . '/' : '') . $config['include_path'];
+			self::add_include_path($include_path);
 		}
 		
 		return $config;
 	}
-
+	
+	static function add_include_path($path){
+		set_include_path(get_include_path() . PATH_SEPARATOR . realpath($path));
+	}
+	
 	//--------------------------------------------------------------------
 	// start session
 	//--------------------------------------------------------------------
@@ -66,7 +69,7 @@ class Script {
 				? self::$config['session_domain'] : '';
 			$session_path = isset(self::$config['session_path'])
 				? self::$config['session_path'] : '/';
-
+			
 			session_set_cookie_params(0, $session_path, $session_domain);
 		}
 		
@@ -80,13 +83,24 @@ class Script {
 	static function connect_to_database(){
 		require_once 'database/database.php';
 		
-		$database = new Database();
-		if(isset(self::$config['db_host'])) $database->set_host(self::$config['db_host']);
-		if(isset(self::$config['db_port'])) $database->set_port(self::$config['db_port']);
-		if(isset(self::$config['db_user'])) $database->set_user(self::$config['db_user'],
-			isset(self::$config['db_password'])?self::$config['db_password']:''
-		);
-		if(isset(self::$config['db_database'])) $database->set_database(self::$config['db_database']);
+		$database_config = [];
+		if(isset(self::$config['db_host'])){
+			$database_config['host'] = self::$config['db_host'];
+		}
+		if(isset(self::$config['db_port'])){
+			$database_config['port'] = self::$config['db_port'];
+		}
+		if(isset(self::$config['db_user'])){
+			$database_config['user'] = self::$config['db_user'];
+			if(isset(self::$config['db_password'])){
+				$database_config['password'] = self::$config['db_password'];
+			}
+		}
+		if(isset(self::$config['db_database'])){
+			$database_config['database'] = self::$config['db_database'];
+		}
+		// TODO: check if eager connecting may be skipped
+		$database = new Database($database_config);
 		$database->connect();
 		
 		return $database;
@@ -125,10 +139,10 @@ class Script {
 	}
 	
 	//--------------------------------------------------------------------
-	// returnint success
+	// returning success
 	//--------------------------------------------------------------------
 	
-	static function succeed($results = false){
+	static function succeed(array $results = null){
 		$output = '';
 		
 		$output .= '{';

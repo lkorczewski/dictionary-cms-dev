@@ -1,4 +1,10 @@
 ----------------------------------------
+ 0.14.0
+----------------------------------------
+ * metadata support (backward compatibility breaker)
+ * moving public data to public directory (backward compatibility breaker)
+
+----------------------------------------
  0.13.5
 ----------------------------------------
  * editor storage (MySQL table) included in storage setup and filled

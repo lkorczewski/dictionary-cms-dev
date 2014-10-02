@@ -12,11 +12,11 @@ $config = Script::load_config();
 
 require_once 'database/database.php';
 require_once 'dictionary/mysql_data.php';
-require_once 'dictionary/import/XML_importer.php;'
+require_once 'dictionary/import/XML_importer.php';
 
 $database = Script::connect_to_database();
 
-$data = new MySQL_Data($database);
+$data = new Dictionary\MySQL_Data($database);
 
 //====================================================
 // parsing
@@ -27,3 +27,6 @@ $XML_file = $argv[1];
 $importer = new Dictionary\XML_Importer($data);
 $importer->parse($XML_file);
 
+if($error = $database->get_last_error()){
+	fwrite(STDERR, $error['message'] . "\n");
+}

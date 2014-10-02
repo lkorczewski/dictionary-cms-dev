@@ -1,33 +1,32 @@
 #!/usr/bin/php
 <?php
 
+use Dictionary\XML_Layout;
+
 //====================================================
 // initialization
 //====================================================
 
-require_once '../include/script.php';
+require 'bootstrap.php';
 
-Script::set_root_path('..');
-$config = Script::load_config();
+require_once __DIR__ . '/../include/script.php';
 
-require_once 'database/database.php';
-require_once 'dictionary/mysql_data.php';
-require_once 'dictionary/dictionary.php';
+Script::set_root_path(__DIR__ . '/..');
+Script::load_config();
+
 require_once 'dictionary/layouts/XML_layout.php';
-
-$database = Script::connect_to_database();
-
-$data = new Dictionary\MySQL_Data($database);
-$dictionary = new Dictionary\Dictionary($data);
 
 //====================================================
 // parsing dictionary
 //====================================================
 
-$layout = new Dictionary\XML_Layout();
+$database    = $services->get('database');
+$dictionary  = $services->get('dictionary');
+
+$layout = new XML_Layout();
 $layout->parse_dictionary($dictionary, 'php://stdout');
 
 if($db_error = $database->get_last_error()){
-	fwrite(STDERR, $db_error['message'] . "\n" . print_r($db_error, true));
+	fwrite(STDERR, $db_error['message'] . "\n");
 }
 
