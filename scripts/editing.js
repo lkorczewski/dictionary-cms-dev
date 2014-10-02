@@ -16,12 +16,14 @@ function hideButtons(element){
 
 /* common actions */
 
-function editElement(elementClass, elementBar, doOnChange, id){
+function editValue(elementClass, elementBar, doOnChange, id){
 	
 	function cancelEditingElement(){
+		console.log('begin:')
 		input.onblur = null // hack for Chrome
-		input.parentNode.removeChild(input)
+		input.remove()
 		element.style.display = 'inline-block'
+		console.log('end:')
 	}
 	
 	var element = elementBar.getElementsByClassName(elementClass)[0]
@@ -34,7 +36,9 @@ function editElement(elementClass, elementBar, doOnChange, id){
 		if(event.keyCode == 13){
 			if(input.value != element.textContent){
 				input.disabled = true
+				console.log('doOnChange:begin:')
 				doOnChange(elementBar, id, input.value, cancelEditingElement, cancelEditingElement)
+				console.log('doOnChange:end:')
 			} else {
 				cancelEditingElement()
 			}
@@ -59,7 +63,9 @@ function updateValue(valueName, valueBar, valueId, newText, doOnSuccess, doOnFai
 		'&t=' + newText
 	makeJsonRequest(action, parameters, {
 		success: function(response){
+			console.log('response')
 			if(response.status == 'success'){
+				console.log('status success')
 				valueElement = valueBar.getElementsByClassName(valueName)[0]
 				
 				if(response.value == undefined){
@@ -68,8 +74,12 @@ function updateValue(valueName, valueBar, valueId, newText, doOnSuccess, doOnFai
 					valueElement.textContent = response.value
 				}
 				
+				console.log('before doOnSuccess')
 				if(doOnSuccess){
+					console.log('doOnSuccess:begin:')
+					// check if really needed under different browsers
 					doOnSuccess()
+					console.log('doOnSuccess:end:')
 				}
 			} else {
 				if(doOnFailure){
@@ -194,7 +204,7 @@ function addEntry(headword){
 }
 
 function editEntryHeadword(headwordBar, nodeId){
-	editElement(
+	editValue(
 		'headword',
 		headwordBar,
 		updateEntryHeadword,
@@ -326,7 +336,7 @@ function addPhrase(parentElement, nodeId){
 }
 
 function editPhrase(phraseBar, nodeId){
-	editElement(
+	editValue(
 		'phrase',
 		phraseBar,
 		updatePhrase,
@@ -394,7 +404,7 @@ function addHeadword(parentElement, parentNodeId){
 }
 
 function editHeadword(headwordBar, parentNodeId){
-	editElement('headword', headwordBar, updateHeadword, parentNodeId)
+	editValue('headword', headwordBar, updateHeadword, parentNodeId)
 }
 
 function updateHeadword(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
@@ -436,7 +446,7 @@ function addPronunciation(nodeContent, parentNodeId){
 }
 
 function editPronunciation(pronunciationBar, parentNodeId){
-	editElement('pronunciation', pronunciationBar, updatePronunciation, parentNodeId)
+	editValue('pronunciation', pronunciationBar, updatePronunciation, parentNodeId)
 }
 
 function updatePronunciation(pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure){
@@ -478,7 +488,7 @@ function addCategoryLabel(nodeContent, parentNodeId){
 }
 
 function editCategoryLabel(categoryLabelBar, parentNodeId){
-	editElement(
+	editValue(
 		'category_label',
 		categoryLabelBar,
 		updateCategoryLabel,
@@ -670,7 +680,7 @@ function addContext(nodeContent, parentNodeId){
 }
 
 function editContext(contextBar, parentNodeId){
-	editElement(
+	editValue(
 		'context',
 		contextBar,
 		updateContext,
@@ -742,10 +752,12 @@ function addTranslation(nodeContent, nodeId){
 }
 
 function editTranslation(translationBar, translationId){
-	editElement('translation', translationBar, updateTranslation, translationId)
+	console.log('edit translation')
+	editValue('translation', translationBar, updateTranslation, translationId)
 }
 
 function updateTranslation(translationBar, translationId, translationText, doOnSuccess, doOnFailure){
+	console.log('update translation')
 	updateValue('translation', translationBar, translationId, translationText, doOnSuccess, doOnFailure)
 }
 
