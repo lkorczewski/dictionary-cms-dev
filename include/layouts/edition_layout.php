@@ -314,7 +314,7 @@ class Edition_Layout extends HTML_Layout {
 				'</div>' . "\n";
 			
 			$this->make_editable_bar_element($form, function() use($form) {
-				$form->get();
+				$this->output .= $form->get_form();
 			});
 			
 			$this->make_buttons(function() use($form){
