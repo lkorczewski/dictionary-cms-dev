@@ -43,4 +43,3 @@ if($translation_id === false){
 $json_response->succeed([
 	'translation_id' => $translation_id
 ]);
-

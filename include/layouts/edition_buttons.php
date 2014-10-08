@@ -16,27 +16,42 @@ trait Edition_Buttons {
 	// two buttons
 	//--------------------------------------------------------------------
 	
-	private function make_two_buttons(Value $value, Node_Interface $parent_node){
+//	private function make_two_buttons(Value $value, Node_Interface $parent_node){
+//		
+//		$output =
+//			'<div class="buttons">' . "\n" .
+//				
+//				'<button'.
+//					' class="button edit"' .
+//					' onclick="edit' . $value->get_camelized_name(). '(this.parentNode.parentNode, ' . $parent_node->get_node_id() . ')"' .
+//				'>' .
+//					$this->localization->get_text('edit') .
+//				'</button>' . "\n" .
+//				
+//				'<button' .
+//					' class="button delete"' .
+//					' onclick="delete' . $value->get_camelized_name(). '(this.parentNode.parentNode, ' . $parent_node->get_node_id() . ')"' .
+//				'>' .
+//					$this->localization->get_text('delete') .
+//				'</button>' . "\n" .
+//				
+//			'</div>' . "\n";
+//		
+//		return $output;
+//	}
+	
+	//--------------------------------------------------------------------
+	// single value buttons
+	//--------------------------------------------------------------------
+	
+	private function make_single_value_buttons(Value $value){
 		
 		$output =
 			'<div class="buttons">' . "\n" .
-				
-				'<button'.
-					' class="button edit"' .
-					' onclick="edit' . $value->get_camelized_name(). '(this.parentNode.parentNode, ' . $parent_node->get_node_id() . ')"' .
-				'>' .
-					$this->localization->get_text('edit') .
-				'</button>' . "\n" .
-				
-				'<button' .
-					' class="button delete"' .
-					' onclick="delete' . $value->get_camelized_name(). '(this.parentNode.parentNode, ' . $parent_node->get_node_id() . ')"' .
-				'>' .
-					$this->localization->get_text('delete') .
-				'</button>' . "\n" .
-				
+				$this->make_edit_value_button($value) .
+				$this->make_delete_value_button($value) .
 			'</div>' . "\n";
-		
+			
 		return $output;
 	}
 	
@@ -48,31 +63,10 @@ trait Edition_Buttons {
 		
 		$output =
 			'<div class="buttons">' . "\n" .
-				
-				$this->make_value_button($value, [
-					'class'     => 'edit',
-					'function'  => 'edit' . $value->get_camelized_name(),
-					'label'     => 'edit',
-				]) .
-				
-				$this->make_value_button($value, [
-					'class'     => 'move_up',
-					'function'  => 'move' . $value->get_camelized_name() . 'Up',
-					'label'     => 'up',
-				]) .
-				
-				$this->make_value_button($value, [
-					'class'     => 'move_down',
-					'function'  => 'move' . $value->get_camelized_name() . 'Down',
-					'label'     => 'down',
-				]) .
-				
-				$this->make_value_button($value, [
-					'class'     => 'delete',
-					'function'  => 'delete' . $value->get_camelized_name(),
-					'label'     => 'delete',
-				]) .
-				
+				$this->make_edit_value_button($value) .
+				$this->make_move_value_up_button($value) .
+				$this->make_move_value_down_button($value) .
+				$this->make_delete_value_button($value) .
 			'</div>' . "\n";
 		
 		return $output;
@@ -119,7 +113,43 @@ trait Edition_Buttons {
 	}
 	
 	//--------------------------------------------------------------------
-	// buttons
+	// node buttons
+	//--------------------------------------------------------------------
+	
+	protected function make_edit_value_button(Value $value){
+		return $this->make_value_button($value, [
+			'class'     => 'edit',
+			'function'  => 'edit' . $value->get_camelized_name(),
+			'label'     => 'edit',
+		]);
+	}
+	
+	protected function make_move_value_up_button(Value $value){
+		return $this->make_value_button($value, [
+			'class'     => 'move_up',
+			'function'  => 'move' . $value->get_camelized_name() . 'Up',
+			'label'     => 'up',
+		]);
+	}
+	
+	protected function make_move_value_down_button(Value $value){
+		return $this->make_value_button($value, [
+			'class'     => 'move_down',
+			'function'  => 'move' . $value->get_camelized_name() . 'Down',
+			'label'     => 'down',
+		]);
+	}
+	
+	protected function make_delete_value_button(Value $value){
+		return $this->make_value_button($value, [
+			'class'     => 'delete',
+			'function'  => 'delete' . $value->get_camelized_name(),
+			'label'     => 'delete',
+		]);
+	}
+	
+	//--------------------------------------------------------------------
+	// node buttons
 	//--------------------------------------------------------------------
 	
 	private function make_move_node_up_button(Node $node){
@@ -175,4 +205,3 @@ trait Edition_Buttons {
 		return $output;
 	}
 }
-

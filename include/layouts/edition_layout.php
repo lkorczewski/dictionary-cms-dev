@@ -217,7 +217,7 @@ class Edition_Layout extends HTML_Layout {
 	//--------------------------------------------------------------------
 	
 	protected function parse_headword(Headword $headword){
-		$this->make_value_bar($headword);
+		$this->make_multiple_value_bar($headword);
 	}
 	
 	//--------------------------------------------------------------------
@@ -241,7 +241,7 @@ class Edition_Layout extends HTML_Layout {
 	//--------------------------------------------------------------------
 	
 	protected function parse_pronunciation(Pronunciation $pronunciation){
-		$this->make_value_bar($pronunciation);
+		$this->make_multiple_value_bar($pronunciation);
 	}
 	
 	//--------------------------------------------------------------------
@@ -256,7 +256,7 @@ class Edition_Layout extends HTML_Layout {
 			'<div class="category_labels">' . "\n";
 		
 		if($category_label){
-			$this->parse_category_label($category_label, $node);
+			$this->parse_category_label($category_label);
 		}
 		
 		$this->output .=
@@ -276,8 +276,8 @@ class Edition_Layout extends HTML_Layout {
 	// category label parser
 	//--------------------------------------------------------------------
 	
-	protected function parse_category_label(Category_Label $category_label, Node_With_Category_Label $parent_node){
-		$this->make_value_bar($category_label, $this->make_two_buttons($category_label, $parent_node));
+	protected function parse_category_label(Category_Label $category_label){
+		$this->make_single_value_bar($category_label);
 	}
 	
 	//--------------------------------------------------------------------
@@ -382,8 +382,8 @@ class Edition_Layout extends HTML_Layout {
 	// context parser
 	//--------------------------------------------------------------------
 	
-	protected function parse_context(Context $context, Node_With_Context $parent_node){
-		$this->make_value_bar($context, $this->make_two_buttons($context, $parent_node));
+	protected function parse_context(Context $context){
+		$this->make_single_value_bar($context);
 	}
 	
 	//--------------------------------------------------------------------
@@ -408,7 +408,7 @@ class Edition_Layout extends HTML_Layout {
 	//--------------------------------------------------------------------
 	
 	protected function parse_translation(Translation $translation){
-		$this->make_value_bar($translation);
+		$this->make_multiple_value_bar($translation);
 	}
 	
 	//====================================================================
@@ -439,11 +439,7 @@ class Edition_Layout extends HTML_Layout {
 	// value bar
 	//--------------------------------------------------------------------
 	
-	protected function make_value_bar(Value $value, $buttons = null){
-		if($buttons === null){
-			$buttons = $this->make_four_buttons($value);
-		}
-		
+	protected function make_value_bar(Value $value, $buttons){
 		$this->make_bar($value, function() use($value, $buttons) {
 			$this->make_editable_bar_element($value, function() use($value){
 				$this->output .= $value->get();
@@ -451,6 +447,14 @@ class Edition_Layout extends HTML_Layout {
 			
 			$this->output .= $buttons;
 		});
+	}
+	
+	protected function make_single_value_bar(Value $value){
+		$this->make_value_bar($value, $this->make_single_value_buttons($value));
+	}
+	
+	protected function make_multiple_value_bar(Value $value){
+		$this->make_value_bar($value, $this->make_four_buttons($value));
 	}
 	
 	//--------------------------------------------------------------------

@@ -33,25 +33,34 @@ function makeBar(name){
 	return bar;
 }
 
-function makeValueBar(name, text, id){
+function makeValueBar(name, text, id, makeButtons){
 	var elementBar = makeBar(name)
 	
 	var element = document.createElement('div')
 	element.className = 'bar_element ' + name
-	element.onclick = function(){ editValue(name, elementBar, id) }
+	element.onclick = function(){ editValue(name, elementBar, updateValue, id) }
 	element.textContent = text
 	elementBar.appendChild(element)
 	
-	var buttons = makeButtons({
-		'edit'    : function(){ editValue(name, elementBar, id) },
+	elementBar.appendChild(makeButtons(elementBar))
+	
+	return elementBar
+}
+
+function makeSingleValueBar(name, text, id){
+	return makeValueBar(name, text, id, function(elementBar){ return makeButtons({
+		'edit'    : function(){ editValue(name, elementBar, updateValue, id) },
+		'delete'  : function(){ deleteValue(name, elementBar, id) }
+	})})
+}
+
+function makeMultipleValueBar(name, text, id){
+	return makeValueBar(name, text, id, function(elementBar){ return makeButtons({
+		'edit'    : function(){ editValue(name, elementBar, updateValue, id) },
 		'up'      : function(){ moveValueUp(name, elementBar, id) },
 		'down'    : function(){ moveValueDown(name, elementBar, id) },
 		'delete'  : function(){ deleteValue(name, elementBar, id) }
-	})
-	
-	elementBar.appendChild(buttons)
-	
-	return elementBar
+	})})
 }
 
 //----------------------------------------------------------------------------
@@ -93,7 +102,7 @@ function appendCategoryLabels(nodeContent, nodeId){
 	))
 }
 
-function appendForms(nodeContent, node){
+function appendForms(nodeContent, nodeId){
 	nodeContent.appendChild(makeNest('forms'))
 	nodeContent.appendChild(makeButtonBar(
 		'form',
@@ -202,16 +211,16 @@ function makeSenseContainer(nodeId, senseLabel){
 //----------------------------------------------------------------------------
 
 function makeHeadwordBar(headwordText, headwordId){
-	return makeValueBar('headword', headwordText, headwordId)
+	return makeMultipleValueBar('headword', headwordText, headwordId)
 }
 
 function makePronunciationBar(pronunciationText, pronunciationId){
-	return makeValueBar('pronunciation', pronunciationText, pronunciationId)
+	return makeMultipleValueBar('pronunciation', pronunciationText, pronunciationId)
 }
 
 function makeCategoryLabelBar(text, parentNodeId){
 	var categoryLabelBar = makeBar('category_label')
-
+	
 	var categoryLabel = document.createElement('div')
 	categoryLabel.className = 'bar_element category_label'
 	categoryLabel.onclick = function(){ editCategoryLabel(categoryLabelBar, parentNodeId) }
@@ -256,26 +265,12 @@ function makeFormBar(formLabel, formText, formId){
 	return formBar
 }
 
-function makeContextBar(text, parentNodeId){
-	var contextBar = makeBar('context')
-	
-	var context = document.createElement('div')
-	context.className = 'bar_element context'
-	context.onclick = function(){ editContext(contextBar, parentNodeId) }
-	context.textContent = text
-	contextBar.appendChild(context)
-	
-	var buttons = makeButtons({
-		'edit'   : function(){ editContext(contextBar, parentNodeId) },
-		'delete' : function(){ deleteContext(contextBar, parentNodeId) },
-
-	})
-	contextBar.appendChild(buttons)
-	
-	return contextBar
+function makeContextBar(contextText, contextId){
+	console.log(contextId)
+	return makeSingleValueBar('context', contextText, contextId)
 }
 
 function makeTranslationBar(translationText, translationId){
-	return makeValueBar('translation', translationText, translationId)
+	return makeMultipleValueBar('translation', translationText, translationId)
 }
 

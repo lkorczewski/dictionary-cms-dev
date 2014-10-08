@@ -16,7 +16,7 @@ function hideButtons(element){
 
 /* common actions */
 
-function editValue(elementClass, elementBar, doOnChange, id){
+function editValue(elementName, elementBar, doOnChange, id){
 	
 	function cancelEditingValue(){
 		input.onblur = null // hack for Chrome
@@ -24,17 +24,17 @@ function editValue(elementClass, elementBar, doOnChange, id){
 		element.style.display = 'inline-block'
 	}
 	
-	var element = elementBar.getElementsByClassName(elementClass)[0]
+	var element = elementBar.getElementsByClassName(elementName)[0]
 	
 	var input = document.createElement('input')
 	input.setAttribute('type', 'text')
-	input.setAttribute('class', elementClass + '_input') // TO DO: finding alternative
+	input.setAttribute('class', elementName + '_input') // TO DO: finding alternative
 	input.value = element.textContent
 	input.onkeydown = function(event){
 		if(event.keyCode == 13){
 			if(input.value != element.textContent){
 				input.disabled = true
-				doOnChange(elementBar, id, input.value, cancelEditingValue, cancelEditingValue)
+				doOnChange(elementName, elementBar, id, input.value, cancelEditingValue, cancelEditingValue)
 			} else {
 				cancelEditingValue()
 			}
@@ -161,7 +161,7 @@ function moveValueDown(valueName, valueBar, valueId){
 }
 
 // delete value
-function deleteValue(valueName, valueBar, valueId){
+function deleteValue(valueName, valueBar, valueId, doOnSuccess){
 	var action = actionPath + '/' + valueName + '.php'
 	var parameters =
 		'id=' + encodeURIComponent(valueId) +
@@ -170,6 +170,10 @@ function deleteValue(valueName, valueBar, valueId){
 		success: function(response){
 			if(response.status == 'success'){
 				valueBar.remove()
+				
+				if(doOnSuccess){
+					doOnSuccess()
+				}
 			}
 		}
 	})
@@ -247,7 +251,11 @@ function deleteEntry(nodeId){
 //------------------------------------------------------------------------------
 
 function addSense(parentElement, nodeId){
-	makeJsonRequest(actionPath + '/add_sense.php', 'n=' + encodeURIComponent(nodeId), {
+	var action = actionPath + '/node.php'
+	var parameters =
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=add_sense'
+	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
 				var senses = parentElement.getElementsByClassName('senses')[0]
@@ -294,7 +302,7 @@ function moveSenseDown(senseElement, nodeId){
 				senseElement.moveDown()
 				
 				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-				nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+				var nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
 				
 				var bufferedSenseLabel = senseLabelElement.textContent;
 				senseLabelElement.textContent = nextSenseLabelElement.textContent;
@@ -306,6 +314,7 @@ function moveSenseDown(senseElement, nodeId){
 
 function deleteSense(senseElement, nodeId){
 	deleteNode('sense', senseElement, nodeId)
+	// todo: labels should be moved
 }
 
 //------------------------------------------------------------------------------
@@ -313,9 +322,10 @@ function deleteSense(senseElement, nodeId){
 //------------------------------------------------------------------------------
 
 function addPhrase(parentElement, nodeId){
-	var action = actionPath + '/add_phrase.php'; 
+	var action = actionPath + '/node.php'; 
 	var parameters =
-		'n=' + encodeURIComponent(nodeId)
+		'n=' + encodeURIComponent(nodeId) +
+		'&a=add_phrase'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
@@ -418,7 +428,7 @@ function deleteHeadword(headwordBar, headwordId){
 //------------------------------------------------------------------------------
 
 function addPronunciation(nodeContent, parentNodeId){
-	var action = actionPath + '/headword_node.php'
+	var action = actionPath + '/node.php'
 	var parameters =
 		'n=' + encodeURIComponent(parentNodeId) +
 		'&a=add_pronunciation'
@@ -459,9 +469,8 @@ function deletePronunciation(pronunciationBar, pronunciationId){
 // category labels
 //------------------------------------------------------------------------------
 
-
 function addCategoryLabel(nodeContent, parentNodeId){
-	var action = actionPath + '/headword_node.php'
+	var action = actionPath + '/node.php'
 	var parameters =
 		'n=' + encodeURIComponent(parentNodeId) +
 		'&a=add_category_label'
@@ -653,15 +662,18 @@ function deleteForm(formBar, formId){
 //------------------------------------------------------------------------------
 
 function addContext(nodeContent, parentNodeId){
-	var action = actionPath + '/sense.php'
+	var action = actionPath + '/node.php'
 	var parameters =
 		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=add_context'
+		'&a=set_context'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
+			console.log(response)
 			if(response.status == 'success'){
+				var contextId = response.context_id
+				console.log(contextId)
 				var contexts = nodeContent.getElementsByClassName('contexts')[0]
-				var contextBar = makeContextBar('...', parentNodeId)
+				var contextBar = makeContextBar('...', contextId)
 				contexts.appendChild(contextBar)
 				editContext(contextBar, parentNodeId)
 			}
@@ -669,20 +681,21 @@ function addContext(nodeContent, parentNodeId){
 	})
 }
 
-function editContext(contextBar, parentNodeId){
+function editContext(contextBar, contextId){
+	console.log('context_id: ' + contextId)
 	editValue(
 		'context',
 		contextBar,
 		updateContext,
-		parentNodeId
+		contextId
 	)
 }
 
-function updateContext(contextBar, parentNodeId, contextText, doOnSuccess, doOnFailure){
+function updateContext(contextBar, contextId, contextText, doOnSuccess, doOnFailure){
 	var action = actionPath + '/context.php'
 	var parameters =
-		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=set' +
+		'id=' + encodeURIComponent(contextId) +
+		'&a=update' +
 		'&t=' + encodeURIComponent(contextText)
 	makeJsonRequest(action, parameters, {
 		success: function(response){
@@ -707,27 +720,23 @@ function updateContext(contextBar, parentNodeId, contextText, doOnSuccess, doOnF
 	})
 }
 
-function deleteContext(contextBar, parentNodeId){
-	var action = actionPath + '/context.php'
-	var parameters =
-		'n=' + parentNodeId +
-		'&a=delete'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				contextBar.remove()
-				// there needs to show up the button adding the label
-			}
-		}
-	})	
+function deleteContext(contextBar, contextId){
+	deleteValue('context', contextBar, contextId, function(){
+		var contexts = contextBar.parentNode
+		var contextButtonBar = contexts.getElementsByClassName('context_button_bar')[0]
+		contextButtonBar.remove()
+	})
 }
 
-/* translations */
+//------------------------------------------------------------------------------
+// translations
+//------------------------------------------------------------------------------
 
 function addTranslation(nodeContent, nodeId){
-	var action = actionPath + '/add_translation.php'
+	var action = actionPath + '/node.php'
 	var parameters =
-		'id=' + encodeURIComponent(nodeId)
+		'id=' + encodeURIComponent(nodeId) +
+		'&a=add_translation'
 	makeJsonRequest(action, parameters, {
 		success: function(response){
 			if(response.status == 'success'){
@@ -760,4 +769,3 @@ function moveTranslationDown(translationBar, translationId){
 function deleteTranslation(translationBar, translationId){
 	deleteValue('translation', translationBar, translationId)
 }
-

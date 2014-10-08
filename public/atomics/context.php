@@ -20,8 +20,8 @@ $json_response = $services->get('json_response');
 // setting parameters
 //----------------------------------------------------
 
-$parent_node_id = $request->get_parameter('n');
-if($parent_node_id === false){
+$context_id = $request->get_parameter('id');
+if($context_id === false){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
@@ -30,7 +30,7 @@ if($action === false){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
-if($action == 'set'){
+if($action == 'update'){
 	$text = $request->get_parameter('t');
 	if($text === false){
 		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
@@ -42,11 +42,12 @@ if($action == 'set'){
 //----------------------------------------------------
 
 switch($action){
-	case 'set':
-		$rows_affected = $services->get('data')->access('context')->set($parent_node_id, $text);
+	case 'update':
+		echo 'context_id: ' . $context_id;
+		$rows_affected = $services->get('data')->access('context')->update($context_id, $text);
 		break;
 	case 'delete':
-		$rows_affected = $services->get('data')->access('context')->delete($parent_node_id);
+		$rows_affected = $services->get('data')->access('context')->delete($context_id);
 		break;
 	default:
 		$json_response->fail(JSON_Response::MESSAGE_UNRECOGNIZED_ACTION);
