@@ -44,6 +44,7 @@ return new Service_Container([
 	},
 	
 	'data' => function(Service_Container $services){
+		require_once 'dictionary/data/mysql_data.php';
 		return new MySQL_Data($services->get('database'));
 	},
 	
