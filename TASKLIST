@@ -7,7 +7,7 @@
 ------------------------------------------------------------------------
  T O   D O :
 ------------------------------------------------------------------------
- * moving labels when deleting sense
+ * moving labels in JS when deleting sense
  * dynamic edition
  * unification of JS codes
  * debugging mode in atomics (query runtime, total runtime)
