@@ -10,6 +10,10 @@ class JSON_Response {
 	const MESSAGE_WRONG_CREDENTIALS    = 'wrong credentials';
 	const MESSAGE_UNRECOGNIZED_ACTION  = 'unrecognized action';
 	const MESSAGE_NOTHING_AFFECTED     = 'nothing affected';
+
+	//------------------------------------------------
+	// returning success
+	//------------------------------------------------
 	
 	function succeed(array $results = null) {
 		$output = '';
@@ -18,9 +22,7 @@ class JSON_Response {
 		$output .= '"status":"success"';
 		
 		if(is_array($results)){
-			foreach($results as $result_key => $result_value){
-				$output .= ',"' . $result_key . '":"' . $result_value . '"';
-			}
+			$output .= $this->process_array($results);
 		}
 		
 		$output .= '}';
@@ -29,17 +31,41 @@ class JSON_Response {
 		exit($output);
 	}
 	
-	function fail($message) {
+	//------------------------------------------------
+	// returning failure
+	//------------------------------------------------
+	
+	function fail($message, array $results = null) {
 		$output =
 			'{' .
 			'"status":"failure"' .
 			',' .
-			'"message":"' . $message . '"' .
+			'"message":"' . $message . '"';
+		
+		if(is_array($results)){
+			$output .= $this->process_array($results);
+		}
+		
+		$output .=
 			'}';
 		
 		header('Content-Type: application/json');
 		exit($output);
 	}
+	
+	//------------------------------------------------
+	
+	function process_array(array $results){
+		$output = '';
+		
+		foreach($results as $result_key => $result_value){
+			$output .= ',"' . $result_key . '":"' . $result_value . '"';
+		}
+		
+		return $output;
+	}
+	
+	//------------------------------------------------
 	
 	// not used yet
 	// todo: rename
