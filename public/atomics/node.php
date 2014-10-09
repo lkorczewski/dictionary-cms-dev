@@ -73,19 +73,19 @@ switch($action){
 		break;
 	
 	case 'add_translation':
-		$result = $services->get('data')->access('translation')->add($sense_id, $text);
+		$result = $services->get('data')->access('translation')->add($node_id, $text);
 		
 		$parameters['translation_id'] = $result;
 		break;
 	
 	case 'add_phrase':
-		$result = $services->get('data')->access('phrase')->add($parent_node_id, $text);
+		$result = $services->get('data')->access('phrase')->add($node_id, $text);
 		
 		$parameters['node_id'] = $result;
 		break;
 	
 	case 'add_sense':
-		$result = $services->get('data')->access('sense')->add($parent_node_id);
+		$result = $services->get('data')->access('sense')->add($node_id);
 		
 		$parameters = [
 			'node_id'  => $result,
