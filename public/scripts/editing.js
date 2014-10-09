@@ -16,167 +16,169 @@ function hideButtons(element){
 
 /* common actions */
 
-function editValue(elementName, elementBar, doOnChange, id){
+var Value = {
 	
-	function cancelEditingValue(){
-		input.onblur = null // hack for Chrome
-		input.remove()
-		element.style.display = 'inline-block'
-	}
-	
-	var element = elementBar.getElementsByClassName(elementName)[0]
-	
-	var input = document.createElement('input')
-	input.setAttribute('type', 'text')
-	input.setAttribute('class', elementName + '_input') // TO DO: finding alternative
-	input.value = element.textContent
-	input.onkeydown = function(event){
-		if(event.keyCode == 13){
-			if(input.value != element.textContent){
-				input.disabled = true
-				doOnChange(elementName, elementBar, id, input.value, cancelEditingValue, cancelEditingValue)
-			} else {
+	edit: function(valueName, valueBar, doOnChange, id){
+		
+		function cancelEditingValue(){
+			input.onblur = null // hack for Chrome
+			input.remove()
+			element.style.display = 'inline-block'
+		}
+		
+		var element = valueBar.getElementsByClassName(valueName)[0]
+		
+		var input = document.createElement('input')
+		input.setAttribute('type', 'text')
+		input.setAttribute('class', valueName + '_input') // TO DO: finding alternative
+		input.value = element.textContent
+		input.onkeydown = function(event){
+			if(event.keyCode == 13){
+				if(input.value != element.textContent){
+					input.disabled = true
+					doOnChange(valueBar, id, input.value, cancelEditingValue, cancelEditingValue)
+				} else {
+					cancelEditingValue()
+				}
+			}
+			if(event.keyCode == 27){
 				cancelEditingValue()
 			}
 		}
-		if(event.keyCode == 27){
-			cancelEditingValue()
-		}
-	}
-	input.onblur = cancelEditingValue
+		input.onblur = cancelEditingValue
+		
+		element.style.display = 'none';
+		valueBar.insertBefore(input, element.nextElementSibling) /* not working in IE<9 */
+		input.focus()
+	},
 	
-	element.style.display = 'none';
-	elementBar.insertBefore(input, element.nextElementSibling) /* not working in IE<9 */
-	input.focus()
-}
-
-function updateValue(valueName, valueBar, valueId, newText, doOnSuccess, doOnFailure){
-	// TODO: newText -- improve the name
-	var action = actionPath + '/' + valueName + '.php'
-	var parameters =
-		'id=' + encodeURIComponent(valueId) +
-		'&a=update' +
-		'&t=' + newText
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var valueElement = valueBar.getElementsByClassName(valueName)[0]
-				
-				if(response.value == undefined){
-					valueElement.textContent = newText
+	update: function(valueName, valueBar, valueId, newText, doOnSuccess, doOnFailure){
+		// TODO: newText -- improve the name
+		var action = actionPath + '/' + valueName + '.php'
+		var parameters =
+			'id=' + encodeURIComponent(valueId) +
+			'&a=update' +
+			'&t=' + newText
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var valueElement = valueBar.getElementsByClassName(valueName)[0]
+					
+					if(response.value == undefined){
+						valueElement.textContent = newText
+					} else {
+						valueElement.textContent = response.value
+					}
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
 				} else {
-					valueElement.textContent = response.value
+					if(doOnFailure){
+						doOnFailure()
+					}
 				}
-				
-				if(doOnSuccess){
-					doOnSuccess()
-				}
-			} else {
+			},
+			failure: function(){
 				if(doOnFailure){
 					doOnFailure()
 				}
 			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
-}
-
-// move node up
-function moveNodeUp(name, element, nodeId){
-	var action = actionPath + '/' + name + '.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=move_up'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				element.moveUp()
-			}
-		}
-	})
-}
-
-// move node down
-function moveNodeDown(name, element, nodeId){
-	var action = actionPath + '/' + name + '.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=move_down'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				element.moveDown()
-			}
-		}
-	})
-}
-
-// delete node
-function deleteNode(name, element, nodeId){
-	var action = actionPath + '/' + name + '.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=delete'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				element.remove()
-			}
-		}
-	})
-}
-
-// move value up
-function moveValueUp(valueName, valueBar, valueId){
-	var action = actionPath + '/' + valueName + '.php'
-	var parameters =
-		'id=' + encodeURIComponent(valueId) +
-		'&a=move_up'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				valueBar.moveUp()
-			}
-		}
-	})
-}
-
-// move value down
-function moveValueDown(valueName, valueBar, valueId){
-	var action = actionPath + '/' + valueName + '.php'
-	var parameters =
-		'id=' + encodeURIComponent(valueId) +
-		'&a=move_down'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				valueBar.moveDown()
-			}
-		}
-	})
-}
-
-// delete value
-function deleteValue(valueName, valueBar, valueId, doOnSuccess){
-	var action = actionPath + '/' + valueName + '.php'
-	var parameters =
-		'id=' + encodeURIComponent(valueId) +
-		'&a=delete'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				valueBar.remove()
-				
-				if(doOnSuccess){
-					doOnSuccess()
+		})
+	},
+	
+	moveUp: function(valueName, valueBar, valueId){
+		var action = actionPath + '/' + valueName + '.php'
+		var parameters =
+			'id=' + encodeURIComponent(valueId) +
+			'&a=move_up'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					valueBar.moveUp()
 				}
 			}
-		}
-	})
+		})
+	},
+	
+	moveDown: function(valueName, valueBar, valueId){
+		var action = actionPath + '/' + valueName + '.php'
+		var parameters =
+			'id=' + encodeURIComponent(valueId) +
+			'&a=move_down'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					valueBar.moveDown()
+				}
+			}
+		})
+	},
+	
+	delete: function(valueName, valueBar, valueId, doOnSuccess){
+		var action = actionPath + '/' + valueName + '.php'
+		var parameters =
+			'id=' + encodeURIComponent(valueId) +
+			'&a=delete'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					valueBar.remove()
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
+				}
+			}
+		})
+	},
+	
+}
+
+var Node = {
+	
+	moveUp: function(name, element, nodeId){
+		var action = actionPath + '/' + name + '.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=move_up'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					element.moveUp()
+				}
+			}
+		})
+	},
+	
+	moveDown: function(name, element, nodeId){
+		var action = actionPath + '/' + name + '.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=move_down'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					element.moveDown()
+				}
+			}
+		})
+	},
+	
+	delete: function(name, element, nodeId){
+		var action = actionPath + '/' + name + '.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=delete'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					element.remove()
+				}
+			}
+		})
+	},
+	
 }
 
 //==============================================================================
@@ -187,585 +189,635 @@ function deleteValue(valueName, valueBar, valueId, doOnSuccess){
 // entry
 //------------------------------------------------------------------------------
 
-function addEntry(headword){
-	makeJsonRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
-		success: function(response){
-			if(response.status == 'success'){
-				window.location = '?h=' + encodeURIComponent(headword) + '&m=edition'
-			}
-		}
-	})
-}
-
-function editEntryHeadword(headwordBar, nodeId){
-	editValue(
-		'headword',
-		headwordBar,
-		updateEntryHeadword,
-		nodeId
-	)
-}
-
-function updateEntryHeadword(headwordBar, nodeId, headwordText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/update_entry.php'
-	var parameter =
-		'n=' + encodeURIComponent(nodeId) +
-		'&h=' + encodeURIComponent(headwordText)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var headword = headwordBar.getElementsByClassName('headword')[0]
-				headword.textContent = headwordText
-				
-				if(doOnSuccess){
-					doOnSuccess()
+var Entry = {
+	
+	add: function addEntry(headword){
+		makeJsonRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
+			success: function(response){
+				if(response.status == 'success'){
+					window.location = '?h=' + encodeURIComponent(headword) + '&m=edition'
 				}
-				
-				window.location = '?h=' + encodeURIComponent(headwordText) + '&m=edition' // here will be problem with
-			} else {
+			}
+		})
+	},
+	
+	/*
+	editHeadword: function(headwordBar, nodeId){
+		Value.edit(
+			'headword',
+			headwordBar,
+			this.updateHeadword,
+			nodeId
+		)
+	},
+	
+	updateHeadword: function(headwordBar, nodeId, headwordText, doOnSuccess, doOnFailure){
+		var action = actionPath + '/update_entry.php'
+		var parameter =
+			'n=' + encodeURIComponent(nodeId) +
+			'&h=' + encodeURIComponent(headwordText)
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var headword = headwordBar.getElementsByClassName('headword')[0]
+					headword.textContent = headwordText
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
+					
+					window.location = '?h=' + encodeURIComponent(headwordText) + '&m=edition' // here will be problem with
+				} else {
+					if(doOnFailure){
+						doOnFailure()
+					}
+				}
+			},
+			failure: function(){
 				if(doOnFailure){
 					doOnFailure()
 				}
 			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
+		})
+	},
+	*/
+	
+	delete: function(nodeId){
+		makeJsonRequest(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
+			success: function(response){
+				if(response.status == 'success'){
+					location.reload()
+				}
 			}
-		}
-	})
-}
-
-function deleteEntry(nodeId){
-	makeJsonRequest(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
-		success: function(response){
-			if(response.status == 'success'){
-				location.reload()
-			}
-		}
-	})	
+		})	
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // senses
 //------------------------------------------------------------------------------
 
-function addSense(parentElement, nodeId){
-	var action = actionPath + '/node.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=add_sense'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var senses = parentElement.getElementsByClassName('senses')[0]
-				var senseContainer = makeSenseContainer(response.node_id, response.label)
-				senses.appendChild(senseContainer)
+var Sense = {
+	
+	name: 'sense',
+	
+	add: function(parentElement, nodeId){
+		var action = actionPath + '/Node,php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=add_sense'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var senses = parentElement.getElementsByClassName('senses')[0]
+					var senseContainer = makeSenseContainer(response.node_id, response.label)
+					senses.appendChild(senseContainer)
+				}
 			}
-		}
-	})
-}
-
-function moveSenseUp(senseElement, nodeId){
-	var action = actionPath + '/sense.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=move_up'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
-				
-				senseElement.moveUp()
-				
-				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-				var previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-				
-				var bufferedSenseLabel = senseLabelElement.textContent;
-				senseLabelElement.textContent = previousSenseLabelElement.textContent;
-				previousSenseLabelElement.textContent = bufferedSenseLabel;
+		})
+	},
+	
+	moveUp: function(senseElement, nodeId){
+		var action = actionPath + '/sense.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=move_up'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
+					
+					senseElement.moveUp()
+					
+					var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+					var previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+					
+					var bufferedSenseLabel = senseLabelElement.textContent;
+					senseLabelElement.textContent = previousSenseLabelElement.textContent;
+					previousSenseLabelElement.textContent = bufferedSenseLabel;
+				}
 			}
-		}
-	})
-}
-
-function moveSenseDown(senseElement, nodeId){
-	var action = actionPath + '/sense.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=move_down'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
-				
-				senseElement.moveDown()
-				
-				var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-				var nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-				
-				var bufferedSenseLabel = senseLabelElement.textContent;
-				senseLabelElement.textContent = nextSenseLabelElement.textContent;
-				nextSenseLabelElement.textContent = bufferedSenseLabel;
+		})
+	},
+	
+	moveDown: function(senseElement, nodeId){
+		var action = actionPath + '/sense.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=move_down'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
+					
+					senseElement.moveDown()
+					
+					var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+					var nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+					
+					var bufferedSenseLabel = senseLabelElement.textContent;
+					senseLabelElement.textContent = nextSenseLabelElement.textContent;
+					nextSenseLabelElement.textContent = bufferedSenseLabel;
+				}
 			}
-		}
-	})
-}
-
-function deleteSense(senseElement, nodeId){
-	deleteNode('sense', senseElement, nodeId)
-	// todo: labels should be moved
+		})
+	},
+	
+	delete: function(senseElement, nodeId){
+		Node.delete(this.name, senseElement, nodeId)
+		// todo: labels should be moved
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // phrases
 //------------------------------------------------------------------------------
 
-function addPhrase(parentElement, nodeId){
-	var action = actionPath + '/node.php'; 
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=add_phrase'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				location.reload()
-			}
-		}
-	})
-}
-
-function editPhrase(phraseBar, nodeId){
-	editValue(
-		'phrase',
-		phraseBar,
-		updatePhrase,
-		nodeId
-	)
-}
-
-function updatePhrase(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/phrase.php'
-	var parameters =
-		'n=' + encodeURIComponent(nodeId) +
-		'&a=update' +
-		'&t=' + encodeURIComponent(phraseText)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var phrase = phraseBar.getElementsByClassName('phrase')[0]
-				phrase.textContent = phraseText
-				
-				if(doOnSuccess){
-					doOnSuccess()
+var Phrase = {
+	
+	name: 'phrase',
+	
+	add: function(parentElement, nodeId){
+		var action = actionPath + '/node.php'; 
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=add_phrase'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					location.reload()
 				}
-			} else {
+			}
+		})
+	},
+	
+	edit: function(phraseBar, nodeId){
+		Value.edit(
+			this.name,
+			phraseBar,
+			this.update,
+			nodeId
+		)
+	},
+	
+	update: function(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
+		var action = actionPath + '/phrase.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=update' +
+			'&t=' + encodeURIComponent(phraseText)
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var phrase = phraseBar.getElementsByClassName('phrase')[0]
+					phrase.textContent = phraseText
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
+				} else {
+					if(doOnFailure){
+						doOnFailure
+					}
+				}
+			},
+			failure: function(){
 				if(doOnFailure){
-					doOnFailure
+					doOnFailure()
 				}
 			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
-}
-
-function movePhraseUp(phraseContainer, nodeId){
-	moveNodeUp('phrase', phraseContainer, nodeId)
-}
-
-function movePhraseDown(phraseContainer, nodeId){
-	moveNodeDown('phrase', phraseContainer, nodeId)
-}
-
-function deletePhrase(phraseContainer, nodeId){
-	deleteNode('phrase', phraseContainer, nodeId)
+		})
+	},
+	
+	moveUp: function(phraseContainer, nodeId){
+		Node.moveUp(this.name, phraseContainer, nodeId)
+	},
+	
+	moveDown: function(phraseContainer, nodeId){
+		Node.moveDown(this.name, phraseContainer, nodeId)
+	},
+	
+	delete: function(phraseContainer, nodeId){
+		Node.delete(this.name, phraseContainer, nodeId)
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // headwords
 //------------------------------------------------------------------------------
 
-function addHeadword(parentElement, parentNodeId){
-	var action = actionPath + '/headword_node.php'
-	var parameters =
-		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=add_headword'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				location.reload()
+var Headword = {
+	
+	add: function(parentElement, parentNodeId){
+		var action = actionPath + '/node.php'
+		var parameters =
+			'n=' + encodeURIComponent(parentNodeId) +
+			'&a=add_headword'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					location.reload()
+				}
 			}
-		}
-	})
-}
-
-function editHeadword(headwordBar, parentNodeId){
-	editValue('headword', headwordBar, updateHeadword, parentNodeId)
-}
-
-function updateHeadword(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
-	updateValue('headword', headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure)
-}
-
-function moveHeadwordUp(headwordBar, headwordId){
-	moveValueUp('headword', headwordBar, headwordId)
-}
-
-function moveHeadwordDown(headwordBar, headwordId){
-	moveValueDown('headword', headwordBar, headwordId)
-}
-
-function deleteHeadword(headwordBar, headwordId){
-	deleteValue('headword', headwordBar, headwordId)
+		})
+	},
+	
+	edit: function(headwordBar, parentNodeId){
+		Value.edit(this.name, headwordBar, this.update, parentNodeId)
+	},
+	
+	update: function(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
+		Value.update(this.name, headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure)
+	},
+	
+	moveUp: function(headwordBar, headwordId){
+		Value.moveUp(this.name, headwordBar, headwordId)
+	},
+	
+	moveDown: function(headwordBar, headwordId){
+		Value.moveDown(this.name, headwordBar, headwordId)
+	},
+	
+	delete: function(headwordBar, headwordId){
+		Value.delete(this.name, headwordBar, headwordId)
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // pronunciations
 //------------------------------------------------------------------------------
 
-function addPronunciation(nodeContent, parentNodeId){
-	var action = actionPath + '/node.php'
-	var parameters =
-		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=add_pronunciation'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var pronunciationId = response.pronunciation_id
-				var pronunciations = nodeContent.getElementsByClassName('pronunciations')[0]
-				var pronunciationBar = makePronunciationBar('...', pronunciationId)
-				pronunciations.appendChild(pronunciationBar)
-				editPronunciation(pronunciationBar, pronunciationId)
+var Pronunciation = {
+	
+	name: 'pronunciation',
+	
+	add: function(nodeContent, parentNodeId){
+		var action = actionPath + '/node.php'
+		var parameters =
+			'n=' + encodeURIComponent(parentNodeId) +
+			'&a=add_pronunciation'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var pronunciationId = response.pronunciation_id
+					var pronunciations = nodeContent.getElementsByClassName('pronunciations')[0]
+					var pronunciationBar = makePronunciationBar('...', pronunciationId)
+					pronunciations.appendChild(pronunciationBar)
+					this.edit(pronunciationBar, pronunciationId)
+				}
 			}
-		}
-	})
-}
-
-function editPronunciation(pronunciationBar, parentNodeId){
-	editValue('pronunciation', pronunciationBar, updatePronunciation, parentNodeId)
-}
-
-function updatePronunciation(pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure){
-	updateValue('pronunciation', pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure)
-}
-
-function movePronunciationUp(pronunciationBar, pronunciationId){
-	moveValueUp('pronunciation', pronunciationBar, pronunciationId)
-}
-
-function movePronunciationDown(pronunciationBar, pronunciationId){
-	moveValueDown('pronunciation', pronunciationBar, pronunciationId)
-}
-
-function deletePronunciation(pronunciationBar, pronunciationId){
-	deleteValue('pronunciation', pronunciationBar, pronunciationId)
+		})
+	},
+	
+	edit: function(pronunciationBar, parentNodeId){
+		Value.edit(this.name, pronunciationBar, this.update, parentNodeId)
+	},
+	
+	update: function(pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure){
+		Value.update(this.name, pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure)
+	},
+	
+	moveUp: function(pronunciationBar, pronunciationId){
+		Value.moveUp(this.name, pronunciationBar, pronunciationId)
+	},
+	
+	moveDown: function(pronunciationBar, pronunciationId){
+		Value.moveDown(this.name, pronunciationBar, pronunciationId)
+	},
+	
+	delete: function(pronunciationBar, pronunciationId){
+		Value.delete(this.name, pronunciationBar, pronunciationId)
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // category labels
 //------------------------------------------------------------------------------
 
-function addCategoryLabel(nodeContent, parentNodeId){
-	var action = actionPath + '/node.php'
-	var parameters =
-		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=add_category_label'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var categoryLabels = nodeContent.getElementsByClassName('category_labels')[0]
-				var categoryLabelBar = makeCategoryLabelBar('...', parentNodeId)
-				categoryLabels.appendChild(categoryLabelBar)
-				editCategoryLabel(categoryLabelBar, parentNodeId)
-			}
-		}
-	})
-}
-
-function editCategoryLabel(categoryLabelBar, parentNodeId){
-	editValue(
-		'category_label',
-		categoryLabelBar,
-		updateCategoryLabel,
-		parentNodeId
-	)
-}
-
-function updateCategoryLabel(categoryLabelBar, parentNodeId, categoryLabelText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/category_label.php'
-	var parameters =
-		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=set' +
-		'&t=' + encodeURIComponent(categoryLabelText)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var categoryLabel = categoryLabelBar.getElementsByClassName('category_label')[0]
-				categoryLabel.textContent = categoryLabelText
-				
-				if(doOnSuccess){
-					doOnSuccess()
+var CategoryLabel = {
+	
+	name: 'category_label',
+	
+	add: function(nodeContent, parentNodeId){
+		var action = actionPath + '/node.php'
+		var parameters =
+			'n=' + encodeURIComponent(parentNodeId) +
+			'&a=add_category_label'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var categoryLabels = nodeContent.getElementsByClassName('category_labels')[0]
+					var categoryLabelBar = makeCategoryLabelBar('...', parentNodeId)
+					categoryLabels.appendChild(categoryLabelBar)
+					this.edit(categoryLabelBar, parentNodeId)
 				}
-			} else {
+			}
+		})
+	},
+	
+	edit: function(categoryLabelBar, parentNodeId){
+		Value.edit(
+			this.name,
+			categoryLabelBar,
+			this.update,
+			parentNodeId
+		)
+	},
+	
+	update: function(categoryLabelBar, parentNodeId, categoryLabelText, doOnSuccess, doOnFailure){
+		var action = actionPath + '/category_label.php'
+		var parameters =
+			'n=' + encodeURIComponent(parentNodeId) +
+			'&a=set' +
+			'&t=' + encodeURIComponent(categoryLabelText)
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var categoryLabel = categoryLabelBar.getElementsByClassName('category_label')[0]
+					categoryLabel.textContent = categoryLabelText
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
+				} else {
+					if(doOnFailure){
+						doOnFailure
+					}
+				}
+			},
+			failure: function(){
 				if(doOnFailure){
-					doOnFailure
+					doOnFailure()
 				}
 			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
+		})
+	},
+	
+	delete: function(categoryLabelBar, parentNodeId){
+		makeJsonRequest(actionPath + '/category_label.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=delete', {
+			success: function(response){
+				if(response.status == 'success'){
+					categoryLabelBar.remove()
+					// there needs to show the button adding the label
+				}
 			}
-		}
-	})
-}
-
-function deleteCategoryLabel(categoryLabelBar, parentNodeId){
-	makeJsonRequest(actionPath + '/category_label.php', 'n=' + encodeURIComponent(parentNodeId) + '&a=delete', {
-		success: function(response){
-			if(response.status == 'success'){
-				categoryLabelBar.remove()
-				// there needs to show the button adding the label
-			}
-		}
-	})
+		})
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // forms
 //------------------------------------------------------------------------------
 
-function addForm(nodeContent, nodeId){
-	makeJsonRequest(actionPath + '/add_form.php', 'n=' + encodeURIComponent(nodeId), {
-		success: function(response){
-			if(response.status == 'success'){
-				var formId = response.form_id
-				var forms = nodeContent.getElementsByClassName('forms')[0]
-				var formBar = makeFormBar('...', '...', formId)
-				forms.appendChild(formBar)
-				editForm(formBar, formId)
+var Form = {
+	
+	name: 'form',
+	
+	add: function addForm(nodeContent, nodeId){
+		var action = actionPath + '/add_form.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId)
+		
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var formId = response.form_id
+					var forms = nodeContent.getElementsByClassName('forms')[0]
+					var formBar = makeFormBar('...', '...', formId)
+					forms.appendChild(formBar)
+					this.edit(formBar, formId)
+				}
 			}
+		})
+	},
+	
+	edit: function(formBar, formId, focus){
+		
+		function cancelEditingForm(){
+			labelInput.onblur = null // hack for Chrome
+			formInput.onblur = null // hack for Chrome
+			
+			labelInput.parentNode.removeChild(labelInput)
+			formInput.parentNode.removeChild(formInput)
+			
+			label.style.display = 'inline-block'
+			form.style.display = 'inline-block'
 		}
-	})
-}
-
-function editForm(formBar, formId, focus){
-	
-	function cancelEditingForm(){
-		labelInput.onblur = null // hack for Chrome
-		formInput.onblur = null // hack for Chrome
 		
-		labelInput.parentNode.removeChild(labelInput)
-		formInput.parentNode.removeChild(formInput)
-		
-		label.style.display = 'inline-block'
-		form.style.display = 'inline-block'
-	}
-	
-	function pressKey(event){
-		if(event.keyCode == 13){
-			if(formInput.value != form.textContent || labelInput.value != label.textContent){
-				labelInput.disabled = true
-				formInput.disabled = true
-				updateForm(formInput.parentNode, formId, labelInput.value, formInput.value, cancelEditingForm)
-			} else {
+		function pressKey(event){
+			if(event.keyCode == 13){
+				if(formInput.value != form.textContent || labelInput.value != label.textContent){
+					labelInput.disabled = true
+					formInput.disabled = true
+					Form.update(formInput.parentNode, formId, labelInput.value, formInput.value, cancelEditingForm)
+				} else {
+					cancelEditingForm()
+				}
+			}
+			if(event.keyCode == 27){
 				cancelEditingForm()
 			}
 		}
-		if(event.keyCode == 27){
-			cancelEditingForm()
+		
+		// constructing label input
+		
+		var label = formBar.getElementsByClassName('form_label')[0]
+		
+		var labelInput = document.createElement('input')
+		labelInput.setAttribute('type','text')
+		labelInput.value = label.textContent
+		labelInput.onkeydown = pressKey
+		/*labelInput.onblur = cancelEditingForm*/
+		
+		// constructing form input
+		
+		var form = formBar.getElementsByClassName('form')[0]
+		
+		var formInput = document.createElement('input')
+		formInput.setAttribute('type','text')
+		formInput.value = form.textContent
+		formInput.onkeydown = pressKey
+		/*formInput.onblur = cancelEditingForm*/
+		
+		// displaying
+		label.style.display = 'none'
+		form.style.display = 'none'
+		formBar.insertBefore(labelInput, label.nextElementSibling) /* not working in IE<9 */
+		formBar.insertBefore(formInput, form.nextElementSibling) /* not working in IE<9 */
+		switch(focus){
+			case 'label': labelInput.focus(); break
+			default: formInput.focus(); break
 		}
-	}
+	},
 	
-	// constructing label input
-	
-	var label = formBar.getElementsByClassName('form_label')[0]
-	
-	var labelInput = document.createElement('input')
-	labelInput.setAttribute('type','text')
-	labelInput.value = label.textContent
-	labelInput.onkeydown = pressKey
-	/*labelInput.onblur = cancelEditingForm*/
-	
-	// constructing form input
-	
-	var form = formBar.getElementsByClassName('form')[0]
-	
-	var formInput = document.createElement('input')
-	formInput.setAttribute('type','text')
-	formInput.value = form.textContent
-	formInput.onkeydown = pressKey
-	/*formInput.onblur = cancelEditingForm*/
-	
-	// displaying
-	label.style.display = 'none'
-	form.style.display = 'none'
-	formBar.insertBefore(labelInput, label.nextElementSibling) /* not working in IE<9 */
-	formBar.insertBefore(formInput, form.nextElementSibling) /* not working in IE<9 */
-	switch(focus){
-		case 'label': labelInput.focus(); break
-		default: formInput.focus(); break
-	}
-}
-
-function updateForm(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnFailure){
-	var action = actionPath + '/form.php'
-	var parameters = 
-		'id=' + formId +
-		'&a=update' +
-		'&l=' + encodeURIComponent(formLabel) +
-		'&t=' + encodeURIComponent(formHeadword)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var labelElement = formBar.getElementsByClassName('form_label')[0]
-				labelElement.textContent = formLabel
-				
-				var formElement = formBar.getElementsByClassName('form')[0]
-				formElement.textContent = formHeadword
-				
-				if(doOnSuccess){
-					doOnSuccess()
+	update: function(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnFailure){
+		var action = actionPath + '/form.php'
+		var parameters = 
+			'id=' + formId +
+			'&a=update' +
+			'&l=' + encodeURIComponent(formLabel) +
+			'&t=' + encodeURIComponent(formHeadword)
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var labelElement = formBar.getElementsByClassName('form_label')[0]
+					labelElement.textContent = formLabel
+					
+					var formElement = formBar.getElementsByClassName('form')[0]
+					formElement.textContent = formHeadword
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
+				} else {
+					if(doOnFailure){
+						doOnFailure()
+					}
 				}
-			} else {
+			},
+			failure: function(){
 				if(doOnFailure){
 					doOnFailure()
 				}
 			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
-}
-
-function moveFormUp(formBar, formId){
-	moveValueUp('form', formBar, formId)
-}
-
-function moveFormDown(formBar, formId){
-	moveValueDown('form', formBar, formId)
-}
-
-function deleteForm(formBar, formId){
-	deleteValue('form', formBar, formId)
+		})
+	},
+	
+	moveUp: function(formBar, formId){
+		Value.moveUp(this.name, formBar, formId)
+	},
+	
+	moveDown: function(formBar, formId){
+		Value.moveDown(this.name, formBar, formId)
+	},
+	
+	delete: function(formBar, formId){
+		Value.delete(this.name, formBar, formId)
+	},
+	
 }
 
 //------------------------------------------------------------------------------
 // contexts
 //------------------------------------------------------------------------------
 
-function addContext(nodeContent, parentNodeId){
-	var action = actionPath + '/node.php'
-	var parameters =
-		'n=' + encodeURIComponent(parentNodeId) +
-		'&a=set_context'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			console.log(response)
-			if(response.status == 'success'){
-				var contextId = response.context_id
-				console.log(contextId)
-				var contexts = nodeContent.getElementsByClassName('contexts')[0]
-				var contextBar = makeContextBar('...', contextId)
-				contexts.appendChild(contextBar)
-				editContext(contextBar, parentNodeId)
-			}
-		}
-	})
-}
-
-function editContext(contextBar, contextId){
-	console.log('context_id: ' + contextId)
-	editValue(
-		'context',
-		contextBar,
-		updateContext,
-		contextId
-	)
-}
-
-function updateContext(contextBar, contextId, contextText, doOnSuccess, doOnFailure){
-	var action = actionPath + '/context.php'
-	var parameters =
-		'id=' + encodeURIComponent(contextId) +
-		'&a=update' +
-		'&t=' + encodeURIComponent(contextText)
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var context = contextBar.getElementsByClassName('context')[0]
-				context.textContent = contextText
-				
-				if(doOnSuccess){
-					doOnSuccess()
+var Context = {
+	
+	name: 'context',
+	
+	add: function(nodeContent, parentNodeId){
+		var action = actionPath + '/node.php'
+		var parameters =
+			'n=' + encodeURIComponent(parentNodeId) +
+			'&a=set_context'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				console.log(response)
+				if(response.status == 'success'){
+					var contextId = response.context_id
+					console.log(contextId)
+					var contexts = nodeContent.getElementsByClassName('contexts')[0]
+					var contextBar = makeContextBar('...', contextId)
+					contexts.appendChild(contextBar)
+					this.edit(contextBar, parentNodeId)
 				}
-			} else {
+			}
+		})
+	},
+	
+	edit: function(contextBar, contextId){
+		Value.edit(this.name, contextBar, this.update, contextId)
+	},
+	
+	update: function(contextBar, contextId, contextText, doOnSuccess, doOnFailure){
+		var action = actionPath + '/context.php'
+		var parameters =
+			'id=' + encodeURIComponent(contextId) +
+			'&a=update' +
+			'&t=' + encodeURIComponent(contextText)
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var context = contextBar.getElementsByClassName('context')[0]
+					context.textContent = contextText
+					
+					if(doOnSuccess){
+						doOnSuccess()
+					}
+				} else {
+					if(doOnFailure){
+						doOnFailure
+					}
+				}
+			},
+			failure: function(){
 				if(doOnFailure){
-					doOnFailure
+					doOnFailure()
 				}
 			}
-		},
-		failure: function(){
-			if(doOnFailure){
-				doOnFailure()
-			}
-		}
-	})
-}
-
-function deleteContext(contextBar, contextId){
-	deleteValue('context', contextBar, contextId, function(){
-		var contexts = contextBar.parentNode
-		var contextButtonBar = contexts.getElementsByClassName('context_button_bar')[0]
-		contextButtonBar.remove()
-	})
+		})
+	},
+	
+	delete: function(contextBar, contextId){
+		Value.delete('context', contextBar, contextId/*, function(){
+			var contexts = contextBar.parentNode
+			var contextButtonBar = contexts.getElementsByClassName('context_button_bar')[0]
+			contextButtonBar.remove()
+		}*/)
+	}
+	
 }
 
 //------------------------------------------------------------------------------
 // translations
 //------------------------------------------------------------------------------
 
-function addTranslation(nodeContent, nodeId){
-	var action = actionPath + '/node.php'
-	var parameters =
-		'id=' + encodeURIComponent(nodeId) +
-		'&a=add_translation'
-	makeJsonRequest(action, parameters, {
-		success: function(response){
-			if(response.status == 'success'){
-				var translationId = response.translation_id
-				var translations = nodeContent.getElementsByClassName('translations')[0]
-				var translationBar = makeTranslationBar('...', translationId)
-				translations.appendChild(translationBar)
-				editTranslation(translationBar, translationId)
+var Translation = {
+	
+	name: 'translation',
+	
+	add: function(nodeContent, nodeId){
+		var action = actionPath + '/node.php'
+		var parameters =
+			'n=' + encodeURIComponent(nodeId) +
+			'&a=add_translation'
+		makeJsonRequest(action, parameters, {
+			success: function(response){
+				if(response.status == 'success'){
+					var translationId = response.translation_id
+					var translations = nodeContent.getElementsByClassName('translations')[0]
+					var translationBar = makeTranslationBar('...', translationId)
+					translations.appendChild(translationBar)
+					this.edit(translationBar, translationId)
+				}
 			}
-		}
-	})
-}
-
-function editTranslation(translationBar, translationId){
-	editValue('translation', translationBar, updateTranslation, translationId)
-}
-
-function updateTranslation(translationBar, translationId, translationText, doOnSuccess, doOnFailure){
-	updateValue('translation', translationBar, translationId, translationText, doOnSuccess, doOnFailure)
-}
-
-function moveTranslationUp(translationBar, translationId){
-	moveValueUp('translation', translationBar, translationId)
-}
-
-function moveTranslationDown(translationBar, translationId){
-	moveValueDown('translation', translationBar, translationId)
-}
-
-function deleteTranslation(translationBar, translationId){
-	deleteValue('translation', translationBar, translationId)
+		})
+	},
+	
+	edit: function(translationBar, translationId){
+		Value.edit(this.name, translationBar, this.update, translationId)
+	},
+	
+	update: function(translationBar, translationId, translationText, doOnSuccess, doOnFailure){
+		Value.update(this.name, translationBar, translationId, translationText, doOnSuccess, doOnFailure)
+	},
+	
+	moveUp: function(translationBar, translationId){
+		Value.moveUp(this.name, translationBar, translationId)
+	},
+	
+	moveDown: function(translationBar, translationId){
+		Value.moveDown(this.name, translationBar, translationId)
+	},
+	
+	delete: function(translationBar, translationId){
+		Value.delete(this.name, translationBar, translationId)
+	}
+	
 }

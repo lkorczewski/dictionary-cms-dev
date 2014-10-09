@@ -77,10 +77,14 @@ trait Edition_Buttons {
 	//--------------------------------------------------------------------
 	
 	private function make_value_button(Value $value, array $parameters){
+		$on_click =
+			$value->get_camelized_name() . '.' . $parameters['method']
+			. '(this.parentNode.parentNode, ' . $value->get_id() . ')';
+		
 		$output = 
 			'<button' .
 				' class="button ' . $parameters['class'] . '"' .
-				' onclick="' . $parameters['function']. '(this.parentNode.parentNode, ' . $value->get_id() . ')"' .
+				' onclick="' . $on_click . '"' .
 			'>' .
 				$this->localization->get_text($parameters['label']) .
 			'</button>' . "\n";
@@ -89,10 +93,14 @@ trait Edition_Buttons {
 	}
 	
 	private function make_form_button(Form $value, array $parameters){
+		$on_click =
+			$value->get_camelized_name() . '.' . $parameters['method']
+			. '(this.parentNode.parentNode, ' . $value->get_id() . ')'; 
+		
 		$output =
 			'<button' .
 				' class="button ' . $parameters['class'] . '"' .
-				' onclick="' . $parameters['function']. '(this.parentNode.parentNode, ' . $value->get_id() . ')"' .
+				' onclick="' . $on_click . '"' .
 			'>' .
 				$this->localization->get_text($parameters['label']) .
 			'</button>' . "\n";
@@ -101,10 +109,14 @@ trait Edition_Buttons {
 	}
 	
 	private function make_node_button(Node $node, array $parameters){
+		$on_click =
+			$node->get_camelized_name() . '.' . $parameters['method']
+			. '(this.parentNode.parentNode.parentNode, ' . $node->get_node_id();
+		
 		$output =
 			'<button' .
 				' class="button ' . $parameters['class'] . '"' .
-				' onclick="' . $parameters['function']. '(this.parentNode.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
+				' onclick="' . $on_click  . '"' .
 			'>' .
 				$this->localization->get_text($parameters['label']) .
 			'</button>' . "\n";
@@ -118,33 +130,33 @@ trait Edition_Buttons {
 	
 	protected function make_edit_value_button(Value $value){
 		return $this->make_value_button($value, [
-			'class'     => 'edit',
-			'function'  => 'edit' . $value->get_camelized_name(),
-			'label'     => 'edit',
+			'class'   => 'edit',
+			'method'  => 'edit',
+			'label'   => 'edit',
 		]);
 	}
 	
 	protected function make_move_value_up_button(Value $value){
 		return $this->make_value_button($value, [
-			'class'     => 'move_up',
-			'function'  => 'move' . $value->get_camelized_name() . 'Up',
-			'label'     => 'up',
+			'class'   => 'move_up',
+			'method'  => 'moveUp',
+			'label'   => 'up',
 		]);
 	}
 	
 	protected function make_move_value_down_button(Value $value){
 		return $this->make_value_button($value, [
-			'class'     => 'move_down',
-			'function'  => 'move' . $value->get_camelized_name() . 'Down',
-			'label'     => 'down',
+			'class'   => 'move_down',
+			'method'  => 'moveDown',
+			'label'   => 'down',
 		]);
 	}
 	
 	protected function make_delete_value_button(Value $value){
 		return $this->make_value_button($value, [
-			'class'     => 'delete',
-			'function'  => 'delete' . $value->get_camelized_name(),
-			'label'     => 'delete',
+			'class'   => 'delete',
+			'method'  => 'delete',
+			'label'   => 'delete',
 		]);
 	}
 	
@@ -155,9 +167,9 @@ trait Edition_Buttons {
 	private function make_move_node_up_button(Node $node){
 		$output =
 			$this->make_node_button($node, [
-				'class'     => 'move_up',
-				'function'  => 'move' . $node->get_camelized_name() . 'Up',
-				'label'     => 'up',
+				'class'   => 'move_up',
+				'method'  => 'moveUp',
+				'label'   => 'up',
 			]);
 		
 		return $output;
@@ -166,9 +178,9 @@ trait Edition_Buttons {
 	private function make_move_node_down_button(Node $node){
 		$output =
 			$this->make_node_button($node, [
-				'class'     => 'move_down',
-				'function'  => 'move' . $node->get_camelized_name() . 'Down',
-				'label'     => 'down',
+				'class'   => 'move_down',
+				'method'  => 'moveDown',
+				'label'   => 'down',
 			]);
 		
 		return $output;
@@ -177,9 +189,9 @@ trait Edition_Buttons {
 	private function make_delete_node_button(Node $node){
 		$output = 
 			$this->make_node_button($node, [
-				'class'     => 'delete',
-				'function'  => 'delete' . $node->get_camelized_name(),
-				'label'     => 'delete',
+				'class'   => 'delete',
+				'method'  => 'delete',
+				'label'   => 'delete',
 			]);
 		
 		return $output;
@@ -195,7 +207,7 @@ trait Edition_Buttons {
 			
 			'<button'.
 				' class="button add_' . $parameters['css_name'] . '"' .
-				' onclick="add' . $parameters['js_name'] . '(this.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
+				' onclick="' . $parameters['js_name'] . '.add(this.parentNode.parentNode, ' . $node->get_node_id() . ')"' .
 			'>' .
 				$this->localization->get_text($parameters['label']) .
 			'</button>' .

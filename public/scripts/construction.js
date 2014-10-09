@@ -33,12 +33,12 @@ function makeBar(name){
 	return bar;
 }
 
-function makeValueBar(name, text, id, makeButtons){
-	var elementBar = makeBar(name)
+function makeValueBar(value, text, id, makeButtons){
+	var elementBar = makeBar(value.name)
 	
 	var element = document.createElement('div')
-	element.className = 'bar_element ' + name
-	element.onclick = function(){ editValue(name, elementBar, updateValue, id) }
+	element.className = 'bar_element ' + value.name
+	element.onclick = function(){ value.edit(elementBar, value.update, id) }
 	element.textContent = text
 	elementBar.appendChild(element)
 	
@@ -47,19 +47,19 @@ function makeValueBar(name, text, id, makeButtons){
 	return elementBar
 }
 
-function makeSingleValueBar(name, text, id){
-	return makeValueBar(name, text, id, function(elementBar){ return makeButtons({
-		'edit'    : function(){ editValue(name, elementBar, updateValue, id) },
-		'delete'  : function(){ deleteValue(name, elementBar, id) }
+function makeSingleValueBar(value, text, id){
+	return makeValueBar(value, text, id, function(elementBar){ return makeButtons({
+		'edit'    : function(){ Value.edit(elementBar, value.update, id) },
+		'delete'  : function(){ Value.delete(elementBar, id) }
 	})})
 }
 
-function makeMultipleValueBar(name, text, id){
-	return makeValueBar(name, text, id, function(elementBar){ return makeButtons({
-		'edit'    : function(){ editValue(name, elementBar, updateValue, id) },
-		'up'      : function(){ moveValueUp(name, elementBar, id) },
-		'down'    : function(){ moveValueDown(name, elementBar, id) },
-		'delete'  : function(){ deleteValue(name, elementBar, id) }
+function makeMultipleValueBar(value, text, id){
+	return makeValueBar(value, text, id, function(elementBar){ return makeButtons({
+		'edit'    : function(){ value.edit(elementBar, value.update, id) },
+		'up'      : function(){ value.moveUp(elementBar, id) },
+		'down'    : function(){ value.moveDown(elementBar, id) },
+		'delete'  : function(){ value.delete(elementBar, id) }
 	})})
 }
 
@@ -97,7 +97,7 @@ function appendCategoryLabels(nodeContent, nodeId){
 		[{
 			name   : 'add_category_label',
 			label  : 'add category label',
-			action : function(){ addCategoryLabel(nodeContent, nodeId) }
+			action : function(){ CategoryLabel.add(nodeContent, nodeId) }
 		}]
 	))
 }
@@ -109,7 +109,7 @@ function appendForms(nodeContent, nodeId){
 		[{
 			name   : 'add_form',
 			label  : 'add form',
-			action : function(){ addForms(nodeContent, nodeId) }
+			action : function(){ Form.add(nodeContent, nodeId) }
 		}]
 	))
 }
@@ -121,7 +121,7 @@ function appendContexts(nodeContent, nodeId){
 		[{
 			name   : 'add_context',
 			label  : 'add context',
-			action : function(){ addContext(nodeContent, nodeId) }
+			action : function(){ Context.add(nodeContent, nodeId) }
 		}]
 	))
 }
@@ -133,7 +133,7 @@ function appendTranslations(nodeContent, nodeId){
 		[{
 			name   : 'add_translation',
 			label  : 'add translation',
-			action : function(){ addTranslation(nodeContent, nodeId) }
+			action : function(){ Translation.add(nodeContent, nodeId) }
 		}]
 	))
 }
@@ -145,7 +145,7 @@ function appendPhrases(nodeContent, nodeId){
 		[{
 			name   : 'add_phrase',
 			label  : 'add phrase',
-			action : function(){ addPhrases(nodeContent, nodeId) }
+			action : function(){ Phrase.add(nodeContent, nodeId) }
 		}]
 	))
 }
@@ -157,7 +157,7 @@ function appendSenses(nodeContent, nodeId){
 		[{
 			name   : 'add_sense',
 			label  : 'add sense',
-			action : function(){ addSense(nodeContent, nodeId) }
+			action : function(){ Sense.add(nodeContent, nodeId) }
 		}]
 	))
 }
@@ -175,9 +175,9 @@ function makeSenseLabelBar(nodeId, senseLabel, senseContent){
 	senseLabelBar.appendChild(senseLabelElement)
 	
 	var buttons = makeButtons({
-		'up'     : function(){ moveSenseUp(senseContent, nodeId) },
-		'down'   : function(){ moveSenseDown(senseContent, nodeId) },
-		'delete' : function(){ deleteSense(senseContent, nodeId) }
+		'up'     : function(){ Sense.moveUp(senseContent, nodeId) },
+		'down'   : function(){ Sense.moveDown(senseContent, nodeId) },
+		'delete' : function(){ Sense.delete(senseContent, nodeId) }
 	})
 	senseLabelBar.appendChild(buttons)
 	
@@ -211,11 +211,11 @@ function makeSenseContainer(nodeId, senseLabel){
 //----------------------------------------------------------------------------
 
 function makeHeadwordBar(headwordText, headwordId){
-	return makeMultipleValueBar('headword', headwordText, headwordId)
+	return makeMultipleValueBar(Headword, headwordText, headwordId)
 }
 
 function makePronunciationBar(pronunciationText, pronunciationId){
-	return makeMultipleValueBar('pronunciation', pronunciationText, pronunciationId)
+	return makeMultipleValueBar(Pronunciation, pronunciationText, pronunciationId)
 }
 
 function makeCategoryLabelBar(text, parentNodeId){
@@ -223,13 +223,13 @@ function makeCategoryLabelBar(text, parentNodeId){
 	
 	var categoryLabel = document.createElement('div')
 	categoryLabel.className = 'bar_element category_label'
-	categoryLabel.onclick = function(){ editCategoryLabel(categoryLabelBar, parentNodeId) }
+	categoryLabel.onclick = function(){ CategoryLabel.edit(categoryLabelBar, parentNodeId) }
 	categoryLabel.textContent = text
 	categoryLabelBar.appendChild(categoryLabel)
 	
 	var buttons = makeButtons({
-		'edit'   : function(){ editCategoryLabel(categoryLabelBar, parentNodeId) },
-		'delete' : function(){ deleteCategoryLabel(categoryLabelBar, parentNodeId) }
+		'edit'   : function(){ CategoryLabel.edit(categoryLabelBar, parentNodeId) },
+		'delete' : function(){ CategoryLabel.delete(categoryLabelBar, parentNodeId) }
 	})
 	categoryLabelBar.appendChild(buttons)
 	
@@ -241,7 +241,7 @@ function makeFormBar(formLabel, formText, formId){
 	
 	var label = document.createElement('div')
 	label.className = 'bar_element form_label'
-	label.onclick = function(){ editForm(formBar, formId) }
+	label.onclick = function(){ Form.edit(formBar, formId) }
 	label.textContent = formLabel
 	formBar.appendChild(label)
 	
@@ -250,15 +250,15 @@ function makeFormBar(formLabel, formText, formId){
 	
 	var form = document.createElement('div')
 	form.className = 'bar_element form'
-	form.onclick = function(){ editForm(formBar, formId) }
+	form.onclick = function(){ form.edit(formBar, formId) }
 	form.textContent = formText
 	formBar.appendChild(form)
 	
 	var buttons = makeButtons({
-		'edit'   : function() { editForm(formBar, formId) },
-		'up'     : function() { moveFormUp(formBar, formId) },
-		'down'   : function() { moveFormDown(formBar, formId) },
-		'delete' : function() { deleteForm(formBar, formId) },
+		'edit'   : function() { Form.edit(formBar, formId) },
+		'up'     : function() { Form.moveUp(formBar, formId) },
+		'down'   : function() { Form.moveDown(formBar, formId) },
+		'delete' : function() { Form.delete(formBar, formId) },
 	})
 	formBar.appendChild(buttons)
 	
@@ -266,11 +266,10 @@ function makeFormBar(formLabel, formText, formId){
 }
 
 function makeContextBar(contextText, contextId){
-	console.log(contextId)
-	return makeSingleValueBar('context', contextText, contextId)
+	return makeSingleValueBar(Context, contextText, contextId)
 }
 
 function makeTranslationBar(translationText, translationId){
-	return makeMultipleValueBar('translation', translationText, translationId)
+	return makeMultipleValueBar(Translation, translationText, translationId)
 }
 

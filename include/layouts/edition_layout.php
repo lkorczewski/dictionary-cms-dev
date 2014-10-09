@@ -175,7 +175,7 @@ class Edition_Layout extends HTML_Layout {
 				$this->make_buttons(function() use($phrase) {
 					
 					$this->output .=
-						'<button class="button edit" onclick="editPhrase(this.parentNode.parentNode, ' .
+						'<button class="button edit" onclick="phrase.edit(this.parentNode.parentNode, ' .
 							$phrase->get_node_id() .
 						')">' .
 							$this->localization->get_text('edit') .
@@ -321,27 +321,27 @@ class Edition_Layout extends HTML_Layout {
 				
 				$this->output .=
 					$this->make_form_button($form, [
-						'class'     => 'edit',
-						'function'  => 'editForm',
-						'label'     => 'edit',
+						'class'   => 'edit',
+						'method'  => 'edit',
+						'label'   => 'edit',
 					]).
 					
 					$this->make_form_button($form, [
-						'class'     => 'move_up',
-						'function'  => 'moveFormUp',
-						'label'     => 'up',
+						'class'   => 'move_up',
+						'method'  => 'moveUp',
+						'label'   => 'up',
 					]).
 					
 					$this->make_form_button($form, [
-						'class'     => 'move_down',
-						'function'  => 'moveFormDown',
-						'label'     => 'down',
+						'class'   => 'move_down',
+						'method'  => 'moveDown',
+						'label'   => 'down',
 					]).
 					
 					$this->make_form_button($form, [
-						'class'     => 'delete',
-						'function'  => 'deleteForm',
-						'label'     => 'delete',
+						'class'   => 'delete',
+						'method'  => 'delete',
+						'label'   => 'delete',
 					]);
 				
 			});
@@ -488,7 +488,7 @@ class Edition_Layout extends HTML_Layout {
 		$this->output .=
 			'<div' .
 			' class="bar_element ' . $class_name . '"'.
-			' onclick="edit' . $element->get_camelized_name() . '(this.parentNode, ' . $element->get_id() . ')"' .
+			' onclick="' . $element->get_camelized_name() . '.edit(this.parentNode, ' . $element->get_id() . ')"' .
 			'>';
 		$content_function();
 		$this->output .= '</div>' . "\n";
