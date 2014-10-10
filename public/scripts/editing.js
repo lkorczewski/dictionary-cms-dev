@@ -14,7 +14,9 @@ function hideButtons(element){
 	buttons.style.display = 'none'
 }
 
-/* common actions */
+//------------------------------------------------------------------------------
+// value
+//------------------------------------------------------------------------------
 
 var Value = {
 	
@@ -134,6 +136,10 @@ var Value = {
 	},
 	
 }
+
+//------------------------------------------------------------------------------
+// node
+//------------------------------------------------------------------------------
 
 var Node = {
 	
@@ -546,7 +552,7 @@ var CategoryLabel = {
 					}
 				} else {
 					if(doOnFailure){
-						doOnFailure
+						doOnFailure()
 					}
 				}
 			},
@@ -770,7 +776,7 @@ var Context = {
 			var contextButtonBar = contexts.getElementsByClassName('context_button_bar')[0]
 			contextButtonBar.remove()
 		}*/)
-	}
+	},
 	
 }
 
@@ -818,6 +824,6 @@ var Translation = {
 	
 	delete: function(translationBar, translationId){
 		Value.delete(this.name, translationBar, translationId)
-	}
+	},
 	
 }
