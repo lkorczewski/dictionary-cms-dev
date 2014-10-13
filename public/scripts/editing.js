@@ -20,7 +20,7 @@ function hideButtons(element){
 
 var Value = {
 	
-	edit: function(valueName, valueBar, doOnChange, id){
+	edit: function(mapper, valueBar, id){
 		
 		function cancelEditingValue(){
 			input.onblur = null // hack for Chrome
@@ -28,17 +28,17 @@ var Value = {
 			element.style.display = 'inline-block'
 		}
 		
-		var element = valueBar.getElementsByClassName(valueName)[0]
+		var element = valueBar.getElementsByClassName(mapper.name)[0]
 		
 		var input = document.createElement('input')
 		input.setAttribute('type', 'text')
-		input.setAttribute('class', valueName + '_input') // TO DO: finding alternative
+		input.setAttribute('class', mapper.name + '_input') // TO DO: finding alternative
 		input.value = element.textContent
 		input.onkeydown = function(event){
 			if(event.keyCode == 13){
 				if(input.value != element.textContent){
 					input.disabled = true
-					doOnChange(valueBar, id, input.value, cancelEditingValue, cancelEditingValue)
+					mapper.update(valueBar, id, input.value, cancelEditingValue, cancelEditingValue)
 				} else {
 					cancelEditingValue()
 				}
@@ -54,9 +54,9 @@ var Value = {
 		input.focus()
 	},
 	
-	update: function(valueName, valueBar, valueId, newText, doOnSuccess, doOnFailure){
+	update: function(mapper, valueBar, valueId, newText, doOnSuccess, doOnFailure){
 		// TODO: newText -- improve the name
-		var action = actionPath + '/' + valueName + '.php'
+		var action = actionPath + '/' + mapper.name + '.php'
 		var parameters =
 			'id=' + encodeURIComponent(valueId) +
 			'&a=update' +
@@ -64,7 +64,7 @@ var Value = {
 		makeJsonRequest(action, parameters, {
 			success: function(response){
 				if(response.status == 'success'){
-					var valueElement = valueBar.getElementsByClassName(valueName)[0]
+					var valueElement = valueBar.getElementsByClassName(mapper.name)[0]
 					
 					if(response.value == undefined){
 						valueElement.textContent = newText
@@ -89,8 +89,8 @@ var Value = {
 		})
 	},
 	
-	moveUp: function(valueName, valueBar, valueId){
-		var action = actionPath + '/' + valueName + '.php'
+	moveUp: function(mapper, valueBar, valueId){
+		var action = mapper + '/' + mapper.name + '.php'
 		var parameters =
 			'id=' + encodeURIComponent(valueId) +
 			'&a=move_up'
@@ -103,8 +103,8 @@ var Value = {
 		})
 	},
 	
-	moveDown: function(valueName, valueBar, valueId){
-		var action = actionPath + '/' + valueName + '.php'
+	moveDown: function(mapper, valueBar, valueId){
+		var action = actionPath + '/' + mapper.name + '.php'
 		var parameters =
 			'id=' + encodeURIComponent(valueId) +
 			'&a=move_down'
@@ -117,8 +117,8 @@ var Value = {
 		})
 	},
 	
-	delete: function(valueName, valueBar, valueId, doOnSuccess){
-		var action = actionPath + '/' + valueName + '.php'
+	delete: function(mapper, valueBar, valueId, doOnSuccess){
+		var action = actionPath + '/' + mapper.name + '.php'
 		var parameters =
 			'id=' + encodeURIComponent(valueId) +
 			'&a=delete'
@@ -143,8 +143,8 @@ var Value = {
 
 var Node = {
 	
-	moveUp: function(name, element, nodeId){
-		var action = actionPath + '/' + name + '.php'
+	moveUp: function(mapper, element, nodeId){
+		var action = actionPath + '/' + mapper.name + '.php'
 		var parameters =
 			'n=' + encodeURIComponent(nodeId) +
 			'&a=move_up'
@@ -157,8 +157,8 @@ var Node = {
 		})
 	},
 	
-	moveDown: function(name, element, nodeId){
-		var action = actionPath + '/' + name + '.php'
+	moveDown: function(mapper, element, nodeId){
+		var action = actionPath + '/' + mapper.name + '.php'
 		var parameters =
 			'n=' + encodeURIComponent(nodeId) +
 			'&a=move_down'
@@ -171,8 +171,8 @@ var Node = {
 		})
 	},
 	
-	delete: function(name, element, nodeId){
-		var action = actionPath + '/' + name + '.php'
+	delete: function(mapper, element, nodeId){
+		var action = actionPath + '/' + mapper.name + '.php'
 		var parameters =
 			'n=' + encodeURIComponent(nodeId) +
 			'&a=delete'
@@ -331,7 +331,7 @@ var Sense = {
 	},
 	
 	delete: function(senseElement, nodeId){
-		Node.delete(this.name, senseElement, nodeId)
+		Node.delete(this, senseElement, nodeId)
 		// todo: labels should be moved
 	},
 	
@@ -360,12 +360,7 @@ var Phrase = {
 	},
 	
 	edit: function(phraseBar, nodeId){
-		Value.edit(
-			this.name,
-			phraseBar,
-			this.update,
-			nodeId
-		)
+		Value.edit(this, phraseBar, nodeId)
 	},
 	
 	update: function(phraseBar, nodeId, phraseText, doOnSuccess, doOnFailure){
@@ -385,7 +380,7 @@ var Phrase = {
 					}
 				} else {
 					if(doOnFailure){
-						doOnFailure
+						doOnFailure()
 					}
 				}
 			},
@@ -398,15 +393,15 @@ var Phrase = {
 	},
 	
 	moveUp: function(phraseContainer, nodeId){
-		Node.moveUp(this.name, phraseContainer, nodeId)
+		Node.moveUp(this, phraseContainer, nodeId)
 	},
 	
 	moveDown: function(phraseContainer, nodeId){
-		Node.moveDown(this.name, phraseContainer, nodeId)
+		Node.moveDown(this, phraseContainer, nodeId)
 	},
 	
 	delete: function(phraseContainer, nodeId){
-		Node.delete(this.name, phraseContainer, nodeId)
+		Node.delete(this, phraseContainer, nodeId)
 	},
 	
 }
@@ -432,23 +427,23 @@ var Headword = {
 	},
 	
 	edit: function(headwordBar, parentNodeId){
-		Value.edit(this.name, headwordBar, this.update, parentNodeId)
+		Value.edit(this, headwordBar, parentNodeId)
 	},
 	
 	update: function(headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure){
-		Value.update(this.name, headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure)
+		Value.update(this, headwordBar, headwordId, headwordText, doOnSuccess, doOnFailure)
 	},
 	
 	moveUp: function(headwordBar, headwordId){
-		Value.moveUp(this.name, headwordBar, headwordId)
+		Value.moveUp(this, headwordBar, headwordId)
 	},
 	
 	moveDown: function(headwordBar, headwordId){
-		Value.moveDown(this.name, headwordBar, headwordId)
+		Value.moveDown(this, headwordBar, headwordId)
 	},
 	
 	delete: function(headwordBar, headwordId){
-		Value.delete(this.name, headwordBar, headwordId)
+		Value.delete(this, headwordBar, headwordId)
 	},
 	
 }
@@ -480,23 +475,23 @@ var Pronunciation = {
 	},
 	
 	edit: function(pronunciationBar, parentNodeId){
-		Value.edit(this.name, pronunciationBar, this.update, parentNodeId)
+		Value.edit(this, pronunciationBar, parentNodeId)
 	},
 	
 	update: function(pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure){
-		Value.update(this.name, pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure)
+		Value.update(this, pronunciationBar, pronunciationId, pronunciationText, doOnSuccess, doOnFailure)
 	},
 	
 	moveUp: function(pronunciationBar, pronunciationId){
-		Value.moveUp(this.name, pronunciationBar, pronunciationId)
+		Value.moveUp(this, pronunciationBar, pronunciationId)
 	},
 	
 	moveDown: function(pronunciationBar, pronunciationId){
-		Value.moveDown(this.name, pronunciationBar, pronunciationId)
+		Value.moveDown(this, pronunciationBar, pronunciationId)
 	},
 	
 	delete: function(pronunciationBar, pronunciationId){
-		Value.delete(this.name, pronunciationBar, pronunciationId)
+		Value.delete(this, pronunciationBar, pronunciationId)
 	},
 	
 }
@@ -527,12 +522,7 @@ var CategoryLabel = {
 	},
 	
 	edit: function(categoryLabelBar, parentNodeId){
-		Value.edit(
-			this.name,
-			categoryLabelBar,
-			this.update,
-			parentNodeId
-		)
+		Value.edit(this, categoryLabelBar, parentNodeId)
 	},
 	
 	update: function(categoryLabelBar, parentNodeId, categoryLabelText, doOnSuccess, doOnFailure){
@@ -696,15 +686,15 @@ var Form = {
 	},
 	
 	moveUp: function(formBar, formId){
-		Value.moveUp(this.name, formBar, formId)
+		Value.moveUp(this, formBar, formId)
 	},
 	
 	moveDown: function(formBar, formId){
-		Value.moveDown(this.name, formBar, formId)
+		Value.moveDown(this, formBar, formId)
 	},
 	
 	delete: function(formBar, formId){
-		Value.delete(this.name, formBar, formId)
+		Value.delete(this, formBar, formId)
 	},
 	
 }
@@ -738,7 +728,7 @@ var Context = {
 	},
 	
 	edit: function(contextBar, contextId){
-		Value.edit(this.name, contextBar, this.update, contextId)
+		Value.edit(this, contextBar, contextId)
 	},
 	
 	update: function(contextBar, contextId, contextText, doOnSuccess, doOnFailure){
@@ -807,23 +797,23 @@ var Translation = {
 	},
 	
 	edit: function(translationBar, translationId){
-		Value.edit(this.name, translationBar, this.update, translationId)
+		Value.edit(this, translationBar, translationId)
 	},
 	
 	update: function(translationBar, translationId, translationText, doOnSuccess, doOnFailure){
-		Value.update(this.name, translationBar, translationId, translationText, doOnSuccess, doOnFailure)
+		Value.update(this, translationBar, translationId, translationText, doOnSuccess, doOnFailure)
 	},
 	
 	moveUp: function(translationBar, translationId){
-		Value.moveUp(this.name, translationBar, translationId)
+		Value.moveUp(this, translationBar, translationId)
 	},
 	
 	moveDown: function(translationBar, translationId){
-		Value.moveDown(this.name, translationBar, translationId)
+		Value.moveDown(this, translationBar, translationId)
 	},
 	
 	delete: function(translationBar, translationId){
-		Value.delete(this.name, translationBar, translationId)
+		Value.delete(this, translationBar, translationId)
 	},
 	
 }
