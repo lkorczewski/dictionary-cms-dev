@@ -43,7 +43,6 @@ if($action == 'update'){
 
 switch($action){
 	case 'update':
-		echo 'context_id: ' . $context_id;
 		$rows_affected = $services->get('data')->access('context')->update($context_id, $text);
 		break;
 	case 'delete':
