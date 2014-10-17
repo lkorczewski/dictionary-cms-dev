@@ -66,7 +66,7 @@ switch($action){
 		$parameters['category_label_id'] = $result;
 		break;
 	
-	case 'set_context':
+	case 'add_context':
 		$result = $services->get('data')->access('context')->set($node_id, $text);
 		
 		$parameters['context_id'] = $result;

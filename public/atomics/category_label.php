@@ -20,8 +20,8 @@ $json_response = $services->get('json_response');
 // setting parameters
 //----------------------------------------------------
 
-$parent_node_id = $request->get_parameter('n');
-if($parent_node_id === false){
+$category_label_id = $request->get_parameter('n');
+if($category_label_id === false){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
@@ -42,11 +42,11 @@ if($action == 'set'){
 //----------------------------------------------------
 
 switch($action){
-	case 'set':
-		$rows_affected = $services->get('data')->access('category_label')->set($parent_node_id, $text);
+	case 'update':
+		$rows_affected = $services->get('data')->access('category_label')->update($category_label_id, $text);
 		break;
 	case 'delete':
-		$rows_affected = $services->get('data')->access('category_label')->delete($parent_node_id);
+		$rows_affected = $services->get('data')->access('category_label')->delete($category_label_id);
 		break;
 	default:
 		$json_response->fail(JSON_Response::MESSAGE_UNRECOGNIZED_ACTION);

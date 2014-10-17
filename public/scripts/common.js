@@ -185,7 +185,7 @@ function showEditorLogIn(){
 // showing editor credentials input
 //==========================================================
 
-function showEditorCredentialsInput(editorToolbarContent){
+function showEditorCredentialsInput(){
 	
 	function disableEditorCredentialsInput(){
 		editorLoginInput.disabled = true
