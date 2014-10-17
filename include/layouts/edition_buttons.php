@@ -111,7 +111,7 @@ trait Edition_Buttons {
 	private function make_node_button(Node $node, array $parameters){
 		$on_click =
 			$node->get_camelized_name() . '.' . $parameters['method']
-			. '(this.parentNode.parentNode.parentNode, ' . $node->get_node_id();
+			. '(this.parentNode.parentNode.parentNode, ' . $node->get_node_id() . ')';
 		
 		$output =
 			'<button' .
