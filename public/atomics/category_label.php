@@ -20,19 +20,19 @@ $json_response = $services->get('json_response');
 // setting parameters
 //----------------------------------------------------
 
-$category_label_id = $request->get_parameter('n');
-if($category_label_id === false){
+$category_label_id = $request->get_parameter('id');
+if($category_label_id === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 $action = $request->get_parameter('a');
-if($action === false){
+if($action === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
-if($action == 'set'){
+if($action == 'update'){
 	$text = $request->get_parameter('t');
-	if($text === false){
+	if($text === null){
 		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 }

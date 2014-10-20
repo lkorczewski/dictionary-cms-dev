@@ -21,18 +21,18 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $translation_id = $request->get_parameter('id');
-if($translation_id === false){
+if($translation_id === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 $action = $request->get_parameter('a');
-if($action === false){
+if($action === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 if($action == 'update'){
 	$text = $request->get_parameter('t');
-	if($text === false){
+	if($text === null){
 		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 }

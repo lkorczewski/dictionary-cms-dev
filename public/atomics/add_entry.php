@@ -21,7 +21,7 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $headword = $request->get_parameter('h');
-if($headword === false)
+if($headword === null)
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
 //----------------------------------------------------

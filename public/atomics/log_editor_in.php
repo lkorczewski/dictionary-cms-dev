@@ -16,12 +16,12 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $login = $request->get_parameter('l');
-if($login === false){
+if($login === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 $password = $request->get_parameter('p');
-if($password === false){
+if($password === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 

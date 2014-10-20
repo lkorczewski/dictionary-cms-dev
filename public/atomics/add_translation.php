@@ -21,7 +21,7 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $sense_id = $request->get_parameter('id');
-if($sense_id === false)
+if($sense_id === null)
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
 $text = $request->get_parameter('t', '...');

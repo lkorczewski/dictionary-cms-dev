@@ -21,7 +21,7 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $node_id = $request->get_parameter('n');
-if($node_id === false){
+if($node_id === null){
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 

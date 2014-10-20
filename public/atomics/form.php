@@ -21,22 +21,22 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $form_id = $request->get_parameter('id');
-if($form_id === false)
+if($form_id === null)
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
 $action = $request->get_parameter('a');
-if($action === false)
+if($action === null)
 	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 
 if($action == 'update'){
 	
 	$label = $request->get_parameter('l');
-	if($label === false){
+	if($label === null){
 		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 	
 	$text = $request->get_parameter('t');
-	if($text === false){
+	if($text === null){
 		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 	

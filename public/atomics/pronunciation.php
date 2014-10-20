@@ -21,19 +21,19 @@ $json_response = $services->get('json_response');
 //----------------------------------------------------
 
 $pronunciation_id = $request->get_parameter('id');
-if($pronunciation_id === false){
-	$json_response->fail('no parameter');
+if($pronunciation_id === null){
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 $action = $request->get_parameter('a');
-if($action === false){
-	$json_response->fail('no parameter');
+if($action === null){
+	$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 }
 
 if($action == 'update'){
 	$text = $request->get_parameter('t');
-	if($text === false){
-		$json_response->fail('no parameter');
+	if($text === null){
+		$json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
 	}
 }
 
