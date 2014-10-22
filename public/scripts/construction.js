@@ -209,6 +209,45 @@ function makeSenseContainer(nodeId, senseLabel){
 }
 
 //----------------------------------------------------------------------------
+// phrase
+//----------------------------------------------------------------------------
+
+function makePhraseBar(nodeId, phraseLabel, phraseContent){
+	var phraseBar = makeBar('phrase')
+	
+	var phraseElement = document.createElement('div')
+	phraseElement.className = 'bar_element phrase_label'
+	phraseElement.textContent = phraseLabel
+	phraseBar.appendChild(phraseElement)
+	
+	var phraseButtons = makeButtons({
+		'up'     : function(){ Phrase.moveUp(phraseContent, nodeId) },
+		'down'   : function(){ Phrase.moveDown(phraseContent, nodeId) },
+		'delete' : function(){ Phrase.delete(phraseContent, nodeId) }
+	})
+	phraseBar.appendChild(phraseButtons)
+	
+	return phraseBar
+}
+
+function makePhraseContent(nodeId){
+	var phraseContent = document.createElement('div')
+	phraseContent.className = 'content sense_content'
+	
+	appendTranslations(phraseContent, nodeId)
+}
+
+function makePhraseContainer(nodeId, phraseLabel){
+	var phraseContainer = document.createElement('div')
+	phraseContainer.className = 'sense_container'
+	
+	phraseContainer.appendChild(makeSenseLabelBar(nodeId, phraseLabel, phraseContainer))
+	phraseContainer.appendChild(makeSenseContent(nodeId))
+	
+	return phraseContainer;
+}
+
+//----------------------------------------------------------------------------
 
 function makeHeadwordBar(headwordText, headwordId){
 	return makeMultipleValueBar(Headword, headwordText, headwordId)
