@@ -38,7 +38,7 @@ function makeValueBar(value, text, id, makeButtons){
 	
 	var element = document.createElement('div')
 	element.className = 'bar_element ' + value.name
-	element.onclick = function(){ value.edit(elementBar, value.update, id) }
+	element.onclick = function(){ value.edit(elementBar, id) }
 	element.textContent = text
 	elementBar.appendChild(element)
 	
@@ -49,14 +49,14 @@ function makeValueBar(value, text, id, makeButtons){
 
 function makeSingleValueBar(value, text, id){
 	return makeValueBar(value, text, id, function(elementBar){ return makeButtons({
-		'edit'    : function(){ Value.edit(elementBar, value.update, id) },
-		'delete'  : function(){ Value.delete(elementBar, id) }
+		'edit'    : function(){ value.edit(elementBar, id) },
+		'delete'  : function(){ value.delete(elementBar, id) }
 	})})
 }
 
 function makeMultipleValueBar(value, text, id){
 	return makeValueBar(value, text, id, function(elementBar){ return makeButtons({
-		'edit'    : function(){ value.edit(elementBar, value.update, id) },
+		'edit'    : function(){ value.edit(elementBar, id) },
 		'up'      : function(){ value.moveUp(elementBar, id) },
 		'down'    : function(){ value.moveDown(elementBar, id) },
 		'delete'  : function(){ value.delete(elementBar, id) }
@@ -166,7 +166,7 @@ function appendSenses(nodeContent, nodeId){
 // nodes
 //----------------------------------------------------------------------------
 
-function makeSenseLabelBar(nodeId, senseLabel, senseContent){
+function makeSenseLabelBar(nodeId, senseLabel, senseContainer){
 	var senseLabelBar = makeBar('sense_label')
 	
 	var senseLabelElement = document.createElement('div')
@@ -175,9 +175,9 @@ function makeSenseLabelBar(nodeId, senseLabel, senseContent){
 	senseLabelBar.appendChild(senseLabelElement)
 	
 	var buttons = makeButtons({
-		'up'     : function(){ Sense.moveUp(senseContent, nodeId) },
-		'down'   : function(){ Sense.moveDown(senseContent, nodeId) },
-		'delete' : function(){ Sense.delete(senseContent, nodeId) }
+		'up'     : function(){ Sense.moveUp(senseContainer, nodeId) },
+		'down'   : function(){ Sense.moveDown(senseContainer, nodeId) },
+		'delete' : function(){ Sense.delete(senseContainer, nodeId) }
 	})
 	senseLabelBar.appendChild(buttons)
 	

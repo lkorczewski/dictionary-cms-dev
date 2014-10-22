@@ -31,15 +31,15 @@ var Value = {
 				if(response.status == 'success'){
 					var valueId = response[that.name + '_id']
 					var values = nodeContent.getElementsByClassName(that.pluralName)[0]
-					var valueBar = makeTranslationBar('...', valueId)
+					var valueBar = that.makeBar('...', valueId)
 					values.appendChild(valueBar)
-					this.edit(valueBar, valueId)
+					that.edit(valueBar, valueId)
 				}
 			}
 		})
 	},
 	
-	edit: function(valueBar, id){
+	edit: function(valueBar, valueId){
 		
 		function cancelEditingValue(){
 			input.onblur = null // hack for Chrome
@@ -58,7 +58,7 @@ var Value = {
 			if(event.keyCode == 13){
 				if(input.value != element.textContent){
 					input.disabled = true
-					that.update(valueBar, id, input.value, cancelEditingValue, cancelEditingValue)
+					that.update(valueBar, valueId, input.value, cancelEditingValue, cancelEditingValue)
 				} else {
 					cancelEditingValue()
 				}
@@ -75,6 +75,7 @@ var Value = {
 	},
 	
 	update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
+		
 		// TODO: newText -- improve the name
 		var action = actionPath + '/' + this.name + '.php'
 		var parameters =
@@ -240,7 +241,7 @@ var Node = {
 
 var Entry = {
 	
-	add: function addEntry(headword){
+	add: function(headword){
 		makeJsonRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
 			success: function(response){
 				if(response.status == 'success'){
@@ -249,7 +250,6 @@ var Entry = {
 			}
 		})
 	},
-	
 	
 	delete: function(nodeId){
 		makeJsonRequest(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
@@ -358,6 +358,43 @@ var Phrase = {
 		__proto__: Value,
 		
 		name: 'phrase',
+		
+		// temporary hack
+		update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
+			// TODO: newText -- improve the name
+			var action = actionPath + '/' + this.name + '.php'
+			var parameters =
+				'n=' + encodeURIComponent(valueId) +
+				'&a=update' +
+				'&t=' + newText
+			var that = this
+			makeJsonRequest(action, parameters, {
+				success: function(response){
+					if(response.status == 'success'){
+						var valueElement = valueBar.getElementsByClassName(that.name)[0]
+						
+						if(response.value == undefined){
+							valueElement.textContent = newText
+						} else {
+							valueElement.textContent = response.value
+						}
+						
+						if(doOnSuccess){
+							doOnSuccess()
+						}
+					} else {
+						if(doOnFailure){
+							doOnFailure()
+						}
+					}
+				},
+				failure: function(){
+					if(doOnFailure){
+						doOnFailure()
+					}
+				}
+			})
+		},
 	},
 	
 	// overwrite because of location.reload()
@@ -377,7 +414,7 @@ var Phrase = {
 	},
 	
 	edit: function(phraseBar, nodeId){
-		this.phraseValue.edit(this.phraseValue, phraseBar, nodeId)
+		this.phraseValue.edit(phraseBar, nodeId)
 	},
 	
 }

@@ -168,14 +168,14 @@ class Edition_Layout extends HTML_Layout {
 			
 			$this->make_bar($phrase, function() use($phrase) {
 			
-				$this->make_editable_bar_element($phrase, function() use($phrase) {
+				$this->make_editable_phrase_bar_element($phrase, function() use($phrase) {
 					$this->output .= $phrase->get();
 				});
 				
 				$this->make_buttons(function() use($phrase) {
 					
 					$this->output .=
-						'<button class="button edit" onclick="phrase.edit(this.parentNode.parentNode, ' .
+						'<button class="button edit" onclick="Phrase.edit(this.parentNode.parentNode, ' .
 							$phrase->get_node_id() .
 						')">' .
 							$this->localization->get_text('edit') .
@@ -489,6 +489,22 @@ class Edition_Layout extends HTML_Layout {
 			'<div' .
 			' class="bar_element ' . $class_name . '"'.
 			' onclick="' . $element->get_camelized_name() . '.edit(this.parentNode, ' . $element->get_id() . ')"' .
+			'>';
+		$content_function();
+		$this->output .= '</div>' . "\n";
+	}
+	
+	// ugly hack for phrase
+	
+	protected function make_editable_phrase_bar_element(Phrase $form, callable $content_function, $class_name = null){
+		if(!$class_name){
+			$class_name = $form->get_snakized_name();
+		}
+		
+		$this->output .=
+			'<div' .
+			' class="bar_element ' . $class_name . '"'.
+			' onclick="' . $form->get_camelized_name() . '.edit(this.parentNode, ' . $form->get_node_id() . ')"' .
 			'>';
 		$content_function();
 		$this->output .= '</div>' . "\n";
