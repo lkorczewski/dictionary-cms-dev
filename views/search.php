@@ -88,7 +88,7 @@ class Search_View {
 				'</div>' . "\n" .
 				'<div>' .
 					'<button class="button create"' .
-						' onclick="addEntry(document.getElementById(\'search_mask_input\').value)"' .
+						' onclick="Entry.add(document.getElementById(\'search_mask_input\').value)"' .
 					'>' .
 						$this->localization->get_text('create') .
 					'</button>' .

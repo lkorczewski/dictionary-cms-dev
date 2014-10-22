@@ -24,7 +24,7 @@ function makeRequest(url, parameters, handler){
 		
 		var done = false;
 		// console.log('readyState == ' + httpRequest.readyState)
-				
+		
 		// do when response received
 		
 		if(httpRequest.readyState == 4){
@@ -379,7 +379,7 @@ function searchHeadwordsLike(headwordMask){
 					createButton.className = 'button create'
 					createButton.textContent = localization.getText('create')
 					createButton.onclick = function(){
-						addEntry(document.getElementById('search_mask_input').value)
+						Entry.add(document.getElementById('search_mask_input').value)
 					}
 					buttonBar.appendChild(createButton)
 					searchMessage.appendChild(buttonBar)

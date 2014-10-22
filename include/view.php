@@ -289,7 +289,7 @@ class View {
 					]) .
 					$this->localization->get_text('create a new one?') .
 				'</div>' . "\n" .
-				'<button onclick="addEntry(\'' . $this->data['headword'] . '\')">' .
+				'<button onclick="Entry.add(\'' . $this->data['headword'] . '\')">' .
 					$this->localization->get_text('create') .
 				'</button>' . "\n";
 		} else {
