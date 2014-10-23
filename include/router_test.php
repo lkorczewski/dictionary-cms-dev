@@ -42,5 +42,5 @@ $router->route('wrong/path');
 $router->route('controller/action');
 $router->route('controller/action/4');
 $router->route('controller/action/5/parameter');
-$router->route('controller/action/5,parameter');
+$router->route('controller/action/6,parameter');
 

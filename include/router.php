@@ -2,6 +2,8 @@
 
 namespace DCMS;
 
+use ReflectionMethod;
+
 // todo: compiling all paths / lazy compiling single path
 
 class Router {
@@ -16,6 +18,7 @@ class Router {
 		foreach($this->routes as $pattern => $action){
 			if($this->test_path($path, $pattern, $matches)){
 				$this->execute_action($action, $matches);
+				break;
 			}
 		}
 	}
@@ -28,7 +31,7 @@ class Router {
 	}
 	
 	protected function compile_pattern_to_regex($path){
-		$regex = preg_replace('/\{([a-z_]+)\}/', '(?P<$1>[^/]*)', $path);
+		$regex = preg_replace('/\{([a-z_]+)\}/', '(?P<$1>[^/,]*)', $path);
 		$regex = '`^' . $regex . '$`';
 		
 		return $regex;
@@ -36,7 +39,22 @@ class Router {
 	
 	function execute_action($action, array $parameters = []){
 		list($controller, $action) = explode(':', $action);
-		call_user_func_array([$controller, $action], $parameters);
+		$controller_object = new $controller;
+		$method_reflection = new ReflectionMethod($controller_object, $action);
+		
+		$method_parameters = [];
+		foreach($method_reflection->getParameters() as $parameter_reflection){
+			if(isset($parameters[$parameter_reflection->getName()])){
+				$method_parameter = $parameters[$parameter_reflection->getName()];
+			} else if ($parameter_reflection->isDefaultValueAvailable()){
+				$method_parameter = $parameter_reflection->getDefaultValue();
+			} else break;
+			
+			$method_parameters[] = $method_parameter;
+		}
+		
+		$method_reflection->invokeArgs($controller_object, $method_parameters);
+		//call_user_func_array([$controller, $action], $parameters);
 	}
 	
 }
