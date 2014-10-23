@@ -1,4 +1,22 @@
 ----------------------------------------
+ 0.15.0
+----------------------------------------
+ compatibility breakers:
+  * updated Dictionary version, including
+    - separated mappers
+  * updated Database version
+  * relocation of public files
+
+ code:
+  * a try at separating view from controller logic
+  * switching to service manager (dependency injection)
+  * generalization of layouts: buttons, values
+  * generalization of javascripts: values, nodes
+
+ bugfixes:
+  * lot of minor bugfixes and stylistic changes
+
+----------------------------------------
  0.14.0
 ----------------------------------------
  * metadata support (backward compatibility breaker)
