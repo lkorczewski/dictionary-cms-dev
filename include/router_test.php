@@ -37,10 +37,17 @@ class Book {
 	}
 }
 
+$paths = [
+	'wrong/path',
+	'controller/action',
+	'controller/action/4',
+	'controller/action/5/parameter',
+	'controller/action/6,parameter',
+];
+
 $router = new DCMS\Router($routes);
-$router->route('wrong/path');
-$router->route('controller/action');
-$router->route('controller/action/4');
-$router->route('controller/action/5/parameter');
-$router->route('controller/action/6,parameter');
+foreach($paths as $path){
+	$router->route($path);
+	$router->route_legacy($path);
+}
 
