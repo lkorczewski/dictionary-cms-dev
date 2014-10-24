@@ -14,6 +14,8 @@ class Router {
 		$this->routes = $routes;
 	}
 	
+	//
+	
 	function route($path){
 		foreach($this->routes as $pattern => $action){
 			if($this->test_path($path, $pattern, $matches)){
@@ -37,13 +39,30 @@ class Router {
 		return $regex;
 	}
 	
+	//----------------------------------------------------------------
+	// executing action string
+	//----------------------------------------------------------------
+	
 	function execute_action($action, array $parameters = []){
 		list($controller, $action) = explode(':', $action);
 		$controller_object = new $controller;
 		$method_reflection = new ReflectionMethod($controller_object, $action);
 		
+		$method_parameters = $this->get_method_parameters($method_reflection, $parameters);
+		
+		$method_reflection->invokeArgs($controller_object, $method_parameters);
+	}
+	
+	//----------------------------------------------------------------
+	// selecting named parameters matching the action method
+	//----------------------------------------------------------------
+	
+	protected function get_method_parameters(ReflectionMethod $method_reflection, array $parameters){
+		
 		$method_parameters = [];
+		
 		foreach($method_reflection->getParameters() as $parameter_reflection){
+			
 			if(isset($parameters[$parameter_reflection->getName()])){
 				$method_parameter = $parameters[$parameter_reflection->getName()];
 			} else if ($parameter_reflection->isDefaultValueAvailable()){
@@ -53,8 +72,27 @@ class Router {
 			$method_parameters[] = $method_parameter;
 		}
 		
-		$method_reflection->invokeArgs($controller_object, $method_parameters);
-		//call_user_func_array([$controller, $action], $parameters);
+		return $method_parameters;
+	}
+	
+	/** @todo  testing */
+	function execute_action_legacy($action, array $parameters = []){
+		list($controller, $action) = explode(':', $action);
+		
+		$numeric_parameters = $this->get_numeric_parameters();
+		
+		call_user_func_array([$controller, $action], $numeric_parameters);
+	}
+	
+	protected function get_numeric_parameters(array $parameters){
+		$numeric_parameters = [];
+		foreach($parameters as $key => $parameter){
+			if(is_numeric($key) && $key != 0){
+				$numeric_parameters[] = $parameters[$key];
+			}
+		}
+		
+		return $numeric_parameters;
 	}
 	
 }
