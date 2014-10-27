@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<phpunit
+	_bootstrap="./phpunit/bootstrap.php"
+>
+	<testsuites>
+		<testsuite name="General Test Suite">
+			<directory suffix="_test.php">./phpunit/tests</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
