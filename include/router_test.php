@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/router.php';
+require_once __DIR__ . '/numeric_router.php';
 
 $routes = [
 	'controller/action'              => 'Book:show',
@@ -16,7 +17,7 @@ class Book {
 		$param2  = null,
 		$param3  = null
 	){
-		
+		/*
 		if(isset($id)){
 			echo "id: $id";
 		}
@@ -34,6 +35,9 @@ class Book {
 		}
 		
 		echo "\n";
+		*/
+		
+		return true;
 	}
 }
 
@@ -45,9 +49,33 @@ $paths = [
 	'controller/action/6,parameter',
 ];
 
-$router = new DCMS\Router($routes);
-foreach($paths as $path){
-	$router->route($path);
-	$router->route_legacy($path);
+// testing new version
+
+$t = microtime(true);
+
+for($i=0; $i<1000; $i++){
+	$router = new DCMS\Router($routes);
+	foreach($paths as $path){
+		$router->route($path);
+	}
 }
+
+$t = microtime(true) - $t;
+
+echo "named parameters router: $t\n";
+
+// testing old version
+
+$t = microtime(true);
+
+for($i=0; $i<1000; $i++){
+	$router = new DCMS\Numeric_Router($routes);
+	foreach($paths as $path){
+		$router->route($path);
+	}
+}
+
+$t = microtime(true) - $t;
+
+echo "numeric parameters router: $t\n";
 
