@@ -14,11 +14,17 @@ class Router {
 		$this->routes = $routes;
 	}
 	
+	function route(){
+		return $this->route_path($_SERVER['PATH_INFO']);
+	}
+	
 	//----------------------------------------------------------------
 	// routing selected path
 	//----------------------------------------------------------------	
 	
-	function route($path){
+	function route_path($path){
+		$path = $this->normalize_path($path);
+		
 		foreach($this->routes as $pattern => $action){
 			if($this->test_path($path, $pattern, $matches)){
 				$result = $this->execute_action($action, $matches);
@@ -27,6 +33,14 @@ class Router {
 		}
 		
 		return false;
+	}
+	
+	//----------------------------------------------------------------
+	// normalizing path
+	//----------------------------------------------------------------
+	
+	protected function normalize_path($path){
+		return trim($path, '/');
 	}
 	
 	//----------------------------------------------------------------	

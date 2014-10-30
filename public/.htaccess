@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /dictionary
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index2.php/$1 [QSA,L]
+

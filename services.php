@@ -81,6 +81,12 @@ return new Service_Container([
 		require_once __DIR__ . '/include/session.php';
 		return new Session($parameters);
 	},
+	
+	'router' => function(Service_Container $services){
+		require_once __DIR__ . '/include/router.php';
+		$routes = require __DIR__ . '/routes.php';
+		return new DCMS\Router($routes);
+	},
 
 	'localization' => function(Service_Container $services){
 		require_once __DIR__ . '/include/localization.php';
