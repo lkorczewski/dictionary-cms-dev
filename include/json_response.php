@@ -70,6 +70,7 @@ class JSON_Response {
 	// not used yet
 	// todo: rename
 	function return_array(array $data){
+		header('Content-Type: application/json');
 		exit(JSON_encode($data, JSON_FORCE_OBJECT|JSON_UNESCAPED_UNICODE));
 	}
 	
