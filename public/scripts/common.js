@@ -354,7 +354,7 @@ var HeadwordsSearchEngine = {
 					var searchResults = makeSearchResults(headwords, isEditionMode)
 					searchResultsContainer.appendChild(searchResults)
 				} else {
-					var searchMessage = makeEntryNotFoundMessage();
+					var searchMessage = makeEntryNotFoundMessage(headwordMask);
 					searchResultsContainer.appendChild(searchMessage)
 				}
 			}
@@ -378,14 +378,15 @@ var Dictionary = {
 }
 
 function makeSearchResults(headwords, isEditionMode){
-	var searchResults = document.createDocumentFragment()
+	//var searchResults = document.createDocumentFragment()
+	var searchResults = document.createElement('div')
 	
 	for(var index in headwords){
 		var searchResult = makeSearchResult(headwords[index], isEditionMode)
 		searchResults.appendChild(searchResult)
 	}
 	
-	return searchResults;
+	return searchResults
 }
 
 function makeSearchResult(headword, isEditionMode){
@@ -396,14 +397,16 @@ function makeSearchResult(headword, isEditionMode){
 	searchResultAnchor.textContent = headword
 	var link =
 		'?h=' +
-			headword +
-			(isEditionMode ? '&m=edition' : '')
+		headword +
+		(isEditionMode ? '&m=edition' : '')
 	searchResultAnchor.setAttribute('href', link)
 	
-	return searchResult;
+	searchResult.appendChild(searchResultAnchor)
+	
+	return searchResult
 }
 
-function makeEntryNotFoundMessage(){
+function makeEntryNotFoundMessage(headwordMask){
 	var searchMessage = document.createElement('div')
 	searchMessage.className = 'search_message'
 	if(Dictionary.isEditionMode()){ // todo: redundant call or lazyness
@@ -427,6 +430,6 @@ function makeEntryNotFoundMessage(){
 		searchMessage.innerHTML = localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
 	}
 	
-	return searchMessage
-	
+	return searchMessage	
 }
+
