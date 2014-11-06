@@ -338,58 +338,95 @@ function showEditor(editorName){
 //==========================================================
 
 function searchHeadwordsLike(headwordMask){
-	makeJsonRequest('atomics/get_headwords.php', 'h=' + headwordMask, {
-		success: function(response){
-			var headwords = response
-			var searchResultsContainer = document.getElementById('search_results_container')
-			searchResultsContainer.innerHTML = ''; // to be replaced
-			var isEditionMode = false
-			if(window.location.search.indexOf('m=edition') >= 0){
-				isEditionMode = true
-			}
-			if(headwords.length){
-				for(var index in headwords){
-					var searchResult = document.createElement('div')
-					searchResult.className = 'search_result'
-					
-					var searchResultAnchor = document.createElement('a')
-					searchResultAnchor.textContent = headwords[index]
-					var link =
-						'?h=' +
-						headwords[index] +
-						(isEditionMode ? '&m=edition' : '')
-					searchResultAnchor.setAttribute('href', link);
-					searchResult.appendChild(searchResultAnchor)
-					
-					searchResultsContainer.appendChild(searchResult)
-				}
-			} else {
-				var searchMessage = document.createElement('div')
-				searchMessage.className = 'search_message'
-				if(isEditionMode){
-					/* TODO: invent some name for div1 */
-					var div1 = document.createElement('div')
-					div1.innerHTML = // so that <b/> works
-						localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
-						+ localization.getText('create a new one?')
-					searchMessage.appendChild(div1)
-					
-					var buttonBar = document.createElement('div')
-					var createButton = document.createElement('button')
-					createButton.className = 'button create'
-					createButton.textContent = localization.getText('create')
-					createButton.onclick = function(){
-						Entry.add(document.getElementById('search_mask_input').value)
-					}
-					buttonBar.appendChild(createButton)
-					searchMessage.appendChild(buttonBar)
-				} else {
-					searchMessage.innerHTML = localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
-				}
-				
-				searchResultsContainer.appendChild(searchMessage)
-			}
-		}
-	})
+	HeadwordsSearchEngine.searchLike(headwordMask)
 }
 
+var HeadwordsSearchEngine = {
+	
+	searchLike: function(headwordMask){
+		makeJsonRequest('headwords/' + headwordMask, 'h=' + headwordMask, {
+			success: function(response){
+				var headwords = response
+				var searchResultsContainer = document.getElementById('search_results_container')
+				searchResultsContainer.innerHTML = ''; // to be replaced
+				var isEditionMode = Dictionary.isEditionMode()
+				if(headwords.length){
+					var searchResults = makeSearchResults(headwords, isEditionMode)
+					searchResultsContainer.appendChild(searchResults)
+				} else {
+					var searchMessage = makeEntryNotFoundMessage();
+					searchResultsContainer.appendChild(searchMessage)
+				}
+			}
+		})
+	}
+	
+}
+
+var Dictionary = {
+	
+	isEditionMode: function isEditionMode(){
+		var isEditionMode = false
+		
+		if(window.location.search.indexOf('m=edition') >= 0){
+			isEditionMode = true
+		}
+		
+		return isEditionMode
+	}
+	
+}
+
+function makeSearchResults(headwords, isEditionMode){
+	var searchResults = document.createDocumentFragment()
+	
+	for(var index in headwords){
+		var searchResult = makeSearchResult(headwords[index], isEditionMode)
+		searchResults.appendChild(searchResult)
+	}
+	
+	return searchResults;
+}
+
+function makeSearchResult(headword, isEditionMode){
+	var searchResult = document.createElement('div')
+	searchResult.className = 'search_result'
+	
+	var searchResultAnchor = document.createElement('a')
+	searchResultAnchor.textContent = headword
+	var link =
+		'?h=' +
+			headword +
+			(isEditionMode ? '&m=edition' : '')
+	searchResultAnchor.setAttribute('href', link)
+	
+	return searchResult;
+}
+
+function makeEntryNotFoundMessage(){
+	var searchMessage = document.createElement('div')
+	searchMessage.className = 'search_message'
+	if(Dictionary.isEditionMode()){ // todo: redundant call or lazyness
+		/* TODO: invent some name for div1 */
+		var div1 = document.createElement('div')
+		div1.innerHTML = // so that <b/> works
+			localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
+				+ localization.getText('create a new one?')
+		searchMessage.appendChild(div1)
+		
+		var buttonBar = document.createElement('div')
+		var createButton = document.createElement('button')
+		createButton.className = 'button create'
+		createButton.textContent = localization.getText('create')
+		createButton.onclick = function(){
+			Entry.add(document.getElementById('search_mask_input').value)
+		}
+		buttonBar.appendChild(createButton)
+		searchMessage.appendChild(buttonBar)
+	} else {
+		searchMessage.innerHTML = localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
+	}
+	
+	return searchMessage
+	
+}
