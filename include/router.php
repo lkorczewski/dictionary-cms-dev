@@ -9,10 +9,20 @@ use ReflectionMethod;
 class Router {
 	
 	protected $routes;
+	protected $controller_generator;
 	
-	function __construct(array $routes){
-		$this->routes = $routes;
+	//----------------------------------------------------------------
+	// constructing
+	//----------------------------------------------------------------
+	
+	function __construct(array $routes, Callable $controller_generator = null){
+		$this->routes                = $routes;
+		$this->controller_generator  = $controller_generator;
 	}
+	
+	//----------------------------------------------------------------
+	// routing by request URL
+	//----------------------------------------------------------------
 	
 	function route(){
 		return $this->route_path($_SERVER['PATH_INFO']);
@@ -66,12 +76,13 @@ class Router {
 	}
 	
 	//----------------------------------------------------------------
-	// executing action string basing on ma
+	// executing action string
 	//----------------------------------------------------------------
 	
 	function execute_action($action, array $parameters = []){
 		list($controller, $action) = explode(':', $action);
-		$controller_object = new $controller;
+		
+		$controller_object = $this->instantiate_controller($controller);
 		$method_reflection = new ReflectionMethod($controller_object, $action);
 		
 		$method_parameters = $this->get_method_parameters($method_reflection, $parameters);
@@ -79,6 +90,20 @@ class Router {
 		$result = $method_reflection->invokeArgs($controller_object, $method_parameters);
 		
 		return $result;
+	}
+	
+	//----------------------------------------------------------------
+	// instantiating controller
+	//----------------------------------------------------------------
+	protected function instantiate_controller($controller){
+		if($this->controller_generator){
+			$controller_generator = $this->controller_generator;
+			$controller_object = $controller_generator($controller);
+		} else {
+			$controller_object = new $controller();
+		}
+		
+		return $controller_object;
 	}
 	
 	//----------------------------------------------------------------

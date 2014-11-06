@@ -85,14 +85,16 @@ return new Service_Container([
 	'router' => function(Service_Container $services){
 		require_once __DIR__ . '/include/router.php';
 		$routes = require __DIR__ . '/routes.php';
-		return new DCMS\Router($routes);
+		return new DCMS\Router($routes, function($controller) use($services){
+			return new $controller($services);
+		});
 	},
 
 	'localization' => function(Service_Container $services){
 		require_once __DIR__ . '/include/localization.php';
 		return new DCMS\Localization(
-			$services->get('config')->get('locale_path'),
-			$services->get('config')->get('locale')
+			$services->get('config')->get('locale_path'), //todo: fallback
+			$services->get('config')->get('locale') //todo: fallback
 		);
 	},
 
