@@ -4,13 +4,7 @@ namespace Controllers;
 
 use Core\Service_Container;
 
-class Headwords {
-	
-	protected $services;
-	
-	function __construct(Service_Container $services){
-		$this->services = $services;
-	}
+class Headwords extends Controller {
 	
 	function search($headword_mask = ''){
 		$data          = $this->services->get('data');
@@ -27,7 +21,7 @@ class Headwords {
 		$session->set('search_results', $headwords);
 		
 		// todo: use json_response
-		header('Content-Type: application/json');	
+		header('Content-Type: application/json');
 		echo JSON_encode($headwords, JSON_UNESCAPED_UNICODE);
 	}
 	

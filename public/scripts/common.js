@@ -118,45 +118,52 @@ function showWarning(message){
 }
 
 //==========================================================
-// logging editor in
+// editor
 //==========================================================
 
-function logEditorIn(login, password, doOnSuccess, doOnFailure){
-	makeJsonRequest('atomics/log_editor_in.php', 'l=' + login + '&p=' + password, {
-		success: function(response){
-			switch(response.status){
-				case 'success' :
-					doOnSuccess(response.editor_name)
-					break
-				case 'failure' :
-					if(doOnFailure){
-						doOnFailure()
-					}
-					break
+var Editor = {
+	
+	logIn: function(login, password, doOnSuccess, doOnFailure){
+		makeJsonRequest('editor/log_in', 'l=' + login + '&p=' + password, {
+			success: function(response){
+				switch(response.status){
+					case 'success' :
+						doOnSuccess(response.editor_name)
+						break
+					case 'failure' :
+						if(doOnFailure){
+							doOnFailure()
+						}
+						break
+				}
 			}
-		}
-	})
+		})
+	},
+	
+	logOut: function(doOnSuccess, doOnFailure){
+		makeJsonRequest('editor/log_out', '', {
+			success: function(response){
+				switch(response.status){
+					case 'success' :
+						doOnSuccess()
+						break
+					case 'failure' :
+						if(doOnFailure){
+							doOnFailure()
+						}
+						break
+				}
+			}
+		})
+	}
 }
 
-//==========================================================
-// logging editor out
-//==========================================================
+function logEditorIn(login, password, doOnSuccess, doOnFailure){
+	Editor.logIn(login, password, doOnSuccess, doOnFailure)
+}
 
 function logEditorOut(doOnSuccess, doOnFailure){
-	makeJsonRequest('atomics/log_editor_out.php', '', {
-		success: function(response){
-			switch(response.status){
-				case 'success' :
-					doOnSuccess()
-					break
-				case 'failure' :
-					if(doOnFailure){
-						doOnFailure()
-					}
-					break
-			}
-		}
-	})
+	Editor.logOut(doOnSuccess, doOnFailure)
 }
 
 //==========================================================
