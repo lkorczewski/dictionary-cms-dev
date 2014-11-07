@@ -1,4 +1,11 @@
 ----------------------------------------
+ 0.15.1-alpha
+----------------------------------------
+ * routing (and clean URLs) instead of "atomics":
+   - headwords listing
+   - logging editor in and out
+
+----------------------------------------
  0.15.0
 ----------------------------------------
  compatibility breakers:
