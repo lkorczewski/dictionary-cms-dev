@@ -37,13 +37,29 @@ class Session {
 	}
 	*/
 	
+	//----------------------------------------------------------------
+	
+	function set($key, $value){
+		$_SESSION[$key] = $value;
+		
+		return $this;
+	}
+	
+	function __set($key, $value){
+		$this->set($key, $value);
+	}
+	
+	//----------------------------------------------------------------
+	
 	function has($key){
 		return isset($_SESSION[$key]);
 	}
 	
-	function set($key, $value){
-		$_SESSION[$key] = $value;
+	function __isset($key){
+		return $this->has($key);
 	}
+	
+	//----------------------------------------------------------------
 	
 	function get($key, $default = null){
 		if(isset($_SESSION[$key])){
@@ -53,8 +69,30 @@ class Session {
 		return $default;
 	}
 	
+	function __get($key){
+		return $this->get($key);
+	}
+	
+	//----------------------------------------------------------------
+	
 	function delete($key){
 		unset($_SESSION[$key]);
+	}
+	
+	function __unset($key){
+		$this->delete($key);
+	}
+	
+	//----------------------------------------------------------------
+	
+	function reset(){
+		$_SESSION = [];
+	}
+	
+	//----------------------------------------------------------------
+	
+	function destroy(){
+		session_destroy();
 	}
 }
 
