@@ -4,21 +4,20 @@ namespace Controllers;
 
 use \DCMS\Session;
 use \DCMS\Request;
+use \DCMS\Data as DCMS_Data;
 use \DCMS\JSON_Response;
 
 class Editor extends Controller {
 	
+	/** @var Session $session */
 	protected $session;
+	
+	/** @var JSON_Response $json_response */
 	protected $json_response;
 	
 	protected function init(){
-		
-		/** @var Session $session */
-		$this->session = $this->services->get('session');
-		
-		/** @var JSON_Response $json_response */
+		$this->session       = $this->services->get('session');
 		$this->json_response = $this->services->get('json_response');
-		
 	}
 	
 	function log_in(){

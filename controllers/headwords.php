@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use Core\Service_Container;
-
 class Headwords extends Controller {
 	
 	function search($headword_mask = ''){
