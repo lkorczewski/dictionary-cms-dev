@@ -32,7 +32,7 @@ class Editor extends Controller {
 		$editor_result = $dcms_data->get_editor($login, $password);
 		
 		if($editor_result === false){
-			$json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
+			$this->json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 		}
 		
 		if(count($editor_result) == 0){
