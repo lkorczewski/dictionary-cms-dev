@@ -1,12 +1,12 @@
 <?php
 
 return [
-	'category_label/list'       => 'Controllers\Category_Label:list',
+	'editor/log_in'  => 'Controllers\Editor:log_in',
+	'editor/log_out' => 'Controllers\Editor:log_out',
 	
 	'headwords'                 => 'Controllers\Headwords:search',
 	'headwords/{headword_mask}' => 'Controllers\Headwords:search',
 	
-	'editor/log_in'  => 'Controllers\Editor:log_in',
-	'editor/log_out' => 'Controllers\Editor:log_out',
+	'category_labels' => 'Controllers\Category_Labels:list_all', // todo: zmienić na list
 ];
 

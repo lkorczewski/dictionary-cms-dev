@@ -4,6 +4,7 @@
  * routing (and clean URLs) instead of "atomics":
    - headwords listing
    - logging editor in and out
+   - listing of category labels
 
 ----------------------------------------
  0.15.0
