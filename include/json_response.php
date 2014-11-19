@@ -10,7 +10,7 @@ class JSON_Response {
 	const MESSAGE_WRONG_CREDENTIALS    = 'wrong credentials';
 	const MESSAGE_UNRECOGNIZED_ACTION  = 'unrecognized action';
 	const MESSAGE_NOTHING_AFFECTED     = 'nothing affected';
-
+	
 	//------------------------------------------------
 	// returning success
 	//------------------------------------------------
