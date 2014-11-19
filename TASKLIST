@@ -16,6 +16,7 @@
  * change of first headword should redirect
  * mode in session vs mode in links
  * separate and unique form labels
+ * better handling of buttons when a value is moved up and down
 
 ------------------------------------------------------------------------
 D O N E :

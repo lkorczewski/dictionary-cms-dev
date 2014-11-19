@@ -77,13 +77,9 @@ var Value = {
 	update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
 		
 		// TODO: newText -- improve the name
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'id=' + encodeURIComponent(valueId) +
-			'&a=update' +
-			'&t=' + newText
+		var action = this.name + '/' + encodeURIComponent(valueId) + '/update/' + encodeURIComponent(newText)
 		var that = this
-		makeJsonRequest(action, parameters, {
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var valueElement = valueBar.getElementsByClassName(that.name)[0]
@@ -112,11 +108,8 @@ var Value = {
 	},
 	
 	delete: function(valueBar, valueId, doOnSuccess){
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'id=' + encodeURIComponent(valueId) +
-			'&a=delete'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(valueId) + '/delete'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					valueBar.remove()
@@ -136,11 +129,8 @@ var MultipleValue = {
 	__proto__: Value,
 	
 	moveUp: function(valueBar, valueId){
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'id=' + encodeURIComponent(valueId) +
-			'&a=move_up'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(valueId) + '/move_up'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					valueBar.moveUp()
@@ -150,11 +140,8 @@ var MultipleValue = {
 	},
 	
 	moveDown: function(valueBar, valueId){
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'id=' + encodeURIComponent(valueId) +
-			'&a=move_down'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(valueId) + '/move_down'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					valueBar.moveDown()

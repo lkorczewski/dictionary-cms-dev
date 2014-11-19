@@ -4,6 +4,8 @@ namespace DCMS\Controllers;
 
 use Dictionary\Dictionary;
 
+// todo: rename to plural to conform to the standard or merge plurals with singulars
+
 class Entry_Controller {
 	
 	protected $dictionary;
@@ -24,3 +26,4 @@ class Entry_Controller {
 	}
 	
 }
+

@@ -5,6 +5,8 @@
    - headwords listing
    - logging editor in and out
    - listing of category labels
+   - single and multiple values
+ * bugfix: not saving edition of a new label before page reload 
 
 ----------------------------------------
  0.15.0

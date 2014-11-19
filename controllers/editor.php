@@ -70,3 +70,4 @@ class Editor extends Controller {
 		return $value;
 	}
 }
+
