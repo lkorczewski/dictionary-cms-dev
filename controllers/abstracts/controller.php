@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers;
+namespace Controllers\Abstracts;
 
 use Core\Service_Container;
 

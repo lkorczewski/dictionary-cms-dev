@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Category_Labels extends Controller {
+class Category_Labels extends Abstracts\Controller {
 	
 	function list_all(){
 		

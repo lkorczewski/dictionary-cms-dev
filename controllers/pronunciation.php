@@ -4,7 +4,7 @@ namespace Controllers;
 
 use \Phonetics\XSAMPA_Parser;
 
-class Pronunciation extends Multiple_Value {
+class Pronunciation extends Abstracts\Multiple_Value {
 	
 	protected static $name = 'pronunciation';
 	

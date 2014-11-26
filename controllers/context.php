@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Context extends Single_Value {
+class Context extends Abstracts\Single_Value {
 	
 	protected static $name = 'translation';
 	

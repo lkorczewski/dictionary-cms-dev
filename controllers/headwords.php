@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Headwords extends Controller {
+class Headwords extends Abstracts\Controller {
 	
 	function search($headword_mask = ''){
 		$data          = $this->services->get('data');

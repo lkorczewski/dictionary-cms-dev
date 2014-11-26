@@ -7,7 +7,7 @@ use \DCMS\Request;
 use \DCMS\Data as DCMS_Data;
 use \DCMS\JSON_Response;
 
-class Editor extends Controller {
+class Editor extends Abstracts\Controller {
 	
 	/** @var Session $session */
 	protected $session;

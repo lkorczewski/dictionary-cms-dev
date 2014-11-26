@@ -3,7 +3,7 @@
 namespace Controllers;
 
 // todo: semantically wrong assignment to "Multiple Value"
-class Form extends Multiple_Value {
+class Form extends Abstracts\Multiple_Value {
 	
 	protected static $name = 'form';
 	

@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Category_Label extends Single_Value {
+class Category_Label extends Abstracts\Single_Value {
 	
 	protected static $name = 'category_label';
 	

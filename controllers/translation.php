@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Translation extends Multiple_Value {
+class Translation extends Abstracts\Multiple_Value {
 	
 	protected static $name = 'translation';
 	

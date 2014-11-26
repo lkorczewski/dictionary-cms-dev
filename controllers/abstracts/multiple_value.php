@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers;
+namespace Controllers\Abstracts;
 
 abstract class Multiple_Value extends JSON_Controller {
 	
