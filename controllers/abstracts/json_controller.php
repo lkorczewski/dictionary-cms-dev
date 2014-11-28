@@ -13,7 +13,16 @@ abstract class JSON_Controller extends Controller {
 		$this->json_response = $this->services->get('json_response');
 	}
 	
-	protected function handle_result($affected_rows, array $results = null){
+	// todo: rename parameters
+	protected function handle_query_result($result, array $results = null){
+		if($result === false){
+			$this->json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
+		}
+		
+		$this->json_response->succeed($results);
+	}
+	
+	protected function handle_update_result($affected_rows, array $results = null){
 		if($affected_rows === false){
 			$this->json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 		}

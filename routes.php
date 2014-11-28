@@ -33,5 +33,14 @@ return [
 	'translation/{id}/move_up'        => 'Controllers\Translation:move_up',
 	'translation/{id}/move_down'      => 'Controllers\Translation:move_down',
 	'translation/{id}/delete'         => 'Controllers\Translation:delete',
+	
+	'node/{node_id}/add_headword'       => 'Controllers\Node:add_headword',
+	'node/{node_id}/add_pronunciation'  => 'Controllers\Node:add_pronunciation',
+	'node/{node_id}/add_context'        => 'Controllers\Node:add_context',
+	'node/{node_id}/add_form'           => 'Controllers\Node:add_form',
+	'node/{node_id}/add_category_label' => 'Controllers\Node:add_category_label',
+	'node/{node_id}/add_translation'    => 'Controllers\Node:add_translation',
+	'node/{node_id}/add_phrase'         => 'Controllers\Node:add_phrase',
+	'node/{node_id}/add_sense'          => 'Controllers\Node:add_sense',
 ];
 
