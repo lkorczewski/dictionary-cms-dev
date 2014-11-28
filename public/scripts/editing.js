@@ -262,7 +262,7 @@ var Sense = {
 	pluralName:  'senses',
 	
 	add: function(parentElement, nodeId){
-		var action = actionPath + '/Node,php'
+		var action = actionPath + '/node.php'
 		var parameters =
 			'n=' + encodeURIComponent(nodeId) +
 			'&a=add_sense'
