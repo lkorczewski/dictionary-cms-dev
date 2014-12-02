@@ -4,6 +4,8 @@ return [
 	'editor/log_in'  => 'Controllers\Editor:log_in',
 	'editor/log_out' => 'Controllers\Editor:log_out',
 	
+	// values
+	
 	'headwords'                 => 'Controllers\Headwords:search',
 	'headwords/{headword_mask}' => 'Controllers\Headwords:search',
 	
@@ -33,6 +35,19 @@ return [
 	'translation/{id}/move_up'        => 'Controllers\Translation:move_up',
 	'translation/{id}/move_down'      => 'Controllers\Translation:move_down',
 	'translation/{id}/delete'         => 'Controllers\Translation:delete',
+	
+	// nodes
+	
+	'phrase/{node_id}/update/{value}' => 'Controllers\Phrase:update',
+	'phrase/{node_id}/move_up'        => 'Controllers\Phrase:move_up',
+	'phrase/{node_id}/move_down'      => 'Controllers\Phrase:move_down',
+	'phrase/{node_id}/delete'         => 'Controllers\Phrase:delete',
+	
+	'sense/{node_id}/move_up'   => 'Controllers\Sense:move_up',
+	'sense/{node_id}/move_down' => 'Controllers\Sense:move_down',
+	'sense/{node_id}/delete'    => 'Controllers\Sense:delete',
+	
+	// adding (nodes and values)
 	
 	'node/{node_id}/add_headword'       => 'Controllers\Node:add_headword',
 	'node/{node_id}/add_pronunciation'  => 'Controllers\Node:add_pronunciation',

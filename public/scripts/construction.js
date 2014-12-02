@@ -163,7 +163,7 @@ function appendSenses(nodeContent, nodeId){
 }
 
 //----------------------------------------------------------------------------
-// nodes
+// sense
 //----------------------------------------------------------------------------
 
 function makeSenseLabelBar(nodeId, senseLabel, senseContainer){
@@ -211,6 +211,7 @@ function makeSenseContainer(nodeId, senseLabel){
 //----------------------------------------------------------------------------
 // phrase
 //----------------------------------------------------------------------------
+// todo: control
 
 function makePhraseBar(nodeId, phraseLabel, phraseContent){
 	var phraseBar = makeBar('phrase')
@@ -232,17 +233,17 @@ function makePhraseBar(nodeId, phraseLabel, phraseContent){
 
 function makePhraseContent(nodeId){
 	var phraseContent = document.createElement('div')
-	phraseContent.className = 'content sense_content'
+	phraseContent.className = 'content phrase_content'
 	
 	appendTranslations(phraseContent, nodeId)
 }
 
 function makePhraseContainer(nodeId, phraseLabel){
 	var phraseContainer = document.createElement('div')
-	phraseContainer.className = 'sense_container'
+	phraseContainer.className = 'phrase_container'
 	
-	phraseContainer.appendChild(makeSenseLabelBar(nodeId, phraseLabel, phraseContainer))
-	phraseContainer.appendChild(makeSenseContent(nodeId))
+	phraseContainer.appendChild(makePhraseBar(nodeId, phraseLabel, phraseContainer)) // todo: control
+	phraseContainer.appendChild(makePhraseContent(nodeId)) // todo: control
 	
 	return phraseContainer;
 }

@@ -21,12 +21,9 @@ function hideButtons(element){
 var Value = {
 	
 	add: function(nodeContent, nodeId){
-		var action = actionPath + '/node.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=add_' + this.name
+		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
 		var that = this
-		makeJsonRequest(action, parameters, {
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var valueId = response[that.name + '_id']
@@ -157,29 +154,39 @@ var MultipleValue = {
 
 var Node = {
 	
-	add: function(parentElement, nodeId){
-		var action = actionPath + '/node.php';
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=add_' + this.name
-		makeJsonRequest(action, parameters, {
+	add: function(parentElementContent, nodeId){
+		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		that = this
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var nodeId = response[that.name + '_id']
-					var nodes = nodeContent.getElementsByClassName(that.pluralName)[0]
-					var nodeContainer = that.makeNodeContainer(nodeId)
+					var nodes = parentElementContent.getElementsByClassName(that.pluralName)[0]
+					var nodeContainer = that.makeNodeContainer(nodeId, response) // todo: parameters directly from response, not yet implemented
 					nodes.appendChild(nodeContainer)
 				}
 			}
 		})
 	},
 	
+	/*
+	add: function(parentElement, nodeId){
+		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		makeJsonRequest(action, '', {
+			success: function(response){
+				if(response.status == 'success'){
+					var senses = parentElement.getElementsByClassName('senses')[0]
+					var senseContainer = makeSenseContainer(response.node_id, response.label)
+					senses.appendChild(senseContainer)
+				}
+			}
+		})
+	},
+	*/
+	
 	moveUp: function(element, nodeId){
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=move_up'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_up'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					element.moveUp()
@@ -189,11 +196,8 @@ var Node = {
 	},
 	
 	moveDown: function(element, nodeId){
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=move_down'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_down'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					element.moveDown()
@@ -203,11 +207,8 @@ var Node = {
 	},
 	
 	delete: function(element, nodeId){
-		var action = actionPath + '/' + this.name + '.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=delete'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(nodeId) + '/delete'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					element.remove()
@@ -262,11 +263,8 @@ var Sense = {
 	pluralName:  'senses',
 	
 	add: function(parentElement, nodeId){
-		var action = actionPath + '/node.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=add_sense'
-		makeJsonRequest(action, parameters, {
+		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var senses = parentElement.getElementsByClassName('senses')[0]
@@ -278,11 +276,8 @@ var Sense = {
 	},
 	
 	moveUp: function(senseElement, nodeId){
-		var action = actionPath + '/sense.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=move_up'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_up'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var previousSenseElement = senseElement.previousElementSibling /* not working in IE<9 */
@@ -301,11 +296,8 @@ var Sense = {
 	},
 	
 	moveDown: function(senseElement, nodeId){
-		var action = actionPath + '/sense.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=move_down'
-		makeJsonRequest(action, parameters, {
+		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_down'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var nextSenseElement = senseElement.nextElementSibling /* not working in IE<9 */
@@ -323,10 +315,10 @@ var Sense = {
 		})
 	},
 	
-	delete: function(senseElement, nodeId){
-		Node.delete(this, senseElement, nodeId)
-		// todo: labels should be moved
-	},
+//	delete: function(senseElement, nodeId){
+//		Node.delete(senseElement, nodeId)
+//		// todo: labels should be moved
+//	},
 	
 }
 
@@ -349,13 +341,12 @@ var Phrase = {
 		// temporary hack
 		update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
 			// TODO: newText -- improve the name
-			var action = actionPath + '/' + this.name + '.php'
-			var parameters =
-				'n=' + encodeURIComponent(valueId) +
-				'&a=update' +
-				'&t=' + newText
+			var action = this.name
+				+ '/' + encodeURIComponent(valueId)
+				+ '/update'
+				+ '/' + encodeURIComponent(newText)
 			var that = this
-			makeJsonRequest(action, parameters, {
+			makeJsonRequest(action, '', {
 				success: function(response){
 					if(response.status == 'success'){
 						var valueElement = valueBar.getElementsByClassName(that.name)[0]
@@ -387,11 +378,8 @@ var Phrase = {
 	// overwrite because of location.reload()
 	
 	add: function(parentElement, nodeId){
-		var action = actionPath + '/node.php'; 
-		var parameters =
-			'n=' + encodeURIComponent(nodeId) +
-			'&a=add_phrase'
-		makeJsonRequest(action, parameters, {
+		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					location.reload()
@@ -463,10 +451,7 @@ var Form = {
 	pluralName:  'forms',
 	
 	add: function addForm(nodeContent, nodeId){
-		var action = actionPath + '/add_form.php'
-		var parameters =
-			'n=' + encodeURIComponent(nodeId)
-		
+		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
 		makeJsonRequest(action, parameters, {
 			success: function(response){
 				if(response.status == 'success'){
