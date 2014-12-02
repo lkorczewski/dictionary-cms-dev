@@ -8,10 +8,10 @@ class Pronunciation extends Abstracts\Multiple_Value {
 	
 	protected static $name = 'pronunciation';
 	
-	function update($id, $text){
-		$text = (new XSAMPA_Parser())->parse($text);
+	function update($id, $value){
+		$value = (new XSAMPA_Parser())->parse($value);
 		
-		parent::update($id, $text);
+		parent::update($id, $value);
 	}
 	
 }
