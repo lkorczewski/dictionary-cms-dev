@@ -2,14 +2,17 @@
 
 namespace Controllers;
 
-// todo: rename to plural to conform to the standard or merge plurals with singulars
-
 class Entry extends Abstracts\JSON_Controller {
 	
-	function find($headword){
+	/** @var \Dictionary\MySQL_Entry $entry_access */
+	protected $entry_access;
+	
+	function find(){
 		
 		/** @var \Dictionary\Dictionary $dictionary */
 		$dictionary = $this->services('dictionary');
+		
+		$headword = isset($_GET['h']) ? $_GET['h'] : '';
 		
 		$entries = $headword ? $dictionary->get_entries_by_headword($headword) : [];
 		
@@ -19,15 +22,27 @@ class Entry extends Abstracts\JSON_Controller {
 		];
 	}
 	
+	function add(){
+		$this->init();
+		$entry_node_id = $this->entry_access->add();
+		$this->handle_query_result([
+			'entry_id' => $entry_node_id,
+		]);
+	}
+	
 	// sprawdzić, czy jest używane
 	function delete($node_id){
+		$this->init();
 		
-		/** @var \Dictionary\MySQL_Entry $entry_access */
-		$entry_access = $this->services->get('data')->access('entry');
-		
-		$result = $entry_access->delete($node_id);
+		$result = $this->entry_access->delete($node_id);
 		
 		$this->handle_query_result($result);
+	}
+	
+	function init(){
+		parent::init();
+		
+		$this->entry_access = $this->services->get('data')->access('entry'); 
 	}
 }
 

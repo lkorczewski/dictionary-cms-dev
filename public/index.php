@@ -40,11 +40,9 @@ if($services->get('config')->get('edition_mode') === true){
 //----------------------------------------------------
 
 require_once __DIR__ . '/../controllers/entry.php';
-use DCMS\Controllers\Entry_Controller;
-$entry_controller = new Entry_Controller(
-	$services->get('dictionary')
-);
-$entry_data = $entry_controller->execute();
+use Controllers\Entry as Entry_Controller;
+$entry_controller = new Entry_Controller($services);
+$entry_data = $entry_controller->find();
 
 require_once __DIR__ . '/../controllers/search.php';
 use DCMS\Controllers\Search_Controller;

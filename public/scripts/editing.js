@@ -20,6 +20,7 @@ function hideButtons(element){
 
 var Value = {
 	
+	// todo: should show real returned value!!!
 	add: function(nodeContent, nodeId){
 		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
 		var that = this
@@ -230,7 +231,7 @@ var Node = {
 var Entry = {
 	
 	add: function(headword){
-		makeJsonRequest(actionPath + '/add_entry.php', 'h=' + encodeURIComponent(headword), {
+		makeJsonRequest('entries' + '/add', 'h=' + encodeURIComponent(headword), {
 			success: function(response){
 				if(response.status == 'success'){
 					window.location = '?h=' + encodeURIComponent(headword) + '&m=edition'
@@ -240,7 +241,8 @@ var Entry = {
 	},
 	
 	delete: function(nodeId){
-		makeJsonRequest(actionPath + '/delete_entry.php', 'n=' + encodeURIComponent(nodeId), {
+		var action = 'entry/' + encodeURIComponent(nodeId) + '/delete'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					location.reload()
