@@ -21,7 +21,7 @@ return [
 	
 	'category_label/{id}/update/{value}' => 'Controllers\Category_Label:update',
 	'category_label/{id}/delete'         => 'Controllers\Category_Label:delete',
-	'category_labels'                    => 'Controllers\Category_Labels:list_all', // todo: zmienić na list
+	'category_labels'                    => 'Controllers\Category_Labels:list_all', // todo: change to list
 	
 	'form/{id}/update/{value}' => 'Controllers\Form:update',
 	'form/{id}/move_up'        => 'Controllers\Form:move_up',
