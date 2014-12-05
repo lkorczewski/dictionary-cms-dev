@@ -8,5 +8,6 @@ class Form extends Abstracts\Multiple_Value {
 	protected static $name = 'form';
 	
 	// this controller is not used besides of move_up, move_down and delete
+	// particularly it lacks update form
 }
 

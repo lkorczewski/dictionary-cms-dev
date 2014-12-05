@@ -1,23 +1,17 @@
 <?php
 
-namespace DCMS\Controllers;
-
-use Dictionary\Dictionary;
+namespace Controllers;
 
 // todo: rename to plural to conform to the standard or merge plurals with singulars
 
-class Entry_Controller {
+class Entry extends Abstracts\JSON_Controller {
 	
-	protected $dictionary;
-	
-	function __construct(Dictionary $dictionary){
-		$this->dictionary = $dictionary;
-	}
-	
-	function execute(){
-		$headword = isset($_GET['h']) ? $_GET['h'] : '';
+	function find($headword){
 		
-		$entries = $headword ? $this->dictionary->get_entries_by_headword($headword) : [];
+		/** @var \Dictionary\Dictionary $dictionary */
+		$dictionary = $this->services('dictionary');
+		
+		$entries = $headword ? $dictionary->get_entries_by_headword($headword) : [];
 		
 		return [
 			'headword' => $headword,
@@ -25,5 +19,15 @@ class Entry_Controller {
 		];
 	}
 	
+	// sprawdzić, czy jest używane
+	function delete($node_id){
+		
+		/** @var \Dictionary\MySQL_Entry $entry_access */
+		$entry_access = $this->services->get('data')->access('entry');
+		
+		$result = $entry_access->delete($node_id);
+		
+		$this->handle_query_result($result);
+	}
 }
 
