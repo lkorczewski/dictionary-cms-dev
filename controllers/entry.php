@@ -10,7 +10,7 @@ class Entry extends Abstracts\JSON_Controller {
 	function find(){
 		
 		/** @var \Dictionary\Dictionary $dictionary */
-		$dictionary = $this->services('dictionary');
+		$dictionary = $this->services->get('dictionary');
 		
 		$headword = isset($_GET['h']) ? $_GET['h'] : '';
 		
@@ -24,8 +24,11 @@ class Entry extends Abstracts\JSON_Controller {
 	
 	function add(){
 		$this->init();
-		$entry_node_id = $this->entry_access->add();
-		$this->handle_query_result([
+		
+		$headword = $this->require_parameter('h');
+		
+		$entry_node_id = $this->entry_access->add($headword);
+		$this->handle_query_result($entry_node_id, [
 			'entry_id' => $entry_node_id,
 		]);
 	}

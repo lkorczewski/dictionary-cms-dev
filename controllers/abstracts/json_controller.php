@@ -13,6 +13,20 @@ abstract class JSON_Controller extends Controller {
 		$this->json_response = $this->services->get('json_response');
 	}
 	
+	protected function require_parameter($parameter){
+		
+		/** @var Request $request */
+		$request = $this->services->get('request');
+		
+		$value = $request->get_parameter($parameter);
+		
+		if($value === null){
+			$this->json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
+		}
+		
+		return $value;
+	}
+	
 	// todo: rename parameters
 	protected function handle_query_result($result, array $results = null){
 		if($result === false){

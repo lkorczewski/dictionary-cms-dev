@@ -2,31 +2,27 @@
 
 namespace Controllers;
 
-use \DCMS\Session;
-use \DCMS\Request;
-use \DCMS\Data as DCMS_Data;
 use \DCMS\JSON_Response;
 
-class Editor extends Abstracts\Controller {
+class Editor extends Abstracts\JSON_Controller {
 	
-	/** @var Session $session */
+	/** @var \DCMS\Session $session */
 	protected $session;
 	
-	/** @var JSON_Response $json_response */
-	protected $json_response;
-	
-	protected function init(){
-		$this->session       = $this->services->get('session');
-		$this->json_response = $this->services->get('json_response');
+	function init(){
+		parent::init();
+		
+		$this->session = $this->services->get('session');
 	}
 	
 	function log_in(){
+		
 		$this->init();
 		
 		$login    = $this->require_parameter('l');
 		$password = $this->require_parameter('p');
 		
-		/** @var DCMS_Data $dcms_data */
+		/** @var \DCMS\Data $dcms_data */
 		$dcms_data = $this->services->get('dcms_data');
 		$editor_result = $dcms_data->get_editor($login, $password);
 		
@@ -38,7 +34,7 @@ class Editor extends Abstracts\Controller {
 			$this->json_response->fail(JSON_Response::MESSAGE_WRONG_CREDENTIALS);
 		}
 		
-		$this->session->editor = $login;
+		$this->session->set('editor', $login);
 		
 		$this->json_response->succeed([
 			'editor_name' => $editor_result['login'],
@@ -46,9 +42,10 @@ class Editor extends Abstracts\Controller {
 	}
 	
 	function log_out(){
+		
 		$this->init();
 		
-		/** @var Session $request */
+		/** @var \DCMS\Session $request */
 		$session = $this->services->get('session');
 		
 		$session->delete('editor');
@@ -56,18 +53,5 @@ class Editor extends Abstracts\Controller {
 		$this->json_response->succeed();
 	}
 	
-	protected function require_parameter($parameter){
-		
-		/** @var Request $request */
-		$request = $this->services->get('request');
-		
-		$value = $request->get_parameter($parameter);
-		
-		if($value === null){
-			$this->json_response->fail(JSON_Response::MESSAGE_NO_PARAMETER);
-		}
-		
-		return $value;
-	}
 }
 

@@ -47,7 +47,7 @@ return [
 	'sense/{node_id}/move_down' => 'Controllers\Sense:move_down',
 	'sense/{node_id}/delete'    => 'Controllers\Sense:delete',
 	
-	'entries/add/{headword}' => 'Controllers\Entry:add',
+	'entries/add'            => 'Controllers\Entry:add',
 	'entry/{node_id}/delete' => 'Controllers\Entry:delete',
 	
 	// adding (nodes and values)

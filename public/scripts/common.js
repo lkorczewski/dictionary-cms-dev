@@ -437,6 +437,6 @@ function makeEntryNotFoundMessage(headwordMask){
 		searchMessage.innerHTML = localization.getText('entry not found').replace('{{headword}}', '<b>' + headwordMask + '</b>')
 	}
 	
-	return searchMessage	
+	return searchMessage
 }
 

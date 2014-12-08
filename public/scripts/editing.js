@@ -231,7 +231,9 @@ var Node = {
 var Entry = {
 	
 	add: function(headword){
-		makeJsonRequest('entries' + '/add', 'h=' + encodeURIComponent(headword), {
+		var action = 'entries/add'
+		var parameters = 'h=' + encodeURIComponent(headword)
+		makeJsonRequest(action, parameters, {
 			success: function(response){
 				if(response.status == 'success'){
 					window.location = '?h=' + encodeURIComponent(headword) + '&m=edition'
