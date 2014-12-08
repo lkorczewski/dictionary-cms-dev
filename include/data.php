@@ -91,7 +91,9 @@ class Data {
 			';';
 		$result = $this->database->fetch_one($query);
 		
-		if($result === false) return false;
+		if($result === false){
+			return false;
+		}
 		
 		return $result;
 	}
