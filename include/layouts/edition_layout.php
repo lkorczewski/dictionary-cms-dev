@@ -307,7 +307,7 @@ class Edition_Layout extends HTML_Layout {
 			
 			// todo: should be rewritten on JS level
 			$this->output .=
-				'<div class="bar_element form_label" onclick="editForm(this.parentNode, ' .
+				'<div class="bar_element form_label" onclick="Form.edit(this.parentNode, ' .
 				$form->get_id() .
 				', \'label\')">' .
 					$form->get_label() .
