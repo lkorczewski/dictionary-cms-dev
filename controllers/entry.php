@@ -2,10 +2,13 @@
 
 namespace Controllers;
 
+use Dictionary\Table_Layout;
+
 class Entry extends Abstracts\JSON_Controller {
 	
 	/** @var \Dictionary\MySQL_Entry $entry_access */
 	protected $entry_access;
+	
 	
 	function find(){
 		
@@ -33,13 +36,36 @@ class Entry extends Abstracts\JSON_Controller {
 		]);
 	}
 	
-	// sprawdzić, czy jest używane
+	// check if used! should it be available?
+	
 	function delete($node_id){
 		$this->init();
 		
 		$result = $this->entry_access->delete($node_id);
 		
 		$this->handle_query_result($result);
+	}
+	
+	// gets entry as a JSON structure
+	
+	function get($node_id){
+		parent::init();
+		
+		/** @var \Dictionary\Dictionary $dictionary */
+		$dictionary = $this->services->get('dictionary');
+		$entry = $dictionary->get_entry_by_id($node_id);
+		
+		// maybe it should be simply an empty set
+		if($entry === null){
+			$this->json_response->fail('not found'); // todo: turn into a constant
+		}
+		
+		/** @var \Dictionary\Layout $array_layout */
+		$array_layout = $this->services->get('array_layout');
+		$array_entry = $array_layout->parse_entry($entry);
+		
+		$this->json_response->return_array($array_entry);
+		
 	}
 	
 	function init(){

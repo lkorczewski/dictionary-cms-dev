@@ -3,8 +3,9 @@
 use Core\Service_Container;
 use Config\Config;
 use Database\Database;
-use Dictionary\MySQL_Data;
 use Dictionary\Dictionary;
+use Dictionary\MySQL_Data;
+use Dictionary\Table_Layout;
 
 use DCMS\Request;
 use DCMS\Session;
@@ -101,6 +102,11 @@ return new Service_Container([
 	'json_response' => function(){
 		require_once __DIR__ . '/include/json_response.php';
 		return new JSON_Response();
+	},
+	
+	'array_layout' => function(){
+		require_once 'dictionary/layouts/table_layout.php';
+		return new Table_Layout();
 	},
 	
 ]);
