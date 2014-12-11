@@ -1,7 +1,3 @@
-/* configuration */
-
-var actionPath = 'atomics'
-
 /* misc */
 
 function showButtons(element){
@@ -75,9 +71,11 @@ var Value = {
 	update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
 		
 		// TODO: newText -- improve the name
-		var action = this.name + '/' + encodeURIComponent(valueId) + '/update/' + encodeURIComponent(newText)
+		var action = this.name + '/' + encodeURIComponent(valueId) + '/update'
+		var parameters =
+			'v=' + encodeURIComponent(newText)
 		var that = this
-		makeJsonRequest(action, '', {
+		makeJsonRequest(action, parameters, {
 			success: function(response){
 				if(response.status == 'success'){
 					var valueElement = valueBar.getElementsByClassName(that.name)[0]
@@ -157,7 +155,7 @@ var Node = {
 	
 	add: function(parentElementContent, nodeId){
 		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
-		that = this
+		var that = this
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -288,8 +286,12 @@ var Sense = {
 					
 					senseElement.moveUp()
 					
-					var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-					var previousSenseLabelElement = previousSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+					var senseLabelElement = senseElement
+						.getElementsByClassName('sense_label_bar')[0]
+						.getElementsByClassName('sense_label')[0]
+					var previousSenseLabelElement = previousSenseElement
+						.getElementsByClassName('sense_label_bar')[0]
+						.getElementsByClassName('sense_label')[0]
 					
 					var bufferedSenseLabel = senseLabelElement.textContent;
 					senseLabelElement.textContent = previousSenseLabelElement.textContent;
@@ -308,8 +310,12 @@ var Sense = {
 					
 					senseElement.moveDown()
 					
-					var senseLabelElement = senseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
-					var nextSenseLabelElement = nextSenseElement.getElementsByClassName('sense_label_bar')[0].getElementsByClassName('sense_label')[0]
+					var senseLabelElement = senseElement
+						.getElementsByClassName('sense_label_bar')[0]
+						.getElementsByClassName('sense_label')[0]
+					var nextSenseLabelElement = nextSenseElement
+						.getElementsByClassName('sense_label_bar')[0]
+						.getElementsByClassName('sense_label')[0]
 					
 					var bufferedSenseLabel = senseLabelElement.textContent;
 					senseLabelElement.textContent = nextSenseLabelElement.textContent;
@@ -348,9 +354,10 @@ var Phrase = {
 			var action = this.name
 				+ '/' + encodeURIComponent(valueId)
 				+ '/update'
-				+ '/' + encodeURIComponent(newText)
+			var parameters =
+				'v=' + encodeURIComponent(newText)
 			var that = this
-			makeJsonRequest(action, '', {
+			makeJsonRequest(action, parameters, {
 				success: function(response){
 					if(response.status == 'success'){
 						var valueElement = valueBar.getElementsByClassName(that.name)[0]
@@ -529,12 +536,10 @@ var Form = {
 	},
 	
 	update: function(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnFailure){
-		var action = actionPath + '/form.php'
+		var action = 'form/' + formId + '/update'
 		var parameters = 
-			'id=' + formId +
-			'&a=update' +
-			'&l=' + encodeURIComponent(formLabel) +
-			'&t=' + encodeURIComponent(formHeadword)
+			'l=' + encodeURIComponent(formLabel) +
+			'&f=' + encodeURIComponent(formHeadword)
 		makeJsonRequest(action, parameters, {
 			success: function(response){
 				if(response.status == 'success'){

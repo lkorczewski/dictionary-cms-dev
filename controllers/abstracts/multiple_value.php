@@ -8,11 +8,17 @@ abstract class Multiple_Value extends JSON_Controller {
 	
 	protected $value_access;
 	
-	function update($id, $value){
+	function update($id){
 		$this->init();
+		
+		/** @var \DCMS\Request $request */
+		$request = $this->services->get('request');
+		
+		$value = $request->get_parameter('v');
+		
 		$affected_rows = $this->value_access->update($id, $value);
 		$this->handle_update_result($affected_rows, [
-			'value' => $value
+			'value' => $value,
 		]);
 	}
 	
