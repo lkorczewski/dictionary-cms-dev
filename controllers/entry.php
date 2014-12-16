@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use DCMS\JSON_Response;
 use Dictionary\Table_Layout;
 
 class Entry extends Abstracts\JSON_Controller {
@@ -55,9 +56,13 @@ class Entry extends Abstracts\JSON_Controller {
 		$dictionary = $this->services->get('dictionary');
 		$entry = $dictionary->get_entry_by_id($node_id);
 		
-		// maybe it should be simply an empty set
+		if($entry === false){
+			$this->json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
+		}
+		
 		if($entry === null){
-			$this->json_response->fail('not found'); // todo: turn into a constant
+			// should it report failure? 
+			$this->json_response->fail(JSON_Response::MESSAGE_NOTHING_FOUND);
 		}
 		
 		/** @var \Dictionary\Layout $array_layout */

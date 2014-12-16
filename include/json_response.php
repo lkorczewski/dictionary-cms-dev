@@ -9,6 +9,7 @@ class JSON_Response {
 	const MESSAGE_QUERY_FAILURE        = 'query failure';
 	const MESSAGE_WRONG_CREDENTIALS    = 'wrong credentials';
 	const MESSAGE_UNRECOGNIZED_ACTION  = 'unrecognized action';
+	const MESSAGE_NOTHING_FOUND        = 'nothing found';
 	const MESSAGE_NOTHING_AFFECTED     = 'nothing affected';
 	
 	//------------------------------------------------
