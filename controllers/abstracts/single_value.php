@@ -10,6 +10,7 @@ abstract class Single_Value extends JSON_Controller {
 	
 	function update($id){
 		$this->init();
+		$this->require_authorization();
 		
 		/** @var \DCMS\Request $request */
 		$request = $this->services->get('request');
@@ -24,6 +25,8 @@ abstract class Single_Value extends JSON_Controller {
 	
 	function delete($id){
 		$this->init();
+		$this->require_authorization();
+		
 		$affected_rows = $this->value_access->delete($id);
 		$this->handle_query_result($affected_rows);
 	}

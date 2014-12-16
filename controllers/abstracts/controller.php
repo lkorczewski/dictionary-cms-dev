@@ -15,5 +15,6 @@ abstract class Controller {
 	function __get($service){
 		return $this->services->get($service);
 	}
+	
 }
 

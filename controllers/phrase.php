@@ -8,6 +8,8 @@ class Phrase extends Abstracts\Multiple_Node {
 	
 	function update($node_id, $value){
 		$this->init();
+		$this->require_authorization();
+		
 		$affected_rows = $this->node_access->update($node_id, $value);
 		$this->handle_update_result($affected_rows);
 	}

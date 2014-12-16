@@ -13,6 +13,12 @@ abstract class JSON_Controller extends Controller {
 		$this->json_response = $this->services->get('json_response');
 	}
 	
+	function require_authorization(){
+		if(!$this->services->get('session')->get('editor')){
+			$this->json_response->fail(JSON_Response::MESSAGE_NO_AUTHORIZATION);
+		}
+	}
+	
 	protected function require_parameter($parameter){
 		
 		/** @var Request $request */

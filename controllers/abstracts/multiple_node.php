@@ -10,18 +10,24 @@ abstract class Multiple_Node extends JSON_Controller {
 	
 	function move_up($node_id){
 		$this->init();
+		$this->require_authorization();
+		
 		$affected_rows = $this->node_access->move_up($node_id);
 		$this->handle_update_result($affected_rows);
 	}
 	
 	function move_down($node_id){
 		$this->init();
+		$this->require_authorization();
+		
 		$affected_rows = $this->node_access->move_down($node_id);
 		$this->handle_update_result($affected_rows);
 	}
 	
 	function delete($node_id){
 		$this->init();
+		$this->require_authorization();
+		
 		$result = $this->node_access->delete($node_id);
 		$this->handle_query_result($result);
 	}

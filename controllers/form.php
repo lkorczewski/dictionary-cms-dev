@@ -9,6 +9,7 @@ class Form extends Abstracts\Multiple_Value {
 	
 	function update($id){
 		$this->init();
+		$this->require_authorization();
 		
 		/** @var \DCMS\Request $request */
 		$request = $this->services->get('request');

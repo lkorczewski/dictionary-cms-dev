@@ -10,6 +10,7 @@ abstract class Multiple_Value extends JSON_Controller {
 	
 	function update($id){
 		$this->init();
+		$this->require_authorization();
 		
 		/** @var \DCMS\Request $request */
 		$request = $this->services->get('request');
@@ -24,18 +25,24 @@ abstract class Multiple_Value extends JSON_Controller {
 	
 	function move_up($id){
 		$this->init();
+		$this->require_authorization();
+		
 		$affected_rows = $this->value_access->move_up($id);
 		$this->handle_update_result($affected_rows);
 	}
 	
 	function move_down($id){
 		$this->init();
+		$this->require_authorization();
+		
 		$affected_rows = $this->value_access->move_down($id);
 		$this->handle_update_result($affected_rows);
 	}
 	
 	function delete($id){
 		$this->init();
+		$this->require_authorization();
+		
 		$result = $this->value_access->delete($id);
 		$this->handle_query_result($result);
 	}

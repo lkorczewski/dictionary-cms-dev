@@ -28,6 +28,7 @@ class Entry extends Abstracts\JSON_Controller {
 	
 	function add(){
 		$this->init();
+		$this->require_authorization();
 		
 		$headword = $this->require_parameter('h');
 		
@@ -41,6 +42,7 @@ class Entry extends Abstracts\JSON_Controller {
 	
 	function delete($node_id){
 		$this->init();
+		$this->require_authorization();
 		
 		$result = $this->entry_access->delete($node_id);
 		

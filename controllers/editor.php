@@ -16,7 +16,6 @@ class Editor extends Abstracts\JSON_Controller {
 	}
 	
 	function log_in(){
-		
 		$this->init();
 		
 		$login    = $this->require_parameter('l');
@@ -42,7 +41,6 @@ class Editor extends Abstracts\JSON_Controller {
 	}
 	
 	function log_out(){
-		
 		$this->init();
 		
 		/** @var \DCMS\Session $request */
