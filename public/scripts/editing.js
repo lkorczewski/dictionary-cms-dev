@@ -18,7 +18,7 @@ var Value = {
 	
 	// todo: should show real returned value!!!
 	add: function(nodeContent, nodeId){
-		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
 		var that = this
 		makeJsonRequest(action, '', {
 			success: function(response){
@@ -154,7 +154,7 @@ var MultipleValue = {
 var Node = {
 	
 	add: function(parentElementContent, nodeId){
-		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
 		var that = this
 		makeJsonRequest(action, '', {
 			success: function(response){
@@ -167,21 +167,6 @@ var Node = {
 			}
 		})
 	},
-	
-	/*
-	add: function(parentElement, nodeId){
-		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
-		makeJsonRequest(action, '', {
-			success: function(response){
-				if(response.status == 'success'){
-					var senses = parentElement.getElementsByClassName('senses')[0]
-					var senseContainer = makeSenseContainer(response.node_id, response.label)
-					senses.appendChild(senseContainer)
-				}
-			}
-		})
-	},
-	*/
 	
 	moveUp: function(element, nodeId){
 		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_up'
@@ -228,8 +213,11 @@ var Node = {
 
 var Entry = {
 	
+	name:        'entry',
+	pluralName:  'entries',
+	
 	add: function(headword){
-		var action = 'entries/add'
+		var action = this.pluralName + '/add'
 		var parameters = 'h=' + encodeURIComponent(headword)
 		makeJsonRequest(action, parameters, {
 			success: function(response){
@@ -240,15 +228,16 @@ var Entry = {
 		})
 	},
 	
+	// not used
 	delete: function(nodeId){
-		var action = 'entry/' + encodeURIComponent(nodeId) + '/delete'
+		var action = this.name + '/' + encodeURIComponent(nodeId) + '/delete'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					location.reload()
 				}
 			}
-		})	
+		})
 	},
 	
 }
@@ -265,7 +254,7 @@ var Sense = {
 	pluralName:  'senses',
 	
 	add: function(parentElement, nodeId){
-		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -389,7 +378,7 @@ var Phrase = {
 	// overwrite because of location.reload()
 	
 	add: function(parentElement, nodeId){
-		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -462,7 +451,7 @@ var Form = {
 	pluralName:  'forms',
 	
 	add: function addForm(nodeContent, nodeId){
-		var action =  'node/' + encodeURIComponent(nodeId) + '/add_' + this.name
+		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
 		makeJsonRequest(action, parameters, {
 			success: function(response){
 				if(response.status == 'success'){
