@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use DCMS\JSON_Response;
+
 class Category_Labels extends Abstracts\Controller {
 	
 	function list_all(){

@@ -4,9 +4,25 @@ namespace Controllers\Abstracts;
 
 abstract class Multiple_Node extends JSON_Controller {
 	
+	protected static $name = 'node';
+	
 	protected $node_access;
 	
-	protected static $name = 'node';
+	protected function init(){
+		parent::init();
+		
+		$this->node_access = $this->services->get('data')->access(static::$name);
+	}
+	
+	function add($node_id){
+		$this->init();
+		$this->require_authorization();
+		
+		$value_id = $this->node_access->add($node_id);
+		$this->handle_query_result($value_id, [
+			static::$name . '_id' => $value_id,
+		]);
+	}
 	
 	function move_up($node_id){
 		$this->init();
@@ -32,9 +48,4 @@ abstract class Multiple_Node extends JSON_Controller {
 		$this->handle_query_result($result);
 	}
 	
-	protected function init(){
-		parent::init();
-		
-		$this->node_access = $this->services->get('data')->access(static::$name);
-	}
 }

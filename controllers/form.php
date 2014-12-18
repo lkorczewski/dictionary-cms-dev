@@ -11,11 +11,8 @@ class Form extends Abstracts\Multiple_Value {
 		$this->init();
 		$this->require_authorization();
 		
-		/** @var \DCMS\Request $request */
-		$request = $this->services->get('request');
-		
-		$label  = $request->get_parameter('l');
-		$form   = $request->get_parameter('f');
+		$label  = $this->require_parameter('l');
+		$form   = $this->require_parameter('f');
 		
 		$affected_rows = $this->value_access->update($id, $label, $form);
 		$this->handle_update_result($affected_rows, [

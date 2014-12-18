@@ -8,14 +8,29 @@ abstract class Multiple_Value extends JSON_Controller {
 	
 	protected $value_access;
 	
+	protected function init(){
+		parent::init();
+		
+		$this->value_access = $this->services->get('data')->access(static::$name);
+	}
+	
+	function add($node_id){
+		$this->init();
+		$this->require_authorization();
+		
+		$value = $this->get_parameter('v');
+		
+		$value_id = $this->value_access->add($node_id, $value);
+		$this->handle_query_result($value_id, [
+			static::$name . '_id' => $value_id,
+		]);
+	}
+	
 	function update($id){
 		$this->init();
 		$this->require_authorization();
 		
-		/** @var \DCMS\Request $request */
-		$request = $this->services->get('request');
-		
-		$value = $request->get_parameter('v');
+		$value = $this->require_parameter('v');
 		
 		$affected_rows = $this->value_access->update($id, $value);
 		$this->handle_update_result($affected_rows, [
@@ -47,10 +62,5 @@ abstract class Multiple_Value extends JSON_Controller {
 		$this->handle_query_result($result);
 	}
 	
-	protected function init(){
-		parent::init();
-		
-		$this->value_access = $this->services->get('data')->access(static::$name);
-	}
 }
 

@@ -3,6 +3,7 @@
 namespace Controllers\Abstracts;
 
 use \DCMS\JSON_Response;
+use \DCMS\Request;
 
 abstract class JSON_Controller extends Controller {
 	
@@ -17,6 +18,17 @@ abstract class JSON_Controller extends Controller {
 		if(!$this->services->get('session')->get('editor')){
 			$this->json_response->fail(JSON_Response::MESSAGE_NO_AUTHORIZATION);
 		}
+	}
+	
+	protected function get_parameter($parameter, $default = null){
+		
+		/** @var Request $request */
+		$request = $this->services->get('request');
+		
+		$value = $request->get_parameter($parameter, $default);
+		
+		return $value;
+		
 	}
 	
 	protected function require_parameter($parameter){
@@ -35,6 +47,7 @@ abstract class JSON_Controller extends Controller {
 	
 	// todo: rename parameters
 	protected function handle_query_result($result, array $results = null){
+		
 		if($result === false){
 			$this->json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 		}
@@ -43,6 +56,7 @@ abstract class JSON_Controller extends Controller {
 	}
 	
 	protected function handle_update_result($affected_rows, array $results = null){
+		
 		if($affected_rows === false){
 			$this->json_response->fail(JSON_Response::MESSAGE_QUERY_FAILURE);
 		}
