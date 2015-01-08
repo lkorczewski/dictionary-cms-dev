@@ -6,6 +6,7 @@ abstract class Multiple_Value extends JSON_Controller {
 	
 	protected static $name = 'value';
 	
+	/** @var \Dictionary\MySQL_Multiple_Value $value_access */
 	protected $value_access;
 	
 	protected function init(){

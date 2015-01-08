@@ -6,6 +6,7 @@ abstract class Single_Value extends JSON_Controller {
 	
 	protected static $name = 'value';
 	
+	/** @var \Dictionary\MySQL_Single_Value $value_access */
 	protected $value_access;
 	
 	protected function init(){
@@ -20,7 +21,7 @@ abstract class Single_Value extends JSON_Controller {
 		
 		$value = $this->get_parameter('v');
 		
-		$value_id = $this->value_access->add($node_id, $value);
+		$value_id = $this->value_access->set($node_id, $value);
 		$this->handle_query_result($value_id, [
 			static::$name . '_id' => $value_id,
 		]);
