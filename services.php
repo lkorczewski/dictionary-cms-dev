@@ -90,7 +90,7 @@ return new Service_Container([
 			return new $controller($services);
 		});
 	},
-
+	
 	'localization' => function(Service_Container $services){
 		require_once __DIR__ . '/include/localization.php';
 		return new DCMS\Localization(
@@ -98,7 +98,9 @@ return new Service_Container([
 			$services->get('config')->get('locale') //todo: fallback
 		);
 	},
-
+	
+	'xsampa_parser' => '\Phonetics\XSAMPA_Parser',
+	
 	'json_response' => function(){
 		require_once __DIR__ . '/include/json_response.php';
 		return new JSON_Response();
