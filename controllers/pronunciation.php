@@ -26,8 +26,8 @@ class Pronunciation extends Abstracts\Multiple_Value {
 		
 		$value_id = $this->value_access->add($node_id, $value);
 		$this->handle_query_result($value_id, [
-			static::$name . '_id' => $value_id,
-			'value' => $value,
+			static::$name . '_id'  => $value_id,
+			'value'                => $value,
 		]);
 	}
 	
@@ -47,7 +47,7 @@ class Pronunciation extends Abstracts\Multiple_Value {
 		
 		$affected_rows = $this->value_access->update($id, $value);
 		$this->handle_update_result($affected_rows, [
-			'value' => $value,
+			'value'  => $value,
 		]);
 	}
 	

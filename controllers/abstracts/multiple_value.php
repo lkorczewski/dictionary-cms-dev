@@ -23,7 +23,8 @@ abstract class Multiple_Value extends JSON_Controller {
 		
 		$value_id = $this->value_access->add($node_id, $value);
 		$this->handle_query_result($value_id, [
-			static::$name . '_id' => $value_id,
+			static::$name . '_id'  => $value_id,
+			'value'                => $value,
 		]);
 	}
 	
