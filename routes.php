@@ -1,6 +1,11 @@
 <?php
 
 return [
+	
+	''                      => 'Controllers\Pages\Entry:show',
+	'dictionary'            => 'Controllers\Pages\Entry:show',
+	'dictionary/{headword}' => 'Controllers\Pages\Entry:show',
+	
 	'editor/log_in'  => 'Controllers\Editor:log_in',
 	'editor/log_out' => 'Controllers\Editor:log_out',
 	

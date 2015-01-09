@@ -10,13 +10,10 @@ class Entry extends Abstracts\JSON_Controller {
 	/** @var \Dictionary\MySQL_Entry $entry_access */
 	protected $entry_access;
 	
-	
-	function find(){
+	function find($headword = ''){
 		
 		/** @var \Dictionary\Dictionary $dictionary */
 		$dictionary = $this->services->get('dictionary');
-		
-		$headword = isset($_GET['h']) ? $_GET['h'] : '';
 		
 		$entries = $headword ? $dictionary->get_entries_by_headword($headword) : [];
 		

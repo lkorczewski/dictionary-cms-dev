@@ -39,18 +39,13 @@ if($services->get('config')->get('edition_mode') === true){
 // subcontrollers
 //----------------------------------------------------
 
-require_once __DIR__ . '/../controllers/entry.php';
 use Controllers\Entry as Entry_Controller;
 $entry_controller = new Entry_Controller($services);
 $entry_data = $entry_controller->find();
 
-require_once __DIR__ . '/../controllers/search.php';
-use DCMS\Controllers\Search_Controller;
-$search_controller = new Search_Controller(
-	$services->get('dictionary'),
-	$services->get('config')
-);
-$search_data = $search_controller->execute();
+use Controllers\Search as Search_Controller;
+$search_controller = new Search_Controller($services);
+$search_data = $search_controller->search();
 
 //----------------------------------------------------
 // data for view
