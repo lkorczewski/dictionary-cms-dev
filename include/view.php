@@ -100,17 +100,19 @@ class View {
 	//------------------------------------------------------------------------
 	
 	private function get_header(){
+		$base_url = $this->services->get('config')->get('base_url');
+		
 		$output =
 			'<!DOCTYPE html>' . "\n" .
 			'<html>' . "\n" .
 			'<head>' . "\n" .
 			'<title>' . $this->services->get('config')->get('title') . '</title>' . "\n" .
 			'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
-			'<link rel="stylesheet" type="text/css" href="styles/dictionary.css"/>' . "\n" .
-			'<script type="text/javascript" src="scripts/DOM_extension.js"></script>' . "\n" .
-			'<script type="text/javascript" src="scripts/common.js"></script>' . "\n" .
-			'<script type="text/javascript" src="scripts/construction.js"></script>' . "\n" .
-			'<script type="text/javascript" src="scripts/editing.js"></script>' . "\n" .
+			'<link rel="stylesheet" type="text/css" href="' . $base_url . 'styles/dictionary.css"/>' . "\n" .
+			'<script type="text/javascript" src="' . $base_url . 'scripts/DOM_extension.js"></script>' . "\n" .
+			'<script type="text/javascript" src="' . $base_url . 'scripts/common.js"></script>' . "\n" .
+			'<script type="text/javascript" src="' . $base_url . 'scripts/construction.js"></script>' . "\n" .
+			'<script type="text/javascript" src="' . $base_url . 'scripts/editing.js"></script>' . "\n" .
 			'<script>' . "\n" .
 			'localization.texts = {' . "\n" .
 				$this->get_translations([
@@ -238,7 +240,7 @@ class View {
 	//------------------------------------------------------------------------
 	
 	private function get_search_panel(){
-		return (new Search_View($this->data, $this->localization))->render(); 
+		return (new Search_View($this->services, $this->data))->render();
 	}
 	
 	//------------------------------------------------------------------------

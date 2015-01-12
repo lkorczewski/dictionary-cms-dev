@@ -6,6 +6,9 @@ $config['include_path'] = '../../library';
 // enables displaying errors if disabled by php configuration
 $config['debug'] = true;
 
+// base URL path relative to the for styles, scripts, etc.
+$config['base_url'] = '/';
+
 //----------------------------------------------------------------------------
 // session
 //----------------------------------------------------------------------------

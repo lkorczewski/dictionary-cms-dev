@@ -4,16 +4,22 @@ namespace DCMS\Views;
 
 require_once 'include/localization.php';
 
-use DCMS\Localization;
+use Core\Service_Container;
 
 class Search_View {
 	
 	protected $data;
+	
+	/** @var \Config\Config $configuration */
+	protected $configuration;
+	
+	/** @var \DCMS\Localization $localization */
 	protected $localization;
 	
-	function __construct($data, Localization $localization){
+	function __construct(Service_Container $services, array $data){
 		$this->data          = $data;
-		$this->localization  = $localization;
+		$this->configuration = $services->get('config');
+		$this->localization  = $services->get('localization');
 	}
 	
 	function render(){
@@ -111,6 +117,8 @@ class Search_View {
 	private function get_search_results(){
 		$output = '';
 		
+		$base_url = $this->configuration->get('base_url');
+		
 		$mode_parameter = '';
 		if($this->data['mode'] == 'edition'){
 			$mode_parameter = '&m=edition';
@@ -119,7 +127,7 @@ class Search_View {
 		foreach($this->data['search_results'] as $search_result){
 			$output .=
 				'<div class="search_result">' .
-					'<a href="' . '?h=' . $search_result . $mode_parameter . '">' .
+					'<a href="' . $base_url . 'dictionary/' . $search_result . $mode_parameter . '">' .
 						$search_result .
 					'</a>' .
 				'</div>' . "\n";
