@@ -2,8 +2,6 @@
 
 namespace DCMS;
 
-use ReflectionMethod;
-
 // todo: compiling all paths / lazy compiling single path
 
 class Numeric_Router {
