@@ -18,7 +18,11 @@ var Value = {
 	
 	// todo: should show real returned value!!!
 	add: function(nodeContent, nodeId){
-		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
+		var action =
+			configuration.get('base_url')
+			+ this.pluralName
+			+ '/add/'
+			+ encodeURIComponent(nodeId)
 		var that = this
 		makeJsonRequest(action, '', {
 			success: function(response){
@@ -71,7 +75,12 @@ var Value = {
 	update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
 		
 		// TODO: newText -- improve the name
-		var action = this.name + '/' + encodeURIComponent(valueId) + '/update'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(valueId)
+			+ '/update'
 		var parameters =
 			'v=' + encodeURIComponent(newText)
 		var that = this
@@ -104,7 +113,12 @@ var Value = {
 	},
 	
 	delete: function(valueBar, valueId, doOnSuccess){
-		var action = this.name + '/' + encodeURIComponent(valueId) + '/delete'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(valueId)
+			+ '/delete'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -125,7 +139,12 @@ var MultipleValue = {
 	__proto__: Value,
 	
 	moveUp: function(valueBar, valueId){
-		var action = this.name + '/' + encodeURIComponent(valueId) + '/move_up'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(valueId)
+			+ '/move_up'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -136,7 +155,12 @@ var MultipleValue = {
 	},
 	
 	moveDown: function(valueBar, valueId){
-		var action = this.name + '/' + encodeURIComponent(valueId) + '/move_down'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(valueId)
+			+ '/move_down'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -154,7 +178,11 @@ var MultipleValue = {
 var Node = {
 	
 	add: function(parentElementContent, nodeId){
-		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
+		var action =
+			configuration.get('base_url')
+			+ this.pluralName
+			+ '/add/'
+			+ encodeURIComponent(nodeId)
 		var that = this
 		makeJsonRequest(action, '', {
 			success: function(response){
@@ -169,7 +197,12 @@ var Node = {
 	},
 	
 	moveUp: function(element, nodeId){
-		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_up'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(nodeId)
+			+ '/move_up'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -180,7 +213,12 @@ var Node = {
 	},
 	
 	moveDown: function(element, nodeId){
-		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_down'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(nodeId)
+			+ '/move_down'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -191,7 +229,12 @@ var Node = {
 	},
 	
 	delete: function(element, nodeId){
-		var action = this.name + '/' + encodeURIComponent(nodeId) + '/delete'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(nodeId)
+			+ '/delete'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -217,7 +260,10 @@ var Entry = {
 	pluralName:  'entries',
 	
 	add: function(headword){
-		var action = this.pluralName + '/add'
+		var action =
+			configuration.get('base_url')
+			+ this.pluralName
+			+ '/add'
 		var parameters = 'h=' + encodeURIComponent(headword)
 		makeJsonRequest(action, parameters, {
 			success: function(response){
@@ -230,7 +276,11 @@ var Entry = {
 	
 	// not used
 	delete: function(nodeId){
-		var action = this.name + '/' + encodeURIComponent(nodeId) + '/delete'
+		var action = configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(nodeId)
+			+ '/delete'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -254,7 +304,11 @@ var Sense = {
 	pluralName:  'senses',
 	
 	add: function(parentElement, nodeId){
-		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
+		var action =
+			configuration.get('base_url')
+			+ this.pluralName
+			+ '/add/'
+			+ encodeURIComponent(nodeId)
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -267,7 +321,12 @@ var Sense = {
 	},
 	
 	moveUp: function(senseElement, nodeId){
-		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_up'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(nodeId)
+			+ '/move_up'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -291,7 +350,12 @@ var Sense = {
 	},
 	
 	moveDown: function(senseElement, nodeId){
-		var action = this.name + '/' + encodeURIComponent(nodeId) + '/move_down'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ encodeURIComponent(nodeId)
+			+ '/move_down'
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -340,7 +404,9 @@ var Phrase = {
 		// temporary hack
 		update: function(valueBar, valueId, newText, doOnSuccess, doOnFailure){
 			// TODO: newText -- improve the name
-			var action = this.name
+			var action =
+				configuration.get('base_url')
+				+ this.name
 				+ '/' + encodeURIComponent(valueId)
 				+ '/update'
 			var parameters =
@@ -378,7 +444,11 @@ var Phrase = {
 	// overwrite because of location.reload()
 	
 	add: function(parentElement, nodeId){
-		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
+		var action =
+			configuration.get('base_url')
+			+ this.pluralName
+			+ '/add/'
+			+ encodeURIComponent(nodeId)
 		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
@@ -451,8 +521,12 @@ var Form = {
 	pluralName:  'forms',
 	
 	add: function addForm(nodeContent, nodeId){
-		var action =  this.pluralName + '/add/' + encodeURIComponent(nodeId)
-		makeJsonRequest(action, parameters, {
+		var action =
+			configuration.get('base_url')
+			+ this.pluralName
+			+ '/add/'
+			+ encodeURIComponent(nodeId)
+		makeJsonRequest(action, '', {
 			success: function(response){
 				if(response.status == 'success'){
 					var formId = response.form_id
@@ -525,7 +599,12 @@ var Form = {
 	},
 	
 	update: function(formBar, formId, formLabel, formHeadword, doOnSuccess, doOnFailure){
-		var action = 'form/' + formId + '/update'
+		var action =
+			configuration.get('base_url')
+			+ this.name
+			+ '/'
+			+ formId
+			+ '/update'
 		var parameters = 
 			'l=' + encodeURIComponent(formLabel) +
 			'&f=' + encodeURIComponent(formHeadword)

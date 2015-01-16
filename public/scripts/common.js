@@ -1,4 +1,14 @@
 //==========================================================
+// configuration
+//==========================================================
+
+var configuration = {
+	get(label){
+		return this.parameters[label];
+	}
+}
+
+//==========================================================
 // localization
 //==========================================================
 
@@ -12,7 +22,9 @@ localization.getText = function(label){
 	}
 }
 
-localization.get_text = localization.getText
+localization.get_text = function(){
+	return '[[OBSOLETE TRANSLATION METHOD]]';
+}
 
 //==========================================================
 // making AJAX request
@@ -158,14 +170,6 @@ var Editor = {
 	}
 }
 
-function logEditorIn(login, password, doOnSuccess, doOnFailure){
-	Editor.logIn(login, password, doOnSuccess, doOnFailure)
-}
-
-function logEditorOut(doOnSuccess, doOnFailure){
-	Editor.logOut(doOnSuccess, doOnFailure)
-}
-
 //==========================================================
 // showing editor log in
 //==========================================================
@@ -269,7 +273,7 @@ function showEditorCredentialsInput(){
 		disableEditorCredentialsInput()
 		var login     = editorLoginInput.value
 		var password  = editorPasswordInput.value
-		logEditorIn(
+		Editor.logIn(
 			login,
 			password,
 			function(editorName){
@@ -325,7 +329,7 @@ function showEditor(editorName){
 	logOutButton.className = 'button log_out'
 	logOutButton.textContent = localization.getText('log out')
 	logOutButton.onclick = function(){
-		logEditorOut(function(){
+		Editor.logOut(function(){
 			showEditorLogIn()
 			location.reload()
 		})
@@ -344,14 +348,10 @@ function showEditor(editorName){
 // searching for headwords matching pattern
 //==========================================================
 
-function searchHeadwordsLike(headwordMask){
-	HeadwordsSearchEngine.searchLike(headwordMask)
-}
-
 var HeadwordsSearchEngine = {
 	
 	searchLike: function(headwordMask){
-		makeJsonRequest('headwords/' + headwordMask, 'h=' + headwordMask, {
+		makeJsonRequest(configuration.get('base_url') + 'headwords/' + headwordMask, 'h=' + headwordMask, {
 			success: function(response){
 				var headwords = response
 				var searchResultsContainer = document.getElementById('search_results_container')
@@ -403,6 +403,7 @@ function makeSearchResult(headword, isEditionMode){
 	var searchResultAnchor = document.createElement('a')
 	searchResultAnchor.textContent = headword
 	var link =
+		configuration.get('base_url') +
 		'?h=' +
 		headword +
 		(isEditionMode ? '&m=edition' : '')

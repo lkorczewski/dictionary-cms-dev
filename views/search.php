@@ -60,7 +60,7 @@ class Search_View {
 			'<form id="search_form"' .
 				' onsubmit="' .
 					'event.preventDefault(); '.
-					'searchHeadwordsLike(document.getElementById(\'search_mask_input\').value)' .
+					'HeadwordsSearchEngine.searchLike(document.getElementById(\'search_mask_input\').value)' .
 				'"' .
 			'>' . "\n" .
 				'<span id="search_mask_input_wrapper">' .

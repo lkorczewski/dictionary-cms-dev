@@ -114,6 +114,9 @@ class View {
 			'<script type="text/javascript" src="' . $base_url . 'scripts/construction.js"></script>' . "\n" .
 			'<script type="text/javascript" src="' . $base_url . 'scripts/editing.js"></script>' . "\n" .
 			'<script>' . "\n" .
+			'configuration.parameters = {' . "\n" .
+			'	\'base_url\':\'' . $base_url . '\'' . "\n" .
+			'}' .
 			'localization.texts = {' . "\n" .
 				$this->get_translations([
 					//'no results found',
