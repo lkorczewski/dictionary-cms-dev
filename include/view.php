@@ -116,7 +116,7 @@ class View {
 			'<script>' . "\n" .
 			'configuration.parameters = {' . "\n" .
 			'	\'base_url\':\'' . $base_url . '\'' . "\n" .
-			'}' .
+			'}' . "\n" .
 			'localization.texts = {' . "\n" .
 				$this->get_translations([
 					//'no results found',

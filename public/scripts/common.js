@@ -3,7 +3,7 @@
 //==========================================================
 
 var configuration = {
-	get(label){
+	get: function(label){
 		return this.parameters[label];
 	}
 }
@@ -351,7 +351,13 @@ function showEditor(editorName){
 var HeadwordsSearchEngine = {
 	
 	searchLike: function(headwordMask){
-		makeJsonRequest(configuration.get('base_url') + 'headwords/' + headwordMask, 'h=' + headwordMask, {
+		var path =
+			configuration.get('base_url')
+			+ 'headwords/'
+			+ headwordMask
+		var parameters =
+			'h=' + headwordMask
+		makeJsonRequest(path, parameters, {
 			success: function(response){
 				var headwords = response
 				var searchResultsContainer = document.getElementById('search_results_container')
