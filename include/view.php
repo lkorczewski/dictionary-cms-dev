@@ -16,6 +16,9 @@ class View {
 	/** @var Service_Container $services */
 	private $services;
 	
+	/** @var \Config\Config_Interface $localization */
+	private $configuration;
+	
 	/** @var Localization $localization */
 	private $localization;
 	
@@ -29,7 +32,8 @@ class View {
 		$this->services  = $services;
 		$this->data      = $data;
 		
-		$this->localization = $this->services->get('localization');
+		$this->configuration  = $this->services->get('config');
+		$this->localization   = $this->services->get('localization');
 	}
 	
 	//------------------------------------------------------------------------
@@ -100,13 +104,13 @@ class View {
 	//------------------------------------------------------------------------
 	
 	private function get_header(){
-		$base_url = $this->services->get('config')->get('base_url');
+		$base_url = $this->configuration->get('base_url');
 		
 		$output =
 			'<!DOCTYPE html>' . "\n" .
 			'<html>' . "\n" .
 			'<head>' . "\n" .
-			'<title>' . $this->services->get('config')->get('title') . '</title>' . "\n" .
+			'<title>' . $this->configuration->get('title') . '</title>' . "\n" .
 			'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>' . "\n" .
 			'<link rel="stylesheet" type="text/css" href="' . $base_url . 'styles/dictionary.css"/>' . "\n" .
 			'<script type="text/javascript" src="' . $base_url . 'scripts/DOM_extension.js"></script>' . "\n" .
@@ -203,7 +207,7 @@ class View {
 		$output =
 			'<div class="title">' .
 				'<h1>' .
-					$this->services->get('config')->get('title') .
+					$this->configuration->get('title') .
 				'</h1>' .
 			'</div>';
 		
@@ -286,12 +290,15 @@ class View {
 		$output .=
 			'<div id="content_panel">' . "\n";
 		
+		$not_found_text =
+			$this->localization->get_text('entry not found', [
+				'headword' => '<b>' . $this->data['headword'] . '</b>'
+			]);
+		
 		if($this->data['mode'] == 'edition'){
 			$output .=
 				'<div>' .
-					$this->localization->get_text('entry not found', [
-						'headword' => '<b>' . $this->data['headword'] . '</b>'
-					]) .
+					$not_found_text .
 					$this->localization->get_text('create a new one?') .
 				'</div>' . "\n" .
 				'<button onclick="Entry.add(\'' . $this->data['headword'] . '\')">' .
@@ -300,9 +307,7 @@ class View {
 		} else {
 			$output .=
 				'<div>' .
-					$this->localization->get_text('entry not found', [
-						'headword' => '<b>' . $this->data['headword'] . '</b>'
-					]) .
+					$not_found_text .
 				'</div>' . "\n";
 		}
 		
