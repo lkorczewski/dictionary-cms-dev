@@ -18,6 +18,7 @@ abstract class Multiple_Node extends JSON_Controller {
 		$this->init();
 		$this->require_authorization();
 		
+		// todo: value_id -> node_id, node_id -> parent_node_id
 		$value_id = $this->node_access->add($node_id);
 		$this->handle_query_result($value_id, [
 			static::$name . '_id' => $value_id,

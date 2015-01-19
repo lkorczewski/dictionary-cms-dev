@@ -136,7 +136,14 @@ function showWarning(message){
 var Editor = {
 	
 	logIn: function(login, password, doOnSuccess, doOnFailure){
-		makeJsonRequest('editor/log_in', 'l=' + login + '&p=' + password, {
+		var action =
+			configuration.get('base_url')
+			+ '/editor'
+			+ '/log_in'
+		var parameters =
+			'l=' + login +
+			'&p=' + password
+		makeJsonRequest(action, parameters, {
 			success: function(response){
 				switch(response.status){
 					case 'success' :
@@ -153,7 +160,11 @@ var Editor = {
 	},
 	
 	logOut: function(doOnSuccess, doOnFailure){
-		makeJsonRequest('editor/log_out', '', {
+		var action =
+			configuration.get('base_url')
+			+ '/editor'
+			+ '/log_out'
+		makeJsonRequest(action, '', {
 			success: function(response){
 				switch(response.status){
 					case 'success' :
@@ -410,7 +421,7 @@ function makeSearchResult(headword, isEditionMode){
 	searchResultAnchor.textContent = headword
 	var link =
 		configuration.get('base_url') +
-		'?h=' +
+		'dictionary/' +
 		headword +
 		(isEditionMode ? '&m=edition' : '')
 	searchResultAnchor.setAttribute('href', link)

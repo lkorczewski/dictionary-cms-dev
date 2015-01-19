@@ -6,15 +6,15 @@ $config['include_path'] = '../../library';
 // enables displaying errors if disabled by php configuration
 $config['debug'] = true;
 
-// base URL path relative to the for styles, scripts, etc.
+// base URL path relative to the hostname for styles, scripts, etc.
 $config['base_url'] = '/';
 
 //----------------------------------------------------------------------------
 // session
 //----------------------------------------------------------------------------
-// if two instances of dictionary are hosted under the same domain,
-// they have to have different values in session_name or session_path,
-// otherwise they would share session data, what is usually an unwanted behavior
+// if two instances of dictionary are hosted under the same domain, they have
+// to have different values in session_name or session_path, otherwise they
+// would share session data, what is usually an unwanted behaviour
 //----------------------------------------------------------------------------
 $config['session_name']    = 'session_id';
 //$config['session_domain']  = '';
